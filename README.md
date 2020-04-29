@@ -1,6 +1,6 @@
 # BL49
 Wideband Lambda Controller with Bosch CJ125 and LSU 4.9<br/>
-Stand-alone Lambda Controller with 0-5V output and CAN-Bus Interface<br/>
+Standalone Lambda Controller with 0-5V output and CAN-Bus Interface<br/>
 
 29.04.2020 - Version 0.0.1 - only hardware released<br/>
 
