@@ -4,7 +4,7 @@ Wideband Lambda Controller with Bosch CJ125 and LSU 4.9 with 0-5V output and CAN
 29.04.2020 - Version 0.0.1 - only hardware released / no software available at the moment<br/>
 
 Interactive BOM for easier hand-soldering you can download from the github (BL49/hardware/V0.0.1/bom)
-or access online here: https://oelprinz.000webhostapp.com/BL49/V0.0.0.1/iBOM/ibom.html <br/>
+or access online here: https://oelprinz.000webhostapp.com/BL49/V0.0.1/iBOM/ibom.html <br/>
 Quick link to schematic: https://github.com/oelprinz-org/BL49/blob/master/hardware/V0.0.1/schematics.pdf <br/>
 <img src="hardware/V0.0.1/V0.0.0_assembled.jpeg" title="Assembled Prototype">
 <p align="center">
