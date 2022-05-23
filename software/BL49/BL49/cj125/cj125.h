@@ -14,6 +14,7 @@
 
 typedef enum
 {
+	STATUS_ERROR,
 	STATUS_OKAY,
 	STATUS_E_NOPOWER,
 	STATUS_E_NOSENSOR,
@@ -21,9 +22,11 @@ typedef enum
 	CJ125_E_SHORTCIRCUITBAT
 } tcj125_status;
 
-uint16_t cj125_readSignature (void);
+uint8_t cj125_readSignature (void);
 tcj125_status cj125_readStatus (void);
-
+void cj125_set_calibration_mode (void);
+void cj125_set_running_mode_v8 (void);
+void cj125_set_running_mode_v17 (void);
 
 
 #endif /* CJ125_H_ */

@@ -7,10 +7,20 @@
 
 #include "cj125.h"
 #include "cj125_registers.h"
+#include "../helpers.h"
 
-uint16_t cj125_readSignature (void)
-{
-	return spi_read_write(CJ125_IDENT_REG_REQUEST);	
+uint8_t cj125_readSignature (void)
+{	
+	uint16_t reg;
+	
+	reg = spi_read_write(CJ125_IDENT_REG_REQUEST);
+	
+	if (high(reg) == 0x28 || high(reg) == 0x2e)
+	{
+		return low(reg);
+	}
+	
+	return 0x00;	
 }
 
 tcj125_status cj125_readStatus (void)
@@ -22,17 +32,40 @@ tcj125_status cj125_readStatus (void)
 	switch(statusReg)
 	{
 		case CJ125_DIAG_REG_STATUS_OK:
-			return STATUS_OKAY;
-			break;
+		return STATUS_OKAY;
+		break;
 			
 		case CJ125_DIAG_REG_STATUS_NOPOWER:
-			return STATUS_E_NOPOWER;
-			break;
+		return STATUS_E_NOPOWER;
+		break;
 			
 		case CJ125_DIAG_REG_STATUS_NOSENSOR:
-			return STATUS_E_NOSENSOR;
-			break;
+		return STATUS_E_NOSENSOR;
+		break;
+			
+		default:
+		return STATUS_ERROR;
+		break;
 	}
+}
+
+void cj125_set_calibration_mode (void)
+{
+	uint16_t retVal = 0;
 	
-	return STATUS_OKAY;
+	retVal = spi_read_write(CJ125_INIT_REG1_MODE_CALIBRATE);
+}
+
+void cj125_set_running_mode_v8 (void)
+{
+	uint16_t retVal = 0;
+	
+	retVal = spi_read_write(CJ125_INIT_REG1_MODE_NORMAL_V8);
+}
+
+void cj125_set_running_mode_v17 (void)
+{
+	uint16_t retVal = 0;
+	
+	retVal = spi_read_write(CJ125_INIT_REG1_MODE_NORMAL_V17);
 }

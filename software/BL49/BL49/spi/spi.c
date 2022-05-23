@@ -9,10 +9,11 @@
 
 void spi_init (void)
 {
+	// mosi (pb1) and sck (pb7) are outputs
 	DDRB |= (1 << PB1)|(1 << PB7);
-	// spi ss
+	// spi ss is output too
 	DDRD |= (1 << PD5);
-	
+	// bring them high
 	SPI_SS_DESELECT;
 	
 	// enable spi, 2MHz (div 8), master, mode1 (cpol 0, cpha 1)

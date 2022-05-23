@@ -12,7 +12,7 @@ cj125/cj125.d cj125/cj125.o: ../cj125/cj125.c ../cj125/cj125.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
  ../cj125/../spi/spi.h ../cj125/../spi/../helpers.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdbool.h \
- ../cj125/cj125_registers.h
+ ../cj125/cj125_registers.h ../cj125/../helpers.h
 
 ../cj125/cj125.h:
 
@@ -45,3 +45,5 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdbool.h:
 
 ../cj125/cj125_registers.h:
+
+../cj125/../helpers.h:
