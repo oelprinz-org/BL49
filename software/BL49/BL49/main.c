@@ -31,6 +31,30 @@ int main(void)
 	spi_init();
 	can_init(1);
 	
+	/*
+	
+	There are three different types of CAN modules available:
+	-> 2.0A - Considers 29 bit ID as an error
+	-> 2.0B Passive - Ignores 29 bit ID messages
+	-> 2.0B Active - Handles both 11 and 29 bit ID Messages
+	*/
+	
+	st_cmd_t message;
+	
+	message.id.ext = 0x180;
+	// message.ctrl.ide = 0;			// standard CAN frame type (2.0A)
+	
+	message.ctrl.ide = 1;				// we are using extended ID, check can_lib.c:118
+	message.ctrl.rtr = 0;				// this message object is not requesting a remote node to transmit data back
+	message.dlc = 1;
+	message.cmd = CMD_TX_DATA;
+	// message.pt_data = 0x01;
+	
+	
+	while(can_cmd(&message) != CAN_CMD_ACCEPTED);					// wait for MOb to configure
+	while(can_get_status(&message) == CAN_STATUS_NOT_COMPLETED);	// wait for a transmit request to come in, and send a response
+	
+	
 	board.vBatt = adc2voltage_millis(adc_read_battery())*5;
 	board.vRef = adc2voltage_millis(adc_read_reference());
 	
