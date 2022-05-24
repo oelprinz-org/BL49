@@ -63,4 +63,10 @@ static __inline uint8_t __high(uint16_t __x)
 #define low(x)	__low(x)
 #define high(x)	__high(x)
 
+#define BIT_SET(a,b) ((a) |= (1U<<(b)))
+#define BIT_CLEAR(a,b) ((a) &= ~(1U<<(b)))
+#define BIT_CHECK(var,pos) !!((var) & (1U<<(pos)))
+#define BIT_TOGGLE(var,pos) ((var)^= 1UL << (pos))
+
+
 #endif /* HELPERS_H_ */

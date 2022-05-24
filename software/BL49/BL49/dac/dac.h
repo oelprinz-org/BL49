@@ -15,6 +15,6 @@
 
 void dac_init (void);
 void dac_setValue (uint16_t value);
-
+uint16_t get_dac_value (uint16_t lambda_millis);
 
 #endif /* DAC_H_ */
