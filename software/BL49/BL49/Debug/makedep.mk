@@ -22,7 +22,7 @@ sensor\sensor.c
 
 spi\spi.c
 
-system\system.c
+board\board.c
 
 timer\timer.c
 

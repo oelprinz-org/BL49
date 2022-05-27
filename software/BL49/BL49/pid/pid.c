@@ -7,13 +7,13 @@
 
 #include "pid.h"
 
-uint16_t pid_control (uint16_t inputValue, uint16_t UR_calibration)
+uint16_t pid_control (uint16_t Ur, uint16_t Ur_calibration)
 {
 	  //Calculate error term.
-	  uint16_t error = UR_calibration - inputValue;
+	  uint16_t error = Ur_calibration - Ur;
 	  
 	  //Set current position.
-	  uint16_t position = inputValue;
+	  uint16_t position = Ur;
 	  
 	  //Calculate proportional term.
 	  float pTerm = -pGain * error;

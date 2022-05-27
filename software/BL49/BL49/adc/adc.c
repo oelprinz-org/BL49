@@ -12,9 +12,9 @@ void adc_init (void)
 	// avcc with cap on aref
 	ADCSRB |= (1 << AREFEN);
 	ADMUX = (1 << REFS0);
-		
-	// enable adc, prescalee 128 (125kHz)
-	ADCSRA |= (1 << ADPS2)|(1 << ADPS1)|(1 << ADPS0)|(1 << ADEN);
+	
+	// enable adc, prescaler 8 (2MHz)
+	ADCSRA |= (1 << ADPS1)|(1 << ADPS0)|(1 << ADEN);
 }
 
 uint16_t adc_read (uint8_t channel)

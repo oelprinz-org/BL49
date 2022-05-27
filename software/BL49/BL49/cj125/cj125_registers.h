@@ -24,9 +24,17 @@
 #define CJ125_INIT_REG1_MODE_NORMAL_V17 0x5689  /* Sets the first init register in operation mode. V=17 amplification. */
 
 // diag register status:
-#define CJ125_DIAG_REG_STATUS_OK        0x28FF  /* The response of the diagnostic register when everything is ok. */
-#define CJ125_DIAG_REG_STATUS_NOPOWER   0x2855  /* The response of the diagnostic register when power is low. */
-#define CJ125_DIAG_REG_STATUS_NOSENSOR  0x287F  /* The response of the diagnostic register when no sensor is connected. */
+// #define CJ125_DIAG_REG_STATUS_OK        0x28FF  /* The response of the diagnostic register when everything is ok. */
+// #define CJ125_DIAG_REG_STATUS_NOPOWER   0x2855  /* The response of the diagnostic register when power is low. */
+// #define CJ125_DIAG_REG_STATUS_NOSENSOR  0x287F  /* The response of the diagnostic register when no sensor is connected. */
 
+// diag register status:
+#define CJ125_DIAG_REG_STATUS_OK        0xFF  /* The response of the diagnostic register when everything is ok. */
+#define CJ125_DIAG_REG_STATUS_NOPOWER   0x55  /* The response of the diagnostic register when power is low. */
+#define CJ125_DIAG_REG_STATUS_NOSENSOR  0x7F  /* The response of the diagnostic register when no sensor is connected. */
+
+#define CJ125_DIAG_INSTR_F				0
+#define CJ125_DIAG_PARITY				1
+#define CJ125_DIAG_R_W					2
 
 #endif /* CJ125_REGISTERS_H_ */
