@@ -23,6 +23,6 @@ const float dGain = 10;                                             /* Derivativ
 const uint16_t pwmMin = 0;											/* we have 10 bit fast mode PWM, min value*/
 const uint16_t pwmMax = 1023;										/* we have 10 bit fast mode PWM, max value*/
 
-uint16_t pid_control (uint16_t inputValue, uint16_t UR_calibration);
+uint16_t pid_control (uint16_t Ur, uint16_t Ur_calibration);
 
 #endif /* PID_H_ */

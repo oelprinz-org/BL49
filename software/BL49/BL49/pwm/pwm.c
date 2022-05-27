@@ -11,8 +11,8 @@ void pwm_init (void)
 {
 	// init COM1B1 as GPIO (PC1) and default low:
 	// if bit COM1B1 is 0, then pc1 acts as gpio with original state (so, output and low)
-	DDRC |= (1 << PC1);		// PC1 is an output
-	PORTC &= ~(1 << PC1);	// and is low
+	DDRC |= (1 << PINC1);		// PC1 is an output
+	PORTC &= ~(1 << PINC1);	// and is low
 	
 	// pin pc1 (OC1B, Timer 1 output compare B) connected to sensor heater
 	// fast pwm mode, prescaler 64,  top 0x03ff (1023) = 244Hz
@@ -30,7 +30,7 @@ void pwm_setDuty (uint16_t duty)
 {
 	if (duty == 0)
 	{
-		TCCR1A &= (1 << COM1B1);
+		TCCR1A &= ~(1 << COM1B1);
 	}
 	else
 	{
@@ -43,6 +43,6 @@ void pwm_setDuty (uint16_t duty)
 }
 
 void pwm_shutdown (void)
- {
-	 TCCR1A &= (1 << COM1B1);
- }
+{
+	TCCR1A &= ~(1 << COM1B1);
+}

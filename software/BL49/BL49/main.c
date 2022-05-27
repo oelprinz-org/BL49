@@ -13,12 +13,11 @@
 #include "spi/spi.h"
 #include "can/can_lib.h"
 #include "dac/dac.h"
+#include "pwm/pwm.h"
 #include "cj125/cj125.h"
 #include "timer/timer.h"
 #include "sensor/sensor.h"
-#include "system/system.h"
-
-void init_gpio_stuff (void);
+#include "board/board.h"
 
 extern tSensor sensor1;
 extern tBoard board;
@@ -27,25 +26,32 @@ extern volatile uint16_t ms_counter;
 int main(void)
 {
 	uint8_t signature;
-	tcj125_status status;
+	uint16_t dac_value = 0;
 	
-	init_gpio_stuff();
+	uint8_t loopCounter = 0;
+
 	adc_init();
 	spi_init();
+	pwm_init();
 	init_1ms_timer();
-	
-	sei();
-	
 	// can_init(1);
+
 	
+	board_init(&board);	
+	sensor_init(&sensor1, 61.9, 8);
+	board_read_inputs(&board);
+	
+
+	sei();
+
 	/*
-	
 	There are three different types of CAN modules available:
 	-> 2.0A - Considers 29 bit ID as an error
 	-> 2.0B Passive - Ignores 29 bit ID messages
 	-> 2.0B Active - Handles both 11 and 29 bit ID Messages
+	*/
 	
-	
+	/*	
 	st_cmd_t message;
 	
 	message.id.ext = 0x180;
@@ -57,45 +63,57 @@ int main(void)
 	message.cmd = CMD_TX_DATA;
 	// message.pt_data = 0x01;
 	
-	
 	while(can_cmd(&message) != CAN_CMD_ACCEPTED);					// wait for MOb to configure
 	while(can_get_status(&message) == CAN_STATUS_NOT_COMPLETED);	// wait for a transmit request to come in, and send a response
-	
 	*/
 	
-	board.vBatt = adc2voltage_millis(adc_read_battery())*5;
-	board.vRef = adc2voltage_millis(adc_read_reference());
+	uint16_t dty = 0;
 	
+	
+	
+	// pwm_setDuty (dty);
+
 	signature = cj125_readSignature();
 	
-	while (status != STATUS_OKAY)
-	{
-		status = cj125_readStatus();
-	}
-		
-	cj125_set_calibration_mode();
-	
-	while (status != STATUS_OKAY)
-	{
-		status = cj125_readStatus();
-	}
-	
-	sensor1.Ua_ref = adc2voltage_millis(adc_read_UA());
+	// board_read_inputs(&board_read_inputs);
+
 	sensor1.Ur_ref = adc2voltage_millis(adc_read_UR());
+	sensor1.Ua_ref = adc2voltage_millis(adc_read_UA());
+	sensor1.Ua = 1512;
 	
-	calculate_ip();
-	
-	int i = 10;
+	dac_value = get_dac_value(sensor1.Lambda);
 	
     /* Replace with your application code */
     while (1) 
     {
+		/*
+			PORTC |= (1 << PINC7);
+			sensor1.Ua = adc2voltage_millis(adc_read_UA());
+			sensor1.Ur = adc2voltage_millis(adc_read_UR());
+			calculate_ip(&sensor1);
+			calculate_lambda(&sensor1);
+			PORTC &= ~(1 << PINC7);
+		*/
 		// do stuff...
 		
 		if (BIT_CHECK(TIMER_TASKS, BIT_TIMER_10ms))
 		{
 			BIT_CLEAR(TIMER_TASKS, BIT_TIMER_10ms);
-			// do some 10ms stuff...
+			/*
+			if (sensor1.State == SENSOR_RUNNING)
+			{
+				if(cj125_readStatus() == CJ125_STATUS_OKAY)
+				{
+					calculate_ip(&sensor1);
+					calculate_lambda(&sensor1);
+					
+				}
+				else
+				{
+					
+				}
+			}
+			*/		
 		}
 		
 		if (BIT_CHECK(TIMER_TASKS, BIT_TIMER_20ms))
@@ -114,29 +132,57 @@ int main(void)
 		{
 			BIT_CLEAR(TIMER_TASKS, BIT_TIMER_100ms);
 			// do some 100ms stuff...
-			PORTB ^= (1 << PB5);
+			PORTB ^= (1 << PINB5);
 		}
 		
 		if (BIT_CHECK(TIMER_TASKS, BIT_TIMER_250ms))
 		{
 			BIT_CLEAR(TIMER_TASKS, BIT_TIMER_250ms);
 			// do some 250ms stuff...
-			PORTB ^= (1 << PB6);
+			board_read_inputs(&board);
+			
+			if (board.input1_state == HIGH)
+			{
+				// means: engine is running
+				switch (sensor1.State)
+				{
+					case SENSOR_OFF:
+						// means engine is started right now so we need to init the sensor and stuff...
+						cj125_set_calibration_mode();
+					
+						if (cj125_readStatus() == CJ125_STATUS_OKAY)
+						{
+							// everything is fine, we are in calibration mode...
+							sensor1.Ua_ref = adc2voltage_millis(adc_read_UA());
+							sensor1.Ur_ref = adc2voltage_millis(adc_read_UR());
+						
+							// stuff stored, go for condensation...1.5v for 5 seconds
+							// 5 s = 5000 ms = 20
+							loopCounter = 19;
+							sensor1.State = SENSOR_CONDENSATION;
+						}
+					break;
+					
+					case SENSOR_CONDENSATION:
+						dty = target_voltage_duty_cycle(1500, board.vBatt);
+						pwm_setDuty(dty);
+						loopCounter--;
+						
+						if (loopCounter == 0)
+						{
+							// condensation ended, next step heating up the sensor
+							sensor1.State = SENSOR_HEATING_UP;
+						}
+					
+					break;
+				}
+				
+				
+				
+			}
+
+			PORTB ^= (1 << PINB6);
 		}
+
     }
-}
-
-
-void init_gpio_stuff (void)
-{
-	// init LED2 (pb5) and LED2 (pb6)
-	// led1 is power
-	DDRB |= (1 << PB5)|(1 << PB6);
-	// switch them on
-	PORTB |= (1 << PB5)|(1 << PB6);
-	
-	// pc7 is output:
-	DDRC |= (1 << PC7);
-	// bring them high:
-	PORTC |= (1 << PC7);
 }
