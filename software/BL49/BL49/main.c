@@ -171,8 +171,11 @@ int main(void)
 						if (loopCounter == 0)
 						{
 							// condensation ended, next step heating up the sensor
+							loopCounter = 
 							sensor1.State = SENSOR_HEATING_UP;
 						}
+						
+					case SENSOR_HEATING_UP:
 					
 					break;
 				}
