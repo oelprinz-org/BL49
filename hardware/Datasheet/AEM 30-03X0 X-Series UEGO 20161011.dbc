@@ -1,0 +1,348 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: XSeriesGauge8 XSeriesGauge7 XSeriesGauge6 XSeriesGauge5 XSeriesGauge4 XSeriesGauge3 XSeriesGauge16 XSeriesGauge15 XSeriesGauge14 XSeriesGauge13 XSeriesGauge12 XSeriesGauge11 XSeriesGauge10 XSeriesGauge9 XSeriesGauge2 XSeriesGauge1
+VAL_TABLE_ UEGO_Sensor_Status 20 "Error" 19 "Needs New Free Air Calibration" 18 "Save Sensor" 17 "Preparing to Run" 16 "Determining Sensor Type" 15 "Evap Startup" 14 "Reading Junction Impeadance" 13 "Detecting Sensor" 12 "Preforming Free Air Calibration" 11 "Start Free Air Calibration" 10 "Heater Open Circuit" 9 "Heater Short Circuit" 8 "Overcool" 7 "Overheat" 6 "Run" 5 "Reading Rcal Value" 4 "Equalizing" 3 "Reading Nerst Pump Impedance" 2 "Stabilizing" 1 "Warming Up" 0 "Reset" ;
+VAL_TABLE_ UEGO_Sensor_Detection_Status 8 "Reserved" 4 "Reserved" 2 "Bosch LSU 4.9" 1 "Reserved" ;
+VAL_TABLE_ Ok_Fault 1 "Fault" 0 "OK" ;
+VAL_TABLE_ Valid 1 "Valid" 0 "InValid" ;
+VAL_TABLE_ FreeAirCal 1 "Free Air Calibration" 0 "Resistor Calibration" ;
+
+
+BO_ 2147484047 XSeriesGauge16: 8 XSeriesGauge16
+ SG_ AFR16Ext_SensorDetectedStatus : 51|4@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR16Ext_UsingFreeAreCalState : 53|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR16Ext_SystemVolts : 39|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR16Ext_SensorStatus : 60|5@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR16Ext_SensorFaultState : 62|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR16Ext_HeaterVolts : 47|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR16Ext_DataValidState : 55|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR16Ext : 7|16@0+ (0.0001,0) [0|6.5535] "afr:LA" Vector__XXX
+ SG_ AFR16_OxygenConcentration : 23|16@0- (0.001,0) [-32.768|32.767] "fraction:%" Vector__XXX
+
+BO_ 2147484046 XSeriesGauge15: 8 XSeriesGauge15
+ SG_ AFR15Ext_SensorDetectedStatus : 51|4@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR15Ext_UsingFreeAreCalState : 53|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR15Ext_SystemVolts : 39|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR15Ext_SensorStatus : 60|5@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR15Ext_SensorFaultState : 62|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR15Ext_HeaterVolts : 47|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR15Ext_DataValidState : 55|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR15Ext : 7|16@0+ (0.0001,0) [0|6.5535] "afr:LA" Vector__XXX
+ SG_ AFR15_OxygenConcentration : 23|16@0- (0.001,0) [-32.768|32.767] "fraction:%" Vector__XXX
+
+BO_ 2147484045 XSeriesGauge14: 8 XSeriesGauge14
+ SG_ AFR14Ext_UsingFreeAreCalState : 53|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR14Ext_SystemVolts : 39|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR14Ext_SensorStatus : 60|5@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR14Ext_SensorFaultState : 62|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR14Ext_SensorDetectedStatus : 51|4@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR14Ext_HeaterVolts : 47|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR14Ext_DataValidState : 55|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR14Ext : 7|16@0+ (0.0001,0) [0|6.5535] "afr:LA" Vector__XXX
+ SG_ AFR14_OxygenConcentration : 23|16@0- (0.001,0) [-32.768|32.767] "fraction:%" Vector__XXX
+
+BO_ 2147484044 XSeriesGauge13: 8 XSeriesGauge13
+ SG_ AFR13Ext_UsingFreeAreCalState : 53|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR13Ext_SystemVolts : 39|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR13Ext_SensorStatus : 60|5@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR13Ext_SensorFaultState : 62|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR13Ext_SensorDetectedStatus : 51|4@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR13Ext_HeaterVolts : 47|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR13Ext_DataValidState : 55|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR13Ext : 7|16@0+ (0.0001,0) [0|6.5535] "afr:LA" Vector__XXX
+ SG_ AFR13_OxygenConcentration : 23|16@0- (0.001,0) [-32.768|32.767] "fraction:%" Vector__XXX
+
+BO_ 2147484043 XSeriesGauge12: 8 XSeriesGauge12
+ SG_ AFR12Ext_UsingFreeAreCalState : 53|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR12Ext_SystemVolts : 39|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR12Ext_SensorStatus : 60|5@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR12Ext_SensorFaultState : 62|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR12Ext_SensorDetectedStatus : 51|4@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR12Ext_HeaterVolts : 47|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR12Ext_DataValidState : 55|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR12Ext : 7|16@0+ (0.0001,0) [0|6.5535] "afr:LA" Vector__XXX
+ SG_ AFR12_OxygenConcentration : 23|16@0- (0.001,0) [-32.768|32.767] "fraction:%" Vector__XXX
+
+BO_ 2147484042 XSeriesGauge11: 8 XSeriesGauge11
+ SG_ AFR11Ext_UsingFreeAreCalState : 53|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR11Ext_SystemVolts : 39|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR11Ext_SensorStatus : 60|5@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR11Ext_SensorFaultState : 62|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR11Ext_SensorDetectedStatus : 51|4@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR11Ext_HeaterVolts : 47|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR11Ext_DataValidState : 55|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR11Ext : 7|16@0+ (0.0001,0) [0|6.5535] "afr:LA" Vector__XXX
+ SG_ AFR11_OxygenConcentration : 23|16@0- (0.001,0) [-32.768|32.767] "fraction:%" Vector__XXX
+
+BO_ 2147484041 XSeriesGauge10: 8 XSeriesGauge10
+ SG_ AFR10Ext_UsingFreeAreCalState : 53|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR10Ext_SystemVolts : 39|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR10Ext_SensorStatus : 60|5@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR10Ext_SensorFaultState : 62|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR10Ext_SensorDetectedStatus : 51|4@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR10Ext_HeaterVolts : 47|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR10Ext_DataValidState : 55|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR10Ext : 7|16@0+ (0.0001,0) [0|6.5535] "afr:LA" Vector__XXX
+ SG_ AFR10_OxygenConcentration : 23|16@0- (0.001,0) [-32.768|32.767] "fraction:%" Vector__XXX
+
+BO_ 2147484040 XSeriesGauge9: 8 XSeriesGauge9
+ SG_ AFR9Ext_UsingFreeAreCalState : 53|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR9Ext_SystemVolts : 39|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR9Ext_SensorStatus : 60|5@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR9Ext_SensorFaultState : 62|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR9Ext_SensorDetectedStatus : 51|4@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR9Ext_HeaterVolts : 47|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR9Ext_DataValidState : 55|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR9Ext : 7|16@0+ (0.0001,0) [0|6.5535] "afr:LA" Vector__XXX
+ SG_ AFR9_OxygenConcentration : 23|16@0- (0.001,0) [-32.768|32.767] "fraction:%" Vector__XXX
+
+BO_ 2147484039 XSeriesGauge8: 8 XSeriesGauge8
+ SG_ AFR8Ext_UsingFreeAreCalState : 53|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR8Ext_SystemVolts : 39|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR8Ext_SensorStatus : 60|5@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR8Ext_SensorFaultState : 62|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR8Ext_SensorDetectedStatus : 51|4@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR8Ext_HeaterVolts : 47|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR8Ext_DataValidState : 55|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR8Ext : 7|16@0+ (0.0001,0) [0|6.5535] "afr:LA" Vector__XXX
+ SG_ AFR8_OxygenConcentration : 23|16@0- (0.001,0) [-32.768|32.767] "fraction:%" Vector__XXX
+
+BO_ 2147484038 XSeriesGauge7: 8 XSeriesGauge7
+ SG_ AFR7Ext_UsingFreeAreCalState : 53|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR7Ext_SystemVolts : 39|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR7Ext_SensorStatus : 60|5@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR7Ext_SensorFaultState : 62|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR7Ext_SensorDetectedStatus : 51|4@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR7Ext_HeaterVolts : 47|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR7Ext_DataValidState : 55|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR7Ext : 7|16@0+ (0.0001,0) [0|6.5535] "afr:LA" Vector__XXX
+ SG_ AFR7_OxygenConcentration : 23|16@0- (0.001,0) [-32.768|32.767] "fraction:%" Vector__XXX
+
+BO_ 2147484037 XSeriesGauge6: 8 XSeriesGauge6
+ SG_ AFR6Ext_UsingFreeAreCalState : 53|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR6Ext_SystemVolts : 39|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR6Ext_SensorStatus : 60|5@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR6Ext_SensorFaultState : 62|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR6Ext_SensorDetectedStatus : 51|4@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR6Ext_HeaterVolts : 47|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR6Ext_DataValidState : 55|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR6Ext : 7|16@0+ (0.0001,0) [0|6.5535] "afr:LA" Vector__XXX
+ SG_ AFR6_OxygenConcentration : 23|16@0- (0.001,0) [-32.768|32.767] "fraction:%" Vector__XXX
+
+BO_ 2147484036 XSeriesGauge5: 8 XSeriesGauge5
+ SG_ AFR5Ext_SensorDetectedStatus : 51|4@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR5Ext_UsingFreeAreCalState : 53|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR5Ext_SystemVolts : 39|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR5Ext_SensorStatus : 60|5@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR5Ext_SensorFaultState : 62|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR5Ext_HeaterVolts : 47|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR5Ext_DataValidState : 55|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR5Ext : 7|16@0+ (0.0001,0) [0|6.5535] "afr:LA" Vector__XXX
+ SG_ AFR5_OxygenConcentration : 23|16@0- (0.001,0) [-32.768|32.767] "fraction:%" Vector__XXX
+
+BO_ 2147484034 XSeriesGauge3: 8 XSeriesGauge3
+ SG_ AFR3Ext_UsingFreeAreCalState : 53|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR3Ext_SystemVolts : 39|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR3Ext_SensorStatus : 60|5@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR3Ext_SensorFaultState : 62|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR3Ext_SensorDetectedStatus : 51|4@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR3Ext_HeaterVolts : 47|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR3Ext_DataValidState : 55|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR3Ext : 7|16@0+ (0.0001,0) [0|6.5535] "afr:LA" Vector__XXX
+ SG_ AFR3_OxygenConcentration : 23|16@0- (0.001,0) [-32.768|32.767] "fraction:%" Vector__XXX
+
+BO_ 2147484035 XSeriesGauge4: 8 XSeriesGauge4
+ SG_ AFR4Ext_UsingFreeAreCalState : 53|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR4Ext_SystemVolts : 39|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR4Ext_SensorStatus : 60|5@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR4Ext_SensorFaultState : 62|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR4Ext_SensorDetectedStatus : 51|4@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR4Ext_HeaterVolts : 47|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR4Ext_DataValidState : 55|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR4Ext : 7|16@0+ (0.0001,0) [0|6.5535] "afr:LA" Vector__XXX
+ SG_ AFR4_OxygenConcentration : 23|16@0- (0.001,0) [-32.768|32.767] "fraction:%" Vector__XXX
+
+BO_ 2147484033 XSeriesGauge2: 8 XSeriesGauge2
+ SG_ AFR2Ext_UsingFreeAreCalState : 53|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR2Ext_SystemVolts : 39|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR2Ext_SensorStatus : 60|5@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR2Ext_SensorFaultState : 62|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR2Ext_SensorDetectedStatus : 51|4@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR2Ext_HeaterVolts : 47|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR2Ext_DataValidState : 55|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR2Ext : 7|16@0+ (0.0001,0) [0|6.5535] "afr:LA" Vector__XXX
+ SG_ AFR2_OxygenConcentration : 23|16@0- (0.001,0) [-32.768|32.767] "fraction:%" Vector__XXX
+
+BO_ 2147484032 XSeriesGauge1: 8 XSeriesGauge1
+ SG_ AFR1Ext_UsingFreeAreCalState : 53|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR1Ext_SystemVolts : 39|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR1Ext_SensorStatus : 60|5@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR1Ext_SensorFaultState : 62|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR1Ext_SensorDetectedStatus : 51|4@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR1Ext_HeaterVolts : 47|8@0+ (0.1,0) [0|25.5] "voltage:V" Vector__XXX
+ SG_ AFR1Ext_DataValidState : 55|1@0+ (1,0) [0|0] "unitless:" Vector__XXX
+ SG_ AFR1Ext : 7|16@0+ (0.0001,0) [0|6.5535] "afr:LA" Vector__XXX
+ SG_ AFR1_OxygenConcentration : 23|16@0- (0.001,0) [-32.768|32.767] "fraction:%" Vector__XXX
+
+
+
+BA_DEF_ BO_  "GenMsgCycleTime" INT 1 2000;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "Cyclic";
+BA_DEF_ BO_  "GenMsgILSupport" ENUM  "No","Yes";
+BA_DEF_ BU_  "TpNodeBaseAddress" HEX 0 255;
+BA_DEF_ BU_  "ILUsed" ENUM  "No","Yes";
+BA_DEF_  "ProtocolType" STRING ;
+BA_DEF_  "NmType" STRING ;
+BA_DEF_  "VersionNumber" INT 0 10000;
+BA_DEF_  "VersionDay" INT 1 31;
+BA_DEF_  "VersionMonth" INT 1 12;
+BA_DEF_  "VersionYear" INT 2016 3000;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_ BO_  "DBC_Author_Contact" STRING ;
+BA_DEF_DEF_  "DBC_Author_Contact" "CANbusInfo@AEMelectronics.com";
+BA_DEF_DEF_  "GenMsgCycleTime" 10;
+BA_DEF_DEF_  "GenMsgSendType" "Cyclic";
+BA_DEF_DEF_  "GenMsgILSupport" "Yes";
+BA_DEF_DEF_  "TpNodeBaseAddress" 0;
+BA_DEF_DEF_  "ILUsed" "Yes";
+BA_DEF_DEF_  "ProtocolType" "";
+BA_DEF_DEF_  "NmType" "";
+BA_DEF_DEF_  "VersionNumber" 0;
+BA_DEF_DEF_  "VersionDay" 1;
+BA_DEF_DEF_  "VersionMonth" 1;
+BA_DEF_DEF_  "VersionYear" 2016;
+BA_DEF_DEF_  "BusType" "";
+BA_ "BusType" "CAN";
+BA_ "VersionMonth" 10;
+BA_ "VersionDay" 11;
+BA_ "VersionNumber" 1;
+BA_ "ProtocolType" "Can";
+BA_ "TpNodeBaseAddress" BU_ XSeriesGauge8 7;
+BA_ "TpNodeBaseAddress" BU_ XSeriesGauge7 6;
+BA_ "TpNodeBaseAddress" BU_ XSeriesGauge6 5;
+BA_ "TpNodeBaseAddress" BU_ XSeriesGauge5 4;
+BA_ "TpNodeBaseAddress" BU_ XSeriesGauge4 3;
+BA_ "TpNodeBaseAddress" BU_ XSeriesGauge3 2;
+BA_ "TpNodeBaseAddress" BU_ XSeriesGauge16 15;
+BA_ "TpNodeBaseAddress" BU_ XSeriesGauge15 14;
+BA_ "TpNodeBaseAddress" BU_ XSeriesGauge14 13;
+BA_ "TpNodeBaseAddress" BU_ XSeriesGauge13 12;
+BA_ "TpNodeBaseAddress" BU_ XSeriesGauge12 11;
+BA_ "TpNodeBaseAddress" BU_ XSeriesGauge11 10;
+BA_ "TpNodeBaseAddress" BU_ XSeriesGauge10 9;
+BA_ "TpNodeBaseAddress" BU_ XSeriesGauge9 8;
+BA_ "TpNodeBaseAddress" BU_ XSeriesGauge2 1;
+VAL_ 2147484047 AFR16Ext_SensorDetectedStatus 8 "Reserved" 4 "Reserved" 2 "Bosch LSU 4.9" 1 "Reserved" ;
+VAL_ 2147484047 AFR16Ext_UsingFreeAreCalState 1 "Free Air Calibration" 0 "Resistor Calibration" ;
+VAL_ 2147484047 AFR16Ext_SensorStatus 20 "Error" 19 "Needs New Free Air Calibration" 18 "Save Sensor" 17 "Preparing to Run" 16 "Determining Sensor Type" 15 "Evap Startup" 14 "Reading Junction Impeadance" 13 "Detecting Sensor" 12 "Preforming Free Air Calibration" 11 "Start Free Air Calibration" 10 "Heater Open Circuit" 9 "Heater Short Circuit" 8 "Overcool" 7 "Overheat" 6 "Run" 5 "Reading Rcal Value" 4 "Equalizing" 3 "Reading Nerst Pump Impedance" 2 "Stabilizing" 1 "Warming Up" 0 "Reset" ;
+VAL_ 2147484047 AFR16Ext_SensorFaultState 1 "Fault" 0 "OK" ;
+VAL_ 2147484047 AFR16Ext_DataValidState 1 "Valid" 0 "InValid" ;
+VAL_ 2147484046 AFR15Ext_SensorDetectedStatus 8 "Reserved" 4 "Reserved" 2 "Bosch LSU 4.9" 1 "Reserved" ;
+VAL_ 2147484046 AFR15Ext_UsingFreeAreCalState 1 "Free Air Calibration" 0 "Resistor Calibration" ;
+VAL_ 2147484046 AFR15Ext_SensorStatus 20 "Error" 19 "Needs New Free Air Calibration" 18 "Save Sensor" 17 "Preparing to Run" 16 "Determining Sensor Type" 15 "Evap Startup" 14 "Reading Junction Impeadance" 13 "Detecting Sensor" 12 "Preforming Free Air Calibration" 11 "Start Free Air Calibration" 10 "Heater Open Circuit" 9 "Heater Short Circuit" 8 "Overcool" 7 "Overheat" 6 "Run" 5 "Reading Rcal Value" 4 "Equalizing" 3 "Reading Nerst Pump Impedance" 2 "Stabilizing" 1 "Warming Up" 0 "Reset" ;
+VAL_ 2147484046 AFR15Ext_SensorFaultState 1 "Fault" 0 "OK" ;
+VAL_ 2147484046 AFR15Ext_DataValidState 1 "Valid" 0 "InValid" ;
+VAL_ 2147484045 AFR14Ext_UsingFreeAreCalState 1 "Free Air Calibration" 0 "Resistor Calibration" ;
+VAL_ 2147484045 AFR14Ext_SensorStatus 20 "Error" 19 "Needs New Free Air Calibration" 18 "Save Sensor" 17 "Preparing to Run" 16 "Determining Sensor Type" 15 "Evap Startup" 14 "Reading Junction Impeadance" 13 "Detecting Sensor" 12 "Preforming Free Air Calibration" 11 "Start Free Air Calibration" 10 "Heater Open Circuit" 9 "Heater Short Circuit" 8 "Overcool" 7 "Overheat" 6 "Run" 5 "Reading Rcal Value" 4 "Equalizing" 3 "Reading Nerst Pump Impedance" 2 "Stabilizing" 1 "Warming Up" 0 "Reset" ;
+VAL_ 2147484045 AFR14Ext_SensorFaultState 1 "Fault" 0 "OK" ;
+VAL_ 2147484045 AFR14Ext_SensorDetectedStatus 8 "Reserved" 4 "Reserved" 2 "Bosch LSU 4.9" 1 "Reserved" ;
+VAL_ 2147484045 AFR14Ext_DataValidState 1 "Valid" 0 "InValid" ;
+VAL_ 2147484044 AFR13Ext_UsingFreeAreCalState 1 "Free Air Calibration" 0 "Resistor Calibration" ;
+VAL_ 2147484044 AFR13Ext_SensorStatus 20 "Error" 19 "Needs New Free Air Calibration" 18 "Save Sensor" 17 "Preparing to Run" 16 "Determining Sensor Type" 15 "Evap Startup" 14 "Reading Junction Impeadance" 13 "Detecting Sensor" 12 "Preforming Free Air Calibration" 11 "Start Free Air Calibration" 10 "Heater Open Circuit" 9 "Heater Short Circuit" 8 "Overcool" 7 "Overheat" 6 "Run" 5 "Reading Rcal Value" 4 "Equalizing" 3 "Reading Nerst Pump Impedance" 2 "Stabilizing" 1 "Warming Up" 0 "Reset" ;
+VAL_ 2147484044 AFR13Ext_SensorFaultState 1 "Fault" 0 "OK" ;
+VAL_ 2147484044 AFR13Ext_SensorDetectedStatus 8 "Reserved" 4 "Reserved" 2 "Bosch LSU 4.9" 1 "Reserved" ;
+VAL_ 2147484044 AFR13Ext_DataValidState 1 "Valid" 0 "InValid" ;
+VAL_ 2147484043 AFR12Ext_UsingFreeAreCalState 1 "Free Air Calibration" 0 "Resistor Calibration" ;
+VAL_ 2147484043 AFR12Ext_SensorStatus 20 "Error" 19 "Needs New Free Air Calibration" 18 "Save Sensor" 17 "Preparing to Run" 16 "Determining Sensor Type" 15 "Evap Startup" 14 "Reading Junction Impeadance" 13 "Detecting Sensor" 12 "Preforming Free Air Calibration" 11 "Start Free Air Calibration" 10 "Heater Open Circuit" 9 "Heater Short Circuit" 8 "Overcool" 7 "Overheat" 6 "Run" 5 "Reading Rcal Value" 4 "Equalizing" 3 "Reading Nerst Pump Impedance" 2 "Stabilizing" 1 "Warming Up" 0 "Reset" ;
+VAL_ 2147484043 AFR12Ext_SensorFaultState 1 "Fault" 0 "OK" ;
+VAL_ 2147484043 AFR12Ext_SensorDetectedStatus 8 "Reserved" 4 "Reserved" 2 "Bosch LSU 4.9" 1 "Reserved" ;
+VAL_ 2147484043 AFR12Ext_DataValidState 1 "Valid" 0 "InValid" ;
+VAL_ 2147484042 AFR11Ext_UsingFreeAreCalState 1 "Free Air Calibration" 0 "Resistor Calibration" ;
+VAL_ 2147484042 AFR11Ext_SensorStatus 20 "Error" 19 "Needs New Free Air Calibration" 18 "Save Sensor" 17 "Preparing to Run" 16 "Determining Sensor Type" 15 "Evap Startup" 14 "Reading Junction Impeadance" 13 "Detecting Sensor" 12 "Preforming Free Air Calibration" 11 "Start Free Air Calibration" 10 "Heater Open Circuit" 9 "Heater Short Circuit" 8 "Overcool" 7 "Overheat" 6 "Run" 5 "Reading Rcal Value" 4 "Equalizing" 3 "Reading Nerst Pump Impedance" 2 "Stabilizing" 1 "Warming Up" 0 "Reset" ;
+VAL_ 2147484042 AFR11Ext_SensorFaultState 1 "Fault" 0 "OK" ;
+VAL_ 2147484042 AFR11Ext_SensorDetectedStatus 8 "Reserved" 4 "Reserved" 2 "Bosch LSU 4.9" 1 "Reserved" ;
+VAL_ 2147484042 AFR11Ext_DataValidState 1 "Valid" 0 "InValid" ;
+VAL_ 2147484041 AFR10Ext_UsingFreeAreCalState 1 "Free Air Calibration" 0 "Resistor Calibration" ;
+VAL_ 2147484041 AFR10Ext_SensorStatus 20 "Error" 19 "Needs New Free Air Calibration" 18 "Save Sensor" 17 "Preparing to Run" 16 "Determining Sensor Type" 15 "Evap Startup" 14 "Reading Junction Impeadance" 13 "Detecting Sensor" 12 "Preforming Free Air Calibration" 11 "Start Free Air Calibration" 10 "Heater Open Circuit" 9 "Heater Short Circuit" 8 "Overcool" 7 "Overheat" 6 "Run" 5 "Reading Rcal Value" 4 "Equalizing" 3 "Reading Nerst Pump Impedance" 2 "Stabilizing" 1 "Warming Up" 0 "Reset" ;
+VAL_ 2147484041 AFR10Ext_SensorFaultState 1 "Fault" 0 "OK" ;
+VAL_ 2147484041 AFR10Ext_SensorDetectedStatus 8 "Reserved" 4 "Reserved" 2 "Bosch LSU 4.9" 1 "Reserved" ;
+VAL_ 2147484041 AFR10Ext_DataValidState 1 "Valid" 0 "InValid" ;
+VAL_ 2147484040 AFR9Ext_UsingFreeAreCalState 1 "Free Air Calibration" 0 "Resistor Calibration" ;
+VAL_ 2147484040 AFR9Ext_SensorStatus 20 "Error" 19 "Needs New Free Air Calibration" 18 "Save Sensor" 17 "Preparing to Run" 16 "Determining Sensor Type" 15 "Evap Startup" 14 "Reading Junction Impeadance" 13 "Detecting Sensor" 12 "Preforming Free Air Calibration" 11 "Start Free Air Calibration" 10 "Heater Open Circuit" 9 "Heater Short Circuit" 8 "Overcool" 7 "Overheat" 6 "Run" 5 "Reading Rcal Value" 4 "Equalizing" 3 "Reading Nerst Pump Impedance" 2 "Stabilizing" 1 "Warming Up" 0 "Reset" ;
+VAL_ 2147484040 AFR9Ext_SensorFaultState 1 "Fault" 0 "OK" ;
+VAL_ 2147484040 AFR9Ext_SensorDetectedStatus 8 "Reserved" 4 "Reserved" 2 "Bosch LSU 4.9" 1 "Reserved" ;
+VAL_ 2147484040 AFR9Ext_DataValidState 1 "Valid" 0 "InValid" ;
+VAL_ 2147484039 AFR8Ext_UsingFreeAreCalState 1 "Free Air Calibration" 0 "Resistor Calibration" ;
+VAL_ 2147484039 AFR8Ext_SensorStatus 20 "Error" 19 "Needs New Free Air Calibration" 18 "Save Sensor" 17 "Preparing to Run" 16 "Determining Sensor Type" 15 "Evap Startup" 14 "Reading Junction Impeadance" 13 "Detecting Sensor" 12 "Preforming Free Air Calibration" 11 "Start Free Air Calibration" 10 "Heater Open Circuit" 9 "Heater Short Circuit" 8 "Overcool" 7 "Overheat" 6 "Run" 5 "Reading Rcal Value" 4 "Equalizing" 3 "Reading Nerst Pump Impedance" 2 "Stabilizing" 1 "Warming Up" 0 "Reset" ;
+VAL_ 2147484039 AFR8Ext_SensorFaultState 1 "Fault" 0 "OK" ;
+VAL_ 2147484039 AFR8Ext_SensorDetectedStatus 8 "Reserved" 4 "Reserved" 2 "Bosch LSU 4.9" 1 "Reserved" ;
+VAL_ 2147484039 AFR8Ext_DataValidState 1 "Valid" 0 "InValid" ;
+VAL_ 2147484038 AFR7Ext_UsingFreeAreCalState 1 "Free Air Calibration" 0 "Resistor Calibration" ;
+VAL_ 2147484038 AFR7Ext_SensorStatus 20 "Error" 19 "Needs New Free Air Calibration" 18 "Save Sensor" 17 "Preparing to Run" 16 "Determining Sensor Type" 15 "Evap Startup" 14 "Reading Junction Impeadance" 13 "Detecting Sensor" 12 "Preforming Free Air Calibration" 11 "Start Free Air Calibration" 10 "Heater Open Circuit" 9 "Heater Short Circuit" 8 "Overcool" 7 "Overheat" 6 "Run" 5 "Reading Rcal Value" 4 "Equalizing" 3 "Reading Nerst Pump Impedance" 2 "Stabilizing" 1 "Warming Up" 0 "Reset" ;
+VAL_ 2147484038 AFR7Ext_SensorFaultState 1 "Fault" 0 "OK" ;
+VAL_ 2147484038 AFR7Ext_SensorDetectedStatus 8 "Reserved" 4 "Reserved" 2 "Bosch LSU 4.9" 1 "Reserved" ;
+VAL_ 2147484038 AFR7Ext_DataValidState 1 "Valid" 0 "InValid" ;
+VAL_ 2147484037 AFR6Ext_UsingFreeAreCalState 1 "Free Air Calibration" 0 "Resistor Calibration" ;
+VAL_ 2147484037 AFR6Ext_SensorStatus 20 "Error" 19 "Needs New Free Air Calibration" 18 "Save Sensor" 17 "Preparing to Run" 16 "Determining Sensor Type" 15 "Evap Startup" 14 "Reading Junction Impeadance" 13 "Detecting Sensor" 12 "Preforming Free Air Calibration" 11 "Start Free Air Calibration" 10 "Heater Open Circuit" 9 "Heater Short Circuit" 8 "Overcool" 7 "Overheat" 6 "Run" 5 "Reading Rcal Value" 4 "Equalizing" 3 "Reading Nerst Pump Impedance" 2 "Stabilizing" 1 "Warming Up" 0 "Reset" ;
+VAL_ 2147484037 AFR6Ext_SensorFaultState 1 "Fault" 0 "OK" ;
+VAL_ 2147484037 AFR6Ext_SensorDetectedStatus 8 "Reserved" 4 "Reserved" 2 "Bosch LSU 4.9" 1 "Reserved" ;
+VAL_ 2147484037 AFR6Ext_DataValidState 1 "Valid" 0 "InValid" ;
+VAL_ 2147484036 AFR5Ext_SensorDetectedStatus 8 "Reserved" 4 "Reserved" 2 "Bosch LSU 4.9" 1 "Reserved" ;
+VAL_ 2147484036 AFR5Ext_UsingFreeAreCalState 1 "Free Air Calibration" 0 "Resistor Calibration" ;
+VAL_ 2147484036 AFR5Ext_SensorStatus 20 "Error" 19 "Needs New Free Air Calibration" 18 "Save Sensor" 17 "Preparing to Run" 16 "Determining Sensor Type" 15 "Evap Startup" 14 "Reading Junction Impeadance" 13 "Detecting Sensor" 12 "Preforming Free Air Calibration" 11 "Start Free Air Calibration" 10 "Heater Open Circuit" 9 "Heater Short Circuit" 8 "Overcool" 7 "Overheat" 6 "Run" 5 "Reading Rcal Value" 4 "Equalizing" 3 "Reading Nerst Pump Impedance" 2 "Stabilizing" 1 "Warming Up" 0 "Reset" ;
+VAL_ 2147484036 AFR5Ext_SensorFaultState 1 "Fault" 0 "OK" ;
+VAL_ 2147484036 AFR5Ext_DataValidState 1 "Valid" 0 "InValid" ;
+VAL_ 2147484034 AFR3Ext_UsingFreeAreCalState 1 "Free Air Calibration" 0 "Resistor Calibration" ;
+VAL_ 2147484034 AFR3Ext_SensorStatus 20 "Error" 19 "Needs New Free Air Calibration" 18 "Save Sensor" 17 "Preparing to Run" 16 "Determining Sensor Type" 15 "Evap Startup" 14 "Reading Junction Impeadance" 13 "Detecting Sensor" 12 "Preforming Free Air Calibration" 11 "Start Free Air Calibration" 10 "Heater Open Circuit" 9 "Heater Short Circuit" 8 "Overcool" 7 "Overheat" 6 "Run" 5 "Reading Rcal Value" 4 "Equalizing" 3 "Reading Nerst Pump Impedance" 2 "Stabilizing" 1 "Warming Up" 0 "Reset" ;
+VAL_ 2147484034 AFR3Ext_SensorFaultState 1 "Fault" 0 "OK" ;
+VAL_ 2147484034 AFR3Ext_SensorDetectedStatus 8 "Reserved" 4 "Reserved" 2 "Bosch LSU 4.9" 1 "Reserved" ;
+VAL_ 2147484034 AFR3Ext_DataValidState 1 "Valid" 0 "InValid" ;
+VAL_ 2147484035 AFR4Ext_UsingFreeAreCalState 1 "Free Air Calibration" 0 "Resistor Calibration" ;
+VAL_ 2147484035 AFR4Ext_SensorStatus 20 "Error" 19 "Needs New Free Air Calibration" 18 "Save Sensor" 17 "Preparing to Run" 16 "Determining Sensor Type" 15 "Evap Startup" 14 "Reading Junction Impeadance" 13 "Detecting Sensor" 12 "Preforming Free Air Calibration" 11 "Start Free Air Calibration" 10 "Heater Open Circuit" 9 "Heater Short Circuit" 8 "Overcool" 7 "Overheat" 6 "Run" 5 "Reading Rcal Value" 4 "Equalizing" 3 "Reading Nerst Pump Impedance" 2 "Stabilizing" 1 "Warming Up" 0 "Reset" ;
+VAL_ 2147484035 AFR4Ext_SensorFaultState 1 "Fault" 0 "OK" ;
+VAL_ 2147484035 AFR4Ext_SensorDetectedStatus 8 "Reserved" 4 "Reserved" 2 "Bosch LSU 4.9" 1 "Reserved" ;
+VAL_ 2147484035 AFR4Ext_DataValidState 1 "Valid" 0 "InValid" ;
+VAL_ 2147484033 AFR2Ext_UsingFreeAreCalState 1 "Free Air Calibration" 0 "Resistor Calibration" ;
+VAL_ 2147484033 AFR2Ext_SensorStatus 20 "Error" 19 "Needs New Free Air Calibration" 18 "Save Sensor" 17 "Preparing to Run" 16 "Determining Sensor Type" 15 "Evap Startup" 14 "Reading Junction Impeadance" 13 "Detecting Sensor" 12 "Preforming Free Air Calibration" 11 "Start Free Air Calibration" 10 "Heater Open Circuit" 9 "Heater Short Circuit" 8 "Overcool" 7 "Overheat" 6 "Run" 5 "Reading Rcal Value" 4 "Equalizing" 3 "Reading Nerst Pump Impedance" 2 "Stabilizing" 1 "Warming Up" 0 "Reset" ;
+VAL_ 2147484033 AFR2Ext_SensorFaultState 1 "Fault" 0 "OK" ;
+VAL_ 2147484033 AFR2Ext_SensorDetectedStatus 8 "Reserved" 4 "Reserved" 2 "Bosch LSU 4.9" 1 "Reserved" ;
+VAL_ 2147484033 AFR2Ext_DataValidState 1 "Valid" 0 "InValid" ;
+VAL_ 2147484032 AFR1Ext_UsingFreeAreCalState 1 "Free Air Calibration" 0 "Resistor Calibration" ;
+VAL_ 2147484032 AFR1Ext_SensorStatus 20 "Error" 19 "Needs New Free Air Calibration" 18 "Save Sensor" 17 "Preparing to Run" 16 "Determining Sensor Type" 15 "Evap Startup" 14 "Reading Junction Impeadance" 13 "Detecting Sensor" 12 "Preforming Free Air Calibration" 11 "Start Free Air Calibration" 10 "Heater Open Circuit" 9 "Heater Short Circuit" 8 "Overcool" 7 "Overheat" 6 "Run" 5 "Reading Rcal Value" 4 "Equalizing" 3 "Reading Nerst Pump Impedance" 2 "Stabilizing" 1 "Warming Up" 0 "Reset" ;
+VAL_ 2147484032 AFR1Ext_SensorFaultState 1 "Fault" 0 "OK" ;
+VAL_ 2147484032 AFR1Ext_SensorDetectedStatus 8 "Reserved" 4 "Reserved" 2 "Bosch LSU 4.9" 1 "Reserved" ;
+VAL_ 2147484032 AFR1Ext_DataValidState 1 "Valid" 0 "InValid" ;
+
