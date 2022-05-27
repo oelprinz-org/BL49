@@ -27,7 +27,7 @@ int main(void)
 {
 	uint8_t signature;
 	uint16_t dac_value = 0;
-	
+	uint16_t tmp_voltage;
 	uint8_t loopCounter = 0;
 
 	adc_init();
@@ -99,21 +99,26 @@ int main(void)
 		if (BIT_CHECK(TIMER_TASKS, BIT_TIMER_10ms))
 		{
 			BIT_CLEAR(TIMER_TASKS, BIT_TIMER_10ms);
-			/*
-			if (sensor1.State == SENSOR_RUNNING)
+			board_read_inputs(&board);
+			// we are in running state, so :
+			// check cj125 status, read Ur, adjust PID, read Ua, do calculation stuff....
+			if (sensor1.State == SENSOR_RUNNING && board.input1_state == HIGH)
 			{
-				if(cj125_readStatus() == CJ125_STATUS_OKAY)
+				if (cj125_readStatus() == CJ125_STATUS_OKAY)
 				{
+					sensor1.Ua = adc2voltage_millis(adc_read_UA());
 					calculate_ip(&sensor1);
 					calculate_lambda(&sensor1);
-					
+					sensor1.Ur = adc2voltage_millis(adc_read_UR());
 				}
 				else
 				{
-					
+					sensor1.State == SENSOR_ERROR;
+					pwm_shutdown();
 				}
 			}
-			*/		
+			
+			// TODO: send can message here
 		}
 		
 		if (BIT_CHECK(TIMER_TASKS, BIT_TIMER_20ms))
@@ -155,11 +160,21 @@ int main(void)
 							// everything is fine, we are in calibration mode...
 							sensor1.Ua_ref = adc2voltage_millis(adc_read_UA());
 							sensor1.Ur_ref = adc2voltage_millis(adc_read_UR());
-						
-							// stuff stored, go for condensation...1.5v for 5 seconds
-							// 5 s = 5000 ms = 20
-							loopCounter = 19;
-							sensor1.State = SENSOR_CONDENSATION;
+							
+							cj125_set_running_mode_v8();
+							
+							if (cj125_readStatus() == CJ125_STATUS_OKAY)
+							{
+								// stuff stored, go for condensation...1.5v for 5 seconds
+								// 5 s = 5000 ms = 20
+								loopCounter = 19;
+								sensor1.State = SENSOR_CONDENSATION;
+							}
+						}
+						else
+						{
+							sensor1.State == SENSOR_ERROR;
+							pwm_shutdown();
 						}
 					break;
 					
@@ -170,12 +185,44 @@ int main(void)
 						
 						if (loopCounter == 0)
 						{
-							// condensation ended, next step heating up the sensor
-							loopCounter = 
+							// condensation done, next step heating up the sensor
 							sensor1.State = SENSOR_HEATING_UP;
+							loopCounter = 0;
 						}
 						
 					case SENSOR_HEATING_UP:
+						// we heat up the sensor, start with 8.5v and goes up to 13v in 0.4v/s steps
+						// start with 8.5v
+						
+						// first loop:
+						// set voltage to 8.5v
+						if (loopCounter == 0)
+						{
+							tmp_voltage = 8500;
+						}
+						
+						// can we modulo 4? if so, a second is over and we hve to increase the voltage...
+						if (loopCounter % 4 == 0 && loopCounter != 0)
+						{
+							tmp_voltage += 400;
+							
+							if (tmp_voltage > 13000)
+							{
+								tmp_voltage = 13000;
+							}
+						}
+						
+						// adjust heater voltage to supply voltage
+						dty = target_voltage_duty_cycle(tmp_voltage, board.vBatt);
+						pwm_setDuty(dty);
+						
+						if (loopCounter == 48)
+						{
+							// heating up is done, switch to PID controller and go over to running...
+							sensor1.State = SENSOR_RUNNING;
+						}
+						
+						loopCounter++;
 					
 					break;
 				}
