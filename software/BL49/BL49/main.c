@@ -34,7 +34,7 @@ int main(void)
 	spi_init();
 	pwm_init();
 	init_1ms_timer();
-	// can_init(1);
+	can_init(1);
 
 	
 	board_init(&board);	
@@ -69,10 +69,6 @@ int main(void)
 	
 	uint16_t dty = 0;
 	
-	
-	
-	// pwm_setDuty (dty);
-
 	signature = cj125_readSignature();
 	
 	// board_read_inputs(&board_read_inputs);
@@ -82,6 +78,26 @@ int main(void)
 	sensor1.Ua = 1512;
 	
 	dac_value = get_dac_value(sensor1.Lambda);
+	
+	st_cmd_t message, aem_message;
+	
+	message.id.ext = 0x240;
+	message.ctrl.ide = 1;
+	message.ctrl.rtr = 0;
+	message.dlc = 2;
+	message.cmd = CMD_TX_DATA;
+	
+	uint8_t pt_data[message.dlc];
+	
+	aem_message.id.ext = 0x180;
+	aem_message.ctrl.ide = 1;
+	aem_message.ctrl.rtr = 0;
+	aem_message.dlc = 8;
+	aem_message.cmd = CMD_TX_DATA;
+	uint8_t aem_pt_data[message.dlc];
+	
+	uint32_t afr = 0;
+	uint16_t afr2 = 0;
 	
     /* Replace with your application code */
     while (1) 
@@ -99,6 +115,8 @@ int main(void)
 		if (BIT_CHECK(TIMER_TASKS, BIT_TIMER_10ms))
 		{
 			BIT_CLEAR(TIMER_TASKS, BIT_TIMER_10ms);
+			
+			/*
 			board_read_inputs(&board);
 			// we are in running state, so :
 			// check cj125 status, read Ur, adjust PID, read Ua, do calculation stuff....
@@ -117,6 +135,7 @@ int main(void)
 					pwm_shutdown();
 				}
 			}
+			*/
 			
 			// TODO: send can message here
 		}
@@ -136,6 +155,23 @@ int main(void)
 		if (BIT_CHECK(TIMER_TASKS, BIT_TIMER_100ms))
 		{
 			BIT_CLEAR(TIMER_TASKS, BIT_TIMER_100ms);
+			board_read_inputs(&board);
+			
+			sensor1.Lambda = 1050;			
+			
+			aem_pt_data[0] = high(sensor1.Lambda*10);
+			aem_pt_data[1] = low(sensor1.Lambda*10);
+			
+			aem_pt_data[4] = (board.vBatt / 100);
+			
+			// we are using LSU 4.9 (bit 1 is set: 0x2), resistor calibrated and the data is valid....
+			aem_pt_data[6] |= (1 << 1)|(1 << 7);
+			
+			aem_message.pt_data = &aem_pt_data[0];
+			
+			while(can_cmd(&aem_message) != CAN_CMD_ACCEPTED);					// wait for MOb to configure
+			while(can_get_status(&aem_message) == CAN_STATUS_NOT_COMPLETED);	// wait for a transmit request to come in, and send a response
+			
 			// do some 100ms stuff...
 			PORTB ^= (1 << PINB5);
 		}
@@ -143,6 +179,16 @@ int main(void)
 		if (BIT_CHECK(TIMER_TASKS, BIT_TIMER_250ms))
 		{
 			BIT_CLEAR(TIMER_TASKS, BIT_TIMER_250ms);
+			
+			pt_data[0] = 0xFF;
+			pt_data[1] = 0xAA;
+						
+			message.pt_data = &pt_data[0];
+						
+			while(can_cmd(&message) != CAN_CMD_ACCEPTED);					// wait for MOb to configure
+			while(can_get_status(&message) == CAN_STATUS_NOT_COMPLETED);	// wait for a transmit request to come in, and send a response
+			
+			/*
 			// do some 250ms stuff...
 			board_read_inputs(&board);
 			
@@ -230,6 +276,7 @@ int main(void)
 				
 				
 			}
+			*/
 
 			PORTB ^= (1 << PINB6);
 		}
