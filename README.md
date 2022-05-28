@@ -21,6 +21,10 @@ Quick link to schematic: https://github.com/oelprinz-org/BL49/blob/master/hardwa
 |40103|
 |30522|
 
+<img src="hardware/Datasheet/bl49_01.jpg" title="software still in development">
+
+<img src="hardware/Datasheet/can_layout.png" title="AEM X-Series layout">
+
 <img src="hardware/V0.0.1/V0.0.0_assembled.jpeg" title="Assembled Prototype">
 <p align="center">
   <img src="hardware/V0.0.1/top.png" title="Top Side">
