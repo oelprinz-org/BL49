@@ -7,6 +7,11 @@
 
 #include "adc.h"
 
+// since on the channel 3 is a shut reference with 1225v connected,
+// we can calculate the offset. 1225mV = ADC 251
+
+int16_t v_reference_offset = 0;
+
 void adc_init (void)
 {
 	// avcc with cap on aref
@@ -39,20 +44,26 @@ uint16_t adc_readAvg (uint8_t channel, uint8_t samples)
 
 uint16_t adc_read_UA (void)
 {
-	return adc_readAvg (8, 5);
+	return (uint16_t)((int16_t)adc_readAvg (8, 5) + v_reference_offset);
 }
 
 uint16_t adc_read_UR (void)
 {
-	return adc_readAvg (9, 5);
+	return (uint16_t)((int16_t)adc_readAvg (9, 5) + v_reference_offset);
 }
 
 uint16_t adc_read_reference (void)
 {
-	return adc_readAvg (3, 5);
+	uint16_t v_reference = 0;
+	
+	v_reference = adc_readAvg (3, 5);
+	
+	v_reference_offset = 251 - (int16_t) v_reference;
+	
+	return v_reference;
 }
 
 uint16_t adc_read_battery (void)
 {
-	return adc_readAvg (5, 5);
+	return (uint16_t)((int16_t)adc_readAvg (5, 5) + v_reference_offset);
 }

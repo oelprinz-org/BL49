@@ -29,6 +29,7 @@ int main(void)
 	uint16_t dac_value = 0;
 	uint16_t tmp_voltage;
 	uint8_t loopCounter = 0;
+	tcj125_status cj125_status;
 
 	adc_init();
 	spi_init();
@@ -38,10 +39,9 @@ int main(void)
 
 	
 	board_init(&board);	
-	sensor_init(&sensor1, 61.9, 8);
+	sensor_init(&sensor1, 8);
 	board_read_inputs(&board);
 	
-
 	sei();
 
 	/*
@@ -69,15 +69,26 @@ int main(void)
 	
 	uint16_t dty = 0;
 	
-	signature = cj125_readSignature();
 	
-	// board_read_inputs(&board_read_inputs);
-
-	sensor1.Ur_ref = adc2voltage_millis(adc_read_UR());
-	sensor1.Ua_ref = adc2voltage_millis(adc_read_UA());
-	sensor1.Ua = 1512;
+	cj125_readSignature(&signature);
 	
-	dac_value = get_dac_value(sensor1.Lambda);
+	cj125_set_calibration_mode();
+	
+	if (cj125_readStatus(&cj125_status) == COMMAND_VALID)
+	{
+		if (cj125_status == CJ125_STATUS_OKAY)
+		{
+			sensor1.Ur_ref = adc2voltage_millis(adc_read_UR());
+			sensor1.Ua_ref = adc2voltage_millis(adc_read_UA());			
+		}
+	}
+	
+	sensor_update_ua(&sensor1, 1663);
+	
+	sensor_update_ua(&sensor1, 2069);
+	
+	sensor_update_ua(&sensor1, 2222);
+	
 	
 	st_cmd_t message, aem_message;
 	
@@ -96,22 +107,10 @@ int main(void)
 	aem_message.cmd = CMD_TX_DATA;
 	uint8_t aem_pt_data[message.dlc];
 	
-	uint32_t afr = 0;
-	uint16_t afr2 = 0;
 	
     /* Replace with your application code */
     while (1) 
-    {
-		/*
-			PORTC |= (1 << PINC7);
-			sensor1.Ua = adc2voltage_millis(adc_read_UA());
-			sensor1.Ur = adc2voltage_millis(adc_read_UR());
-			calculate_ip(&sensor1);
-			calculate_lambda(&sensor1);
-			PORTC &= ~(1 << PINC7);
-		*/
-		// do stuff...
-		
+    {		
 		if (BIT_CHECK(TIMER_TASKS, BIT_TIMER_10ms))
 		{
 			BIT_CLEAR(TIMER_TASKS, BIT_TIMER_10ms);
@@ -157,7 +156,8 @@ int main(void)
 			BIT_CLEAR(TIMER_TASKS, BIT_TIMER_100ms);
 			board_read_inputs(&board);
 			
-			sensor1.Lambda = 1050;			
+			sensor1.Lambda = 1050;
+			sensor1.State = SENSOR_RUNNING;
 			
 			aem_pt_data[0] = high(sensor1.Lambda*10);
 			aem_pt_data[1] = low(sensor1.Lambda*10);

@@ -56,5 +56,4 @@ void board_read_inputs (tBoard *board)
 	}
 	
 	board->vBatt = adc2voltage_millis(adc_read_battery()) * 5;
-	board->vRef = adc2voltage_millis(adc_read_reference());
 }

@@ -15,7 +15,7 @@ uint16_t lambda_values[] = {650, 700, 750, 800, 822, 850, 900, 950, 970, 990, 10
 
 tSensor sensor1;
 
-void sensor_init (tSensor *sensor, float shunt_resistance, uint8_t amplification_factor)
+void sensor_init (tSensor *sensor, uint8_t amplification_factor)
 {
 	sensor->State = SENSOR_OFF;
 	sensor->Ip = 0;
@@ -26,57 +26,63 @@ void sensor_init (tSensor *sensor, float shunt_resistance, uint8_t amplification
 	sensor->Ur_ref = 0;
 	
 	sensor->Amplification = amplification_factor;
-	sensor->Shunt = (uint16_t) (shunt_resistance*1000);
 }
 
-int16_t calculate_ip (tSensor *sensor)
+int16_t calculate_ip (uint16_t Ua_ref, uint16_t Ua, uint8_t amp)
 {
+	int16_t ip;
 	int32_t delta;
 	int32_t divisor;
 	// pump current calculation formula: Ip = (((Ua - Ua_ref) * PUMP_FACTOR ) / (SENSOR_SHUT * AMPLIFICATION)) * 1000
-	delta = ((int32_t)sensor->Ua - (int32_t)sensor->Ua_ref) * 1000;
-	divisor = (int32_t)sensor->Shunt * (int32_t)sensor->Amplification;	
-	sensor->Ip = (int16_t)(((float)delta / (float)divisor)*1000);
-	return sensor->Ip;
+	delta = ((int32_t)Ua - (int32_t)Ua_ref) * 1000;
+	divisor = (int32_t)SENSOR_SHUNT * (int32_t)amp;	
+	ip = (int16_t)(((float)delta / (float)divisor)*1000);
+	return ip;
 }
 
-uint16_t calculate_lambda (tSensor *sensor)
+uint16_t calculate_lambda (int16_t Ip)
 {
 	uint8_t counter = 0;
+	uint16_t Lambda = 0;
 	
 	float gain, offset;
 	
 	// check against the both ends
-	if (sensor->Ip <= ip_values[0])
+	if (Ip <= ip_values[0])
 	{
-		sensor->Lambda = lambda_values[0];
-		return sensor->Lambda;
+		return lambda_values[0];
 	}
 	
-	if (sensor->Ip >= ip_values[23])
+	if (Ip >= ip_values[23])
 	{
-		sensor->Lambda = lambda_values[23];
-		return sensor->Lambda;
+		return lambda_values[23];
 	}
 	
-	while ((sensor->Lambda == 0) && (counter < 23))
+	while ((Lambda == 0) && (counter < 23))
 	{
 		// exists an exact value?
-		if ( ip_values[counter] == sensor->Ip)
+		if ( ip_values[counter] == Ip)
 		{
-			sensor->Lambda = lambda_values[counter];
+			Lambda = lambda_values[counter];
 		}
 		
 		// ip value is between two values
-		else if ((ip_values[counter] <= sensor->Ip) && (sensor->Ip <= ip_values[counter + 1]))
+		else if ((ip_values[counter] <= Ip) && (Ip <= ip_values[counter + 1]))
 		{
 			gain = (float) (lambda_values[counter+1] - lambda_values[counter]) / (ip_values[counter + 1] -  ip_values[counter]);
 			
 			offset = (lambda_values[counter+1] - (ip_values[counter + 1] * gain));
 			
-			sensor->Lambda = (uint16_t) ((sensor->Ip * gain) + offset);
+			Lambda = (uint16_t) ((Ip * gain) + offset);
 		}
 		counter++;
 	}
-	return sensor->Lambda;
+	return Lambda;
+}
+
+void sensor_update_ua (tSensor *sensor, uint16_t ua_millis)
+{
+	sensor->Ua = ua_millis;
+	sensor->Ip = calculate_ip (sensor->Ua_ref, sensor->Ua, sensor->Amplification);
+	sensor->Lambda = calculate_lambda(sensor->Ip);
 }

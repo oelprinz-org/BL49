@@ -27,14 +27,12 @@ typedef enum
 typedef struct 
 {
 	uint16_t vBatt;
-	uint16_t vRef;
 	tInputState input1_state;
 	tInputState input2_state;
 	tBoardState state;
 } tBoard;
 
 extern uint16_t adc_read_battery (void);
-extern uint16_t adc_read_reference (void);
 
 void board_init (tBoard *board);
 void board_read_inputs (tBoard *board);

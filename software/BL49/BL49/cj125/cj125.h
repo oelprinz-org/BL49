@@ -15,21 +15,35 @@
 
 typedef enum
 {
-	CJ125_COMMUNICATION_ERROR
-	, CJ125_STATUS_ERROR
+	CJ125_STATUS_ERROR
 	, CJ125_STATUS_OKAY
 	, CJ125_STATUS_E_NOPOWER
-	, CJ125_STATUS_E_NOSENSOR
+	, CJ125_STATUS_E_NOSENSOR 
 	, CJ125_E_SHORTCIRCUITGND
 	, CJ125_E_SHORTCIRCUITBAT
 } tcj125_status;
 
-uint8_t cj125_readSignature (void);
-tcj125_status cj125_readStatus (void);
-void cj125_set_calibration_mode (void);
-void cj125_set_running_mode_v8 (void);
-void cj125_set_running_mode_v17 (void);
-uint16_t cj125_read_init1_register (void);
-uint16_t cj125_read_init2_register (void);
+typedef enum
+{
+	COMMAND_VALID
+	, COMMAND_NOT_VALID	
+} tcj125_command_status;
+
+typedef enum
+{
+	CALIBRATION
+	, NORMAL_V8
+	, NORMAL_V17
+} tcj125_mode;
+
+tcj125_command_status cj125_readSignature (uint8_t *sig);
+tcj125_command_status cj125_readStatus (tcj125_status *status);
+tcj125_command_status cj125_set_calibration_mode (void);
+tcj125_command_status cj125_set_running_mode_v8 (void);
+tcj125_command_status cj125_set_running_mode_v17 (void);
+tcj125_command_status cj125_get_mode (tcj125_mode *mode);
+
+tcj125_command_status cj125_read_init1_register (uint16_t *reg);
+tcj125_command_status cj125_read_init2_register (uint16_t *reg);
 
 #endif /* CJ125_H_ */

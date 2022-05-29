@@ -15,8 +15,10 @@
 #define CJ125_INIT_REG1_REQUEST         0x6C00 	/* Requests the first init register. */
 #define CJ125_DIAG_REG_REQUEST          0x7800	/* Dignostic request, gives the current status. */
 #define CJ125_INIT_REG2_REQUEST         0x7E00  /* Requests the second init register. */
-#define CJ125_INIT_REG1_STATUS_0        0x2888  /* The response of the init register when V=8 amplification is in use. */
-#define CJ125_INIT_REG1_STATUS_1        0x2889	/* The response of the init register when V=17 amplification is in use. */
+
+#define CJ125_INIT_REG1_STATUS_CAL      0x289D  /* The response of the init register when in calibration mode. */
+#define CJ125_INIT_REG1_STATUS_V8       0x2888  /* The response of the init register when V=8 amplification is in use. */
+#define CJ125_INIT_REG1_STATUS_V17      0x2889	/* The response of the init register when V=17 amplification is in use. */
 
 // set status:
 #define CJ125_INIT_REG1_MODE_CALIBRATE	0x569D  /* Sets the first init register in calibration mode. */

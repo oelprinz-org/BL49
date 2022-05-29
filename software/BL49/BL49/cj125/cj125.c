@@ -8,7 +8,7 @@
 #include "cj125.h"
 #include "../helpers.h"
 
-uint8_t cj125_readSignature (void)
+tcj125_command_status cj125_readSignature (uint8_t *sig)
 {	
 	uint16_t reg;
 	
@@ -16,16 +16,16 @@ uint8_t cj125_readSignature (void)
 	
 	if (high(reg) == 0x28 || high(reg) == 0x2e)
 	{
-		return low(reg);
+		*sig = low(reg);
+		return COMMAND_VALID;
 	}
 	
-	return 0x00;	
+	return COMMAND_NOT_VALID;
 }
 
-tcj125_status cj125_readStatus (void)
+tcj125_command_status cj125_readStatus (tcj125_status *status)
 {
 	uint16_t statusReg = 0;
-	uint8_t highByte = 0;
 	
 	statusReg = spi_read_write(CJ125_DIAG_REG_REQUEST);
 	
@@ -36,11 +36,9 @@ tcj125_status cj125_readStatus (void)
 	// bit0 = 1 --> current command is not valid
 	// so just check this bit...
 	
-	highByte = high(statusReg);
-	
-	if (BIT_CHECK(highByte, CJ125_DIAG_INSTR_F))
+	if (BIT_CHECK(high(statusReg), CJ125_DIAG_INSTR_F))
 	{
-		return CJ125_COMMUNICATION_ERROR;
+		return COMMAND_NOT_VALID;
 	}
 	
 	// if the last command is valid, we check the content of low byte:
@@ -48,52 +46,124 @@ tcj125_status cj125_readStatus (void)
 	switch(low(statusReg))
 	{
 		case CJ125_DIAG_REG_STATUS_OK:
-		return CJ125_STATUS_OKAY;
+		*status = CJ125_STATUS_OKAY;
 		break;
 		
 		case CJ125_DIAG_REG_STATUS_NOPOWER:
-		return CJ125_STATUS_E_NOPOWER;
+		*status = CJ125_STATUS_E_NOPOWER;
 		break;
 		
 		case CJ125_DIAG_REG_STATUS_NOSENSOR:
-		return CJ125_STATUS_E_NOSENSOR;
+		*status = CJ125_STATUS_E_NOSENSOR;
 		break;
 		
 		default:
-		return CJ125_STATUS_ERROR;
+		*status = CJ125_STATUS_ERROR;
 		break;
 	}
+	
+	return COMMAND_VALID;
 }
 
-void cj125_set_calibration_mode (void)
+tcj125_command_status cj125_set_calibration_mode (void)
 {
-	uint16_t retVal = 0;
+	uint16_t statusReg = 0;
+
+	statusReg = spi_read_write(CJ125_INIT_REG1_MODE_CALIBRATE);
 	
-	retVal = spi_read_write(CJ125_INIT_REG1_MODE_CALIBRATE);
+	if (BIT_CHECK(high(statusReg), CJ125_DIAG_INSTR_F))
+	{
+		return COMMAND_NOT_VALID;
+	}	
 }
 
 // amplification = 8, Lambda 0.65
-void cj125_set_running_mode_v8 (void)
+tcj125_command_status cj125_set_running_mode_v8 (void)
 {
-	uint16_t retVal = 0;
+	uint16_t statusReg = 0;
+
+	statusReg = spi_read_write(CJ125_INIT_REG1_MODE_NORMAL_V8);
 	
-	retVal = spi_read_write(CJ125_INIT_REG1_MODE_NORMAL_V8);
+	if (BIT_CHECK(high(statusReg), CJ125_DIAG_INSTR_F))
+	{
+		return COMMAND_NOT_VALID;
+	}
+	
+	return COMMAND_VALID;
 }
 
 // amplification = 17, Lambda 0.75
-void cj125_set_running_mode_v17 (void)
+tcj125_command_status cj125_set_running_mode_v17 (void)
 {
-	uint16_t retVal = 0;
+	uint16_t statusReg = 0;
+
+	statusReg = spi_read_write(CJ125_INIT_REG1_MODE_NORMAL_V17);
 	
-	retVal = spi_read_write(CJ125_INIT_REG1_MODE_NORMAL_V17);
+	if (BIT_CHECK(high(statusReg), CJ125_DIAG_INSTR_F))
+	{
+		return COMMAND_NOT_VALID;
+	}
+	
+	return COMMAND_VALID;
 }
 
-uint16_t cj125_read_init1_register ()
+tcj125_command_status cj125_get_mode (tcj125_mode *mode)
 {
-	return spi_read_write(CJ125_INIT_REG1_REQUEST);
+	uint16_t statusReg = 0;
+
+	statusReg = spi_read_write(CJ125_INIT_REG1_REQUEST);
+	
+	if (BIT_CHECK(high(statusReg), CJ125_DIAG_INSTR_F))
+	{
+		return COMMAND_NOT_VALID;
+	}
+	
+	switch (statusReg)
+	{
+		case CJ125_INIT_REG1_STATUS_CAL:
+		*mode = CALIBRATION;
+		break;
+		
+		case CJ125_INIT_REG1_STATUS_V8:
+		*mode = NORMAL_V8;
+		break;
+		
+		case CJ125_INIT_REG1_STATUS_V17:
+		*mode = NORMAL_V17;
+		break;
+	}
+	
+	return COMMAND_VALID;
 }
 
-uint16_t cj125_read_init2_register ()
+tcj125_command_status cj125_read_init1_register (uint16_t *reg)
 {
-	return spi_read_write(CJ125_INIT_REG2_REQUEST);
+	uint16_t statusReg = 0;
+
+	statusReg = spi_read_write(CJ125_INIT_REG1_REQUEST);
+	
+	if (BIT_CHECK(high(statusReg), CJ125_DIAG_INSTR_F))
+	{
+		return COMMAND_NOT_VALID;
+	}
+	
+	*reg = statusReg;
+	
+	return COMMAND_VALID;
+}
+
+tcj125_command_status cj125_read_init2_register (uint16_t *reg)
+{
+	uint16_t statusReg = 0;
+
+	statusReg = spi_read_write(CJ125_INIT_REG2_REQUEST);
+	
+	if (BIT_CHECK(high(statusReg), CJ125_DIAG_INSTR_F))
+	{
+		return COMMAND_NOT_VALID;
+	}
+	
+	*reg = statusReg;
+	
+	return COMMAND_VALID;
 }

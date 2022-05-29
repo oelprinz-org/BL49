@@ -11,7 +11,7 @@
 
 #include <stdint.h>
 
-#define SENSOR_SHUNT	61.9
+#define SENSOR_SHUNT	61900
 
 typedef enum
 {
@@ -35,8 +35,9 @@ typedef struct {
 	tSensorState State;
 } tSensor;
 
-void sensor_init (tSensor *sensor, float shunt_resistance, uint8_t amplification_factor);
-int16_t calculate_ip (tSensor *sensor);
-uint16_t calculate_lambda (tSensor *sensor);
+void sensor_init (tSensor *sensor, uint8_t amplification_factor);
+void sensor_update_ua (tSensor *sensor, uint16_t ua_millis);
+// int16_t calculate_ip (uint16_t Ua_ref, uint16_t Ua, uint8_t amp);
+// uint16_t calculate_lambda (int16_t Ip);
 
 #endif /* SENSOR_H_ */
