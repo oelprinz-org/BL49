@@ -14,9 +14,7 @@ dac\dac.c
 
 main.c
 
-pid\pid.c
-
-pwm\pwm.c
+heater\heater.c
 
 sensor\sensor.c
 

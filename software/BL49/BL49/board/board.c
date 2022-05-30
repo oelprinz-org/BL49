@@ -56,4 +56,13 @@ void board_read_inputs (tBoard *board)
 	}
 	
 	board->vBatt = adc2voltage_millis(adc_read_battery()) * 5;
+	
+	if (is_between(board->vBatt, 11000, 16500))
+	{
+		board->battery_status = BATTERY_OKAY;
+	}
+	else
+	{
+		board->battery_status = BATTERY_NOT_OKAY;
+	}
 }

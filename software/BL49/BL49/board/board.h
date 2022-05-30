@@ -20,6 +20,12 @@ typedef enum
 
 typedef enum
 {
+	BATTERY_OKAY
+	, BATTERY_NOT_OKAY
+} tBatteryStatus;
+
+typedef enum
+{
 	LOW
 	, HIGH
 } tInputState;
@@ -30,6 +36,7 @@ typedef struct
 	tInputState input1_state;
 	tInputState input2_state;
 	tBoardState state;
+	tBatteryStatus battery_status;
 } tBoard;
 
 extern uint16_t adc_read_battery (void);

@@ -74,7 +74,9 @@ tcj125_command_status cj125_set_calibration_mode (void)
 	if (BIT_CHECK(high(statusReg), CJ125_DIAG_INSTR_F))
 	{
 		return COMMAND_NOT_VALID;
-	}	
+	}
+	
+	return COMMAND_VALID;
 }
 
 // amplification = 8, Lambda 0.65

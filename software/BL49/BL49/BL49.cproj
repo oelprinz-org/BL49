@@ -180,16 +180,10 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="pid\pid.c">
+    <Compile Include="heater\heater.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="pid\pid.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="pwm\pwm.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="pwm\pwm.h">
+    <Compile Include="heater\heater.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="sensor\sensor.c">
@@ -223,10 +217,9 @@
     <Folder Include="cj125" />
     <Folder Include="can" />
     <Folder Include="timer" />
-    <Folder Include="pid" />
     <Folder Include="board" />
     <Folder Include="sensor" />
-    <Folder Include="pwm" />
+    <Folder Include="heater" />
     <Folder Include="spi" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />

@@ -1,0 +1,51 @@
+
+calculate_ip (510) : t = 70µs
+calculate_ip (2614) : t = 67µs
+
+
+
+calculate_lambda (ip: 2243) : t = 7,6µs (muss rechnen, also interpolieren)
+
+calculate_lambda (ip: 2316) : t = 7,8µs (muss nicht rechnen)
+
+
+Ua: 2614
+calculate_ip(&sensor1);
+calculate_lambda(&sensor1);
+t = 74µs
+
+Ua: 1512
+t: 74.5µs
+
+
+Ua: 1512
+sensor1.Ua_ref = adc2voltage_millis(adc_read_UA());
+calculate_ip(&sensor1);
+calculate_lambda(&sensor1);
+
+t: 722µs
+
+
+
+125kHz ADC (prescaler 128):
+sensor1.Ua_ref = adc2voltage_millis(adc_read_UA());
+t: 650µs
+
+
+1MHz ADC (prescaler 16)
+sensor1.Ua_ref = adc2voltage_millis(adc_read_UA());
+t: 157µs
+
+
+
+2MHz ADC (prescaler 8)
+sensor1.Ua_ref = adc2voltage_millis(adc_read_UA());
+t: 124µs
+
+
+2MHz ADC (prescaler 8)
+Ua: 1512
+sensor1.Ua_ref = adc2voltage_millis(adc_read_UA());
+calculate_ip(&sensor1);
+calculate_lambda(&sensor1);
+t: 200µs

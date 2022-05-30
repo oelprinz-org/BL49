@@ -60,12 +60,23 @@ static __inline uint16_t __target_voltage_duty_cycle (uint16_t targetVoltageMill
 	return (uint16_t) (((float)targetVoltageMillis / (float) supplyVoltageMillis)*1024 -1);
 }
 
+static __inline uint8_t __is_between(uint16_t x, uint16_t y, uint16_t z)
+{
+	if ((x > y) && (x < z))
+	{
+		return 1;
+	}
+	
+	return 0;
+}
+
 #define bswap_16(x) __bswap_16(x)
 #define make_u16t(x1,x2) __make_u16t(x1,x2)
 #define adc2voltage(adc) __adc2voltage(adc)
 #define adc2voltage_millis(adc) __adc2voltage_millis(adc)
 #define voltage2dac_millis(millis) __voltage2dac_millis(millis)
 #define target_voltage_duty_cycle(targetVoltage,supplyVoltage) __target_voltage_duty_cycle(targetVoltage,supplyVoltage)
+#define is_between(x,y,z) __is_between(x,y,z)
 
 // #define isSet(x1, x2) __isSet(x1, x2)
 #define low(x)	__low(x)

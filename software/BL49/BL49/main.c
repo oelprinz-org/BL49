@@ -11,13 +11,13 @@
 #include "helpers.h"
 #include "adc/adc.h"
 #include "spi/spi.h"
-#include "can/can_lib.h"
 #include "dac/dac.h"
-#include "pwm/pwm.h"
+#include "heater/heater.h"
 #include "cj125/cj125.h"
 #include "timer/timer.h"
 #include "sensor/sensor.h"
 #include "board/board.h"
+#include "can/can_lib.h"
 
 extern tSensor sensor1;
 extern tBoard board;
@@ -27,17 +27,16 @@ int main(void)
 {
 	uint8_t signature;
 	uint16_t dac_value = 0;
-	uint16_t tmp_voltage;
+	uint16_t tmp_voltage = 1500;
 	uint8_t loopCounter = 0;
 	tcj125_status cj125_status;
 
 	adc_init();
 	spi_init();
-	pwm_init();
+	heater_init();
 	init_1ms_timer();
 	can_init(1);
 
-	
 	board_init(&board);	
 	sensor_init(&sensor1, 8);
 	board_read_inputs(&board);
@@ -68,28 +67,7 @@ int main(void)
 	*/
 	
 	uint16_t dty = 0;
-	
-	
-	cj125_readSignature(&signature);
-	
-	cj125_set_calibration_mode();
-	
-	if (cj125_readStatus(&cj125_status) == COMMAND_VALID)
-	{
-		if (cj125_status == CJ125_STATUS_OKAY)
-		{
-			sensor1.Ur_ref = adc2voltage_millis(adc_read_UR());
-			sensor1.Ua_ref = adc2voltage_millis(adc_read_UA());			
-		}
-	}
-	
-	sensor_update_ua(&sensor1, 1663);
-	
-	sensor_update_ua(&sensor1, 2069);
-	
-	sensor_update_ua(&sensor1, 2222);
-	
-	
+
 	st_cmd_t message, aem_message;
 	
 	message.id.ext = 0x240;
@@ -106,6 +84,19 @@ int main(void)
 	aem_message.dlc = 8;
 	aem_message.cmd = CMD_TX_DATA;
 	uint8_t aem_pt_data[message.dlc];
+	
+	cj125_set_calibration_mode();
+	
+	sensor1.Ua_ref = adc2voltage_millis(adc_read_UA());
+	sensor1.Ur_ref = adc2voltage_millis(adc_read_UR());
+	
+	cj125_set_running_mode_v8();
+	
+	sensor1.Ur = adc2voltage_millis(adc_read_UR());
+	
+	uint16_t pid_ret = 0;
+	
+	pid_ret = heater_pid_control(sensor1.Ur, sensor1.Ur_ref);
 	
 	
     /* Replace with your application code */
@@ -163,6 +154,7 @@ int main(void)
 			aem_pt_data[1] = low(sensor1.Lambda*10);
 			
 			aem_pt_data[4] = (board.vBatt / 100);
+			aem_pt_data[5] = (tmp_voltage / 100);
 			
 			// we are using LSU 4.9 (bit 1 is set: 0x2), resistor calibrated and the data is valid....
 			aem_pt_data[6] |= (1 << 1)|(1 << 7);
