@@ -13,7 +13,9 @@
 #include <stdint.h>
 
 void adc_init (void);
-uint16_t adc_read (uint8_t channel);
-uint16_t adc_readAvg (uint8_t channel, uint8_t samples);
+uint16_t adc_read_UA (void);
+uint16_t adc_read_UR (void);
+uint16_t adc_read_reference (void);
+uint16_t adc_read_battery (void);
 
 #endif /* ADC_H_ */

@@ -4,13 +4,23 @@
 
 adc\adc.c
 
+can\can_drv.c
+
+can\can_lib.c
+
 cj125\cj125.c
 
 dac\dac.c
 
 main.c
 
-pwm\pwm.c
+heater\heater.c
+
+sensor\sensor.c
 
 spi\spi.c
+
+board\board.c
+
+timer\timer.c
 

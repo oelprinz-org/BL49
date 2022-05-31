@@ -9,14 +9,21 @@
 
 void spi_init (void)
 {
-	DDRB |= (1 << PB1)|(1 << PB7);
-	// spi ss
-	DDRD |= (1 << PD5);
-	
+	// mosi (pb1) and sck (pb7) are outputs
+	DDRB |= (1 << PINB1)|(1 << PINB7);
+	// spi ss is output too
+	DDRD |= (1 << PIND5);
+	// bring them high
 	SPI_SS_DESELECT;
 	
 	// enable spi, 2MHz (div 8), master, mode1 (cpol 0, cpha 1)
-	SPCR |= (1 << SPE)|(0 << DORD)|(1 << MSTR)|(0 << CPOL)|(1 << CPHA)|(1 << SPI2X)|(1 << SPR0);
+	// SPCR |= (1 << SPE)|(0 << DORD)|(1 << MSTR)|(0 << CPOL)|(1 << CPHA)|(1 << SPI2X)|(1 << SPR0);
+	
+	// enable spi, 1MHz (div 16), master, mode1 (cpol 0, cpha 1)
+	// SPCR = (1 << SPE)|(1 << MSTR)|(1 << CPHA)|(1 << SPR0);
+	
+	// enable spi, 4MHz (div 16), master, mode1 (cpol 0, cpha 1)
+	SPCR = (1 << SPE)|(1 << MSTR)|(1 << CPHA);
 }
 
 uint16_t spi_read_write (uint16_t data)
