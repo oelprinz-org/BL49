@@ -21,6 +21,7 @@
 volatile uint8_t TIMER_TASKS;
 
 void init_1ms_timer (void);
+void timer_delay_ms (uint16_t millis);
 
 
 

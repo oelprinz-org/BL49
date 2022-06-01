@@ -8,13 +8,13 @@ can\can_drv.c
 
 can\can_lib.c
 
+can\can_network.c
+
 cj125\cj125.c
 
 dac\dac.c
 
 main.c
-
-heater\heater.c
 
 sensor\sensor.c
 

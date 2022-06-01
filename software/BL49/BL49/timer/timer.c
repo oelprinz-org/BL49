@@ -37,6 +37,19 @@ void init_1ms_timer (void)
 	TCCR0B |= (1 << CS01)|(1 << CS00);	// prescaler 64
 }
 
+void timer_delay_ms (uint16_t millis)
+{
+	do 
+	{
+		OCR0A = 249;
+		TCCR0A |= (1<<WGM01);				// Mode = CTC
+		TCCR0B |= (1 << CS01)|(1 << CS00);	// prescaler 64
+		while ((TIFR1 & (1 << OCF1A)) == 0);
+		TIFR1 |= (1 << OCF1A);
+		millis--;
+	} while (millis > 0);
+}
+
 ISR (TIMER0_COMPA_vect)
 {
 	ms_counter++;

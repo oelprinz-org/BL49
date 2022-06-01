@@ -20,6 +20,11 @@ void adc_init (void)
 	
 	// enable adc, prescaler 8 (2MHz)
 	ADCSRA |= (1 << ADPS1)|(1 << ADPS0)|(1 << ADEN);
+	
+	// Dummy readout to prevent further error readings
+	ADCSRA |= (1 << ADSC);
+	while ( ADCSRA & (1 << ADSC)){}
+	(void) ADCW;
 }
 
 uint16_t adc_read (uint8_t channel)

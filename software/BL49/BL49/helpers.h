@@ -55,10 +55,16 @@ static __inline uint8_t __high(uint16_t __x)
 	return (uint8_t) (((__x)>>8) & 0xFF);
 }
 
-static __inline uint16_t __target_voltage_duty_cycle (uint16_t targetVoltageMillis, uint16_t supplyVoltageMillis)
+static __inline uint16_t __voltage2duty_cycle(uint16_t _targetVoltageMillis, uint16_t _supplyVoltageMillis, uint16_t _steps)
 {
-	return (uint16_t) (((float)targetVoltageMillis / (float) supplyVoltageMillis)*1024 -1);
+	return (uint16_t)(((float)_targetVoltageMillis / (float)_supplyVoltageMillis) * _steps - 1);
 }
+
+static __inline uint16_t __duty_cycle2voltage(uint16_t _supplyVoltageMillis, uint16_t _dutyCycle, uint16_t _steps)
+{
+	return ((float) _supplyVoltageMillis / (float) _steps) *_dutyCycle;
+}
+
 
 static __inline uint8_t __is_between(uint16_t x, uint16_t y, uint16_t z)
 {
@@ -75,7 +81,8 @@ static __inline uint8_t __is_between(uint16_t x, uint16_t y, uint16_t z)
 #define adc2voltage(adc) __adc2voltage(adc)
 #define adc2voltage_millis(adc) __adc2voltage_millis(adc)
 #define voltage2dac_millis(millis) __voltage2dac_millis(millis)
-#define target_voltage_duty_cycle(targetVoltage,supplyVoltage) __target_voltage_duty_cycle(targetVoltage,supplyVoltage)
+#define voltage2duty_cycle(targetVoltage,supplyVoltage,steps) __voltage2duty_cycle(targetVoltage,supplyVoltage,steps)
+#define duty_cycle2voltage(supplyVoltage,dutyCycle,steps) __duty_cycle2voltage(supplyVoltage,dutyCycle,steps)
 #define is_between(x,y,z) __is_between(x,y,z)
 
 // #define isSet(x1, x2) __isSet(x1, x2)

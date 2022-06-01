@@ -12,12 +12,11 @@
 #include "adc/adc.h"
 #include "spi/spi.h"
 #include "dac/dac.h"
-#include "heater/heater.h"
 #include "cj125/cj125.h"
 #include "timer/timer.h"
 #include "sensor/sensor.h"
 #include "board/board.h"
-#include "can/can_lib.h"
+#include "can/can_network.h"
 
 extern tSensor sensor1;
 extern tBoard board;
@@ -33,15 +32,14 @@ int main(void)
 
 	adc_init();
 	spi_init();
-	heater_init();
-	init_1ms_timer();
-	can_init(1);
+	// heater_init();
+	can_network_init(1);
 
 	board_init(&board);	
 	sensor_init(&sensor1, 8);
 	board_read_inputs(&board);
 	
-	sei();
+	sei();	
 
 	/*
 	There are three different types of CAN modules available:
@@ -68,36 +66,21 @@ int main(void)
 	
 	uint16_t dty = 0;
 
-	st_cmd_t message, aem_message;
-	
-	message.id.ext = 0x240;
-	message.ctrl.ide = 1;
-	message.ctrl.rtr = 0;
-	message.dlc = 2;
-	message.cmd = CMD_TX_DATA;
-	
-	uint8_t pt_data[message.dlc];
-	
-	aem_message.id.ext = 0x180;
-	aem_message.ctrl.ide = 1;
-	aem_message.ctrl.rtr = 0;
-	aem_message.dlc = 8;
-	aem_message.cmd = CMD_TX_DATA;
-	uint8_t aem_pt_data[message.dlc];
 	
 	cj125_set_calibration_mode();
+	timer_delay_ms(500);
+	
+	// Ur value:
+	// lower value means hotter sensor...
+	// Ur_ref is something round about 1v (1015)
+	// Ua_ref is something round about 1.5 (1503)
 	
 	sensor1.Ua_ref = adc2voltage_millis(adc_read_UA());
 	sensor1.Ur_ref = adc2voltage_millis(adc_read_UR());
 	
 	cj125_set_running_mode_v8();
 	
-	sensor1.Ur = adc2voltage_millis(adc_read_UR());
-	
-	uint16_t pid_ret = 0;
-	
-	pid_ret = heater_pid_control(sensor1.Ur, sensor1.Ur_ref);
-	
+	init_1ms_timer();
 	
     /* Replace with your application code */
     while (1) 
@@ -122,7 +105,7 @@ int main(void)
 				else
 				{
 					sensor1.State == SENSOR_ERROR;
-					pwm_shutdown();
+					heater_shutdown();
 				}
 			}
 			*/
@@ -147,22 +130,11 @@ int main(void)
 			BIT_CLEAR(TIMER_TASKS, BIT_TIMER_100ms);
 			board_read_inputs(&board);
 			
-			sensor1.Lambda = 1050;
-			sensor1.State = SENSOR_RUNNING;
+			sensor_update_ua (&sensor1, 2100);
 			
-			aem_pt_data[0] = high(sensor1.Lambda*10);
-			aem_pt_data[1] = low(sensor1.Lambda*10);
+			sensor1.Status = RUN;
 			
-			aem_pt_data[4] = (board.vBatt / 100);
-			aem_pt_data[5] = (tmp_voltage / 100);
 			
-			// we are using LSU 4.9 (bit 1 is set: 0x2), resistor calibrated and the data is valid....
-			aem_pt_data[6] |= (1 << 1)|(1 << 7);
-			
-			aem_message.pt_data = &aem_pt_data[0];
-			
-			while(can_cmd(&aem_message) != CAN_CMD_ACCEPTED);					// wait for MOb to configure
-			while(can_get_status(&aem_message) == CAN_STATUS_NOT_COMPLETED);	// wait for a transmit request to come in, and send a response
 			
 			// do some 100ms stuff...
 			PORTB ^= (1 << PINB5);
@@ -172,13 +144,8 @@ int main(void)
 		{
 			BIT_CLEAR(TIMER_TASKS, BIT_TIMER_250ms);
 			
-			pt_data[0] = 0xFF;
-			pt_data[1] = 0xAA;
-						
-			message.pt_data = &pt_data[0];
-						
-			while(can_cmd(&message) != CAN_CMD_ACCEPTED);					// wait for MOb to configure
-			while(can_get_status(&message) == CAN_STATUS_NOT_COMPLETED);	// wait for a transmit request to come in, and send a response
+			sensor1.Ur = adc2voltage_millis(adc_read_UR());		
+			
 			
 			/*
 			// do some 250ms stuff...
@@ -212,13 +179,13 @@ int main(void)
 						else
 						{
 							sensor1.State == SENSOR_ERROR;
-							pwm_shutdown();
+							heater_shutdown();
 						}
 					break;
 					
 					case SENSOR_CONDENSATION:
 						dty = target_voltage_duty_cycle(1500, board.vBatt);
-						pwm_setDuty(dty);
+						heater_setDuty(dty);
 						loopCounter--;
 						
 						if (loopCounter == 0)
@@ -252,7 +219,7 @@ int main(void)
 						
 						// adjust heater voltage to supply voltage
 						dty = target_voltage_duty_cycle(tmp_voltage, board.vBatt);
-						pwm_setDuty(dty);
+						heater_setDuty(dty);
 						
 						if (loopCounter == 48)
 						{

@@ -156,6 +156,12 @@
     <Compile Include="can\can_lib.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="can\can_network.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="can\can_network.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="cj125\cj125.c">
       <SubType>compile</SubType>
     </Compile>
@@ -178,12 +184,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="heater\heater.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="heater\heater.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="sensor\sensor.c">
@@ -219,7 +219,6 @@
     <Folder Include="timer" />
     <Folder Include="board" />
     <Folder Include="sensor" />
-    <Folder Include="heater" />
     <Folder Include="spi" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
