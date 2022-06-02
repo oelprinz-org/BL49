@@ -6,6 +6,8 @@
  */ 
 
 #include "sensor.h"
+#include "../board/board.h"
+#include "../helpers.h"
 
 // pump current and lambda values from Bosch datasheet
 // Ip * 1000
@@ -49,6 +51,45 @@ void sensor_init (tSensor *sensor, uint8_t amplification_factor)
 	sensor->Amplification = amplification_factor;
 	
 	heater_init();
+}
+
+tSensorStatus sensor_get_diag_status (void)
+{
+	uint8_t diagReg;
+	tSensorStatus status;
+	
+	
+	if (cj125_readStatus(&diagReg) == COMMAND_VALID)
+	{
+		// check that everythingis okay...
+		if (diagReg == CJ125_DIAG_REG_STATUS_OK)
+		{
+			return SENSOR_OKAY;
+		}
+		
+		// if not, check what's wrong.
+		// check the heater
+		switch ((diagReg >> 6)&CJ125_DIAG_MASK)
+		{
+			case 0:
+			case 2:
+				status = HEATER_SHORT_CIRCUIT;
+				break;
+				
+			case 1:
+				status = HEATER_OPEN_CIRCUIT;
+				break;
+			case 3:
+				status = SENSOR_OKAY;
+				break;
+		}
+	}
+	else
+	{
+		status = ERROR;
+	}
+	
+	return status;
 }
 
 int16_t calculate_ip (uint16_t Ua_ref, uint16_t Ua, uint8_t amp)

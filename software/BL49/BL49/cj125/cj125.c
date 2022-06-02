@@ -16,14 +16,14 @@ tcj125_command_status cj125_readSignature (uint8_t *sig)
 	
 	if (high(reg) == 0x28 || high(reg) == 0x2e)
 	{
-		*sig = low(reg);
+		*sig = (low(reg) & CJ125_IDENT_MASK);
 		return COMMAND_VALID;
 	}
 	
 	return COMMAND_NOT_VALID;
 }
 
-tcj125_command_status cj125_readStatus (tcj125_status *status)
+tcj125_command_status cj125_readStatus (uint8_t *diagRegister)
 {
 	uint16_t statusReg = 0;
 	
@@ -43,24 +43,7 @@ tcj125_command_status cj125_readStatus (tcj125_status *status)
 	
 	// if the last command is valid, we check the content of low byte:
 	
-	switch(low(statusReg))
-	{
-		case CJ125_DIAG_REG_STATUS_OK:
-		*status = CJ125_STATUS_OKAY;
-		break;
-		
-		case CJ125_DIAG_REG_STATUS_NOPOWER:
-		*status = CJ125_STATUS_E_NOPOWER;
-		break;
-		
-		case CJ125_DIAG_REG_STATUS_NOSENSOR:
-		*status = CJ125_STATUS_E_NOSENSOR;
-		break;
-		
-		default:
-		*status = CJ125_STATUS_ERROR;
-		break;
-	}
+	*diagRegister = low (statusReg);
 	
 	return COMMAND_VALID;
 }

@@ -11,20 +11,8 @@
 
 #include <stdint.h>
 #include <avr/io.h>
-
+#include "../cj125/cj125.h"
 #define SENSOR_SHUNT	61900
-
-/*
-typedef enum
-{
-	SENSOR_OFF
-	, SENSOR_CALIBRATION
-	, SENSOR_CONDENSATION
-	, SENSOR_HEATING_UP
-	, SENSOR_RUNNING
-	, SENSOR_ERROR
-} tSensorState;
-*/
 
 typedef enum
 {
@@ -49,6 +37,7 @@ typedef enum
 	, SAVE_SENSOR					= 0x12
 	, NEED_NEW_FAC					= 0x13	// FAC: FreeAirCalibration: since we are using LSU4.9 it is not necessary
 	, ERROR							= 0x14
+	, SENSOR_OKAY					= 0x15
 } tSensorStatus;
 
 typedef enum

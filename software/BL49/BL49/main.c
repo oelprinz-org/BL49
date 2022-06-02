@@ -28,7 +28,6 @@ int main(void)
 	uint16_t dac_value = 0;
 	uint16_t tmp_voltage = 1500;
 	uint8_t loopCounter = 0;
-	tcj125_status cj125_status;
 
 	adc_init();
 	spi_init();
