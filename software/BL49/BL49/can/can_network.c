@@ -8,12 +8,28 @@
 #include "can_network.h"
 #include "../helpers.h"
 
-/*
+	/*
 	There are three different types of CAN modules available:
 	-> 2.0A - Considers 29 bit ID as an error
 	-> 2.0B Passive - Ignores 29 bit ID messages
 	-> 2.0B Active - Handles both 11 and 29 bit ID Messages
-*/
+	*/
+	
+	/*	
+	st_cmd_t message;
+	
+	message.id.ext = 0x180;
+	// message.ctrl.ide = 0;			// standard CAN frame type (2.0A)
+	
+	message.ctrl.ide = 1;				// we are using extended ID, check can_lib.c:118
+	message.ctrl.rtr = 0;				// this message object is not requesting a remote node to transmit data back
+	message.dlc = 1;
+	message.cmd = CMD_TX_DATA;
+	// message.pt_data = 0x01;
+	
+	while(can_cmd(&message) != CAN_CMD_ACCEPTED);					// wait for MOb to configure
+	while(can_get_status(&message) == CAN_STATUS_NOT_COMPLETED);	// wait for a transmit request to come in, and send a response
+	*/
 
 void can_network_init (uint8_t mode)
 {
@@ -42,8 +58,7 @@ void can_send_aem_message(tSensor sensor, uint16_t vBatt)
 	aem_pt_data[3] = low(sensor.O2);
 
 	aem_pt_data[4] = (vBatt / 100);
-	
-	aem_pt_data[5] = (vBatt / 100)-20;
+	aem_pt_data[5] = (sensor.HeaterVoltage / 100);
 	
 	byte6.signals.SensorDetectedStatus = sensor.DetectedStatus;
 	byte6.signals.DataValidState = 0x1;

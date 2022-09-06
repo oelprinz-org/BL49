@@ -216,11 +216,27 @@ void heater_init (void)
 	heater_setDuty(0);
 }
 
+void heater_setVoltage (uint16_t voltageMillis)
+{
+	uint16_t duty = 0;
+	sensor1.HeaterVoltage = voltageMillis;
+	
+	if (voltageMillis == 0)
+	{
+		heater_shutdown();
+	}
+	else
+	{
+		duty = voltage2duty_cycle (voltageMillis, board.vBatt, 256);
+		heater_setDuty(duty);	
+	}
+}
+
 void heater_setDuty (uint16_t duty)
 {
 	if (duty == 0)
 	{
-		TCCR1A &= ~(1 << COM1B1);
+		
 	}
 	else
 	{
@@ -230,8 +246,6 @@ void heater_setDuty (uint16_t duty)
 			TCCR1A |= (1 << COM1B1);
 		}
 	}
-	
-	sensor1.HeaterVoltage = duty_cycle2voltage(board.vBatt, duty, 256);
 }
 
 void heater_shutdown (void)
@@ -243,10 +257,10 @@ void heater_shutdown (void)
 uint16_t heater_pid_control (uint16_t Ur, uint16_t Ur_calibration)
 {
 	//Calculate error term.
-	uint16_t error = Ur_calibration - Ur;
+	int16_t error = (int16_t)Ur_calibration - (int16_t)Ur;
 	
 	//Set current position.
-	uint16_t position = Ur;
+	int16_t position = (int16_t)Ur;
 	
 	//Calculate proportional term.
 	float pTerm = -pGain * error;

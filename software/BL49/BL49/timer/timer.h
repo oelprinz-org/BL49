@@ -17,6 +17,7 @@
 #define BIT_TIMER_50ms			2
 #define BIT_TIMER_100ms			3
 #define BIT_TIMER_250ms			4
+#define BIT_TIMER_500ms			5
 
 volatile uint8_t TIMER_TASKS;
 

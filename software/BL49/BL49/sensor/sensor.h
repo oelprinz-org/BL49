@@ -72,6 +72,7 @@ void sensor_update_ua (tSensor *sensor, uint16_t ua_millis);
 // heater stuff...
 void heater_init (void);
 void heater_setDuty (uint16_t duty);
+void heater_setVoltage (uint16_t voltageMillis);
 void heater_shutdown (void);
 uint16_t heater_pid_control (uint16_t Ur, uint16_t Ur_calibration);
 
