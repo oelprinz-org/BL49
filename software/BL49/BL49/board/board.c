@@ -66,3 +66,5 @@ void board_read_inputs (tBoard *board)
 		board->battery_status = BATTERY_NOT_OKAY;
 	}
 }
+
+ 

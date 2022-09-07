@@ -37,8 +37,13 @@ typedef enum
 	, SAVE_SENSOR					= 0x12
 	, NEED_NEW_FAC					= 0x13	// FAC: FreeAirCalibration: since we are using LSU4.9 it is not necessary
 	, ERROR							= 0x14
-	, SENSOR_OKAY					= 0x15
 } tSensorStatus;
+
+typedef enum
+{
+	OK			= 0x0
+	, FAULT		= 0x1
+} tSensorFaultState;
 
 typedef enum
 {
@@ -53,27 +58,28 @@ typedef struct {
 	uint8_t Amplification;
 	uint16_t Ua_ref;
 	uint16_t Ur_ref;
+	uint16_t Ur_ref_raw;
 	uint16_t Ua;
 	uint16_t Ur;
 	int16_t Ip;
 	uint16_t Lambda;
 	uint16_t O2;
 	uint16_t HeaterVoltage;
-	tSensorStatus Status;
-	tSensorDetectedStatus DetectedStatus;
+	tSensorStatus SensorStatus;
+	tSensorFaultState SensorFaultState;
+	tSensorDetectedStatus SensorDetectedStatus;
 } tSensor;
 
 void sensor_init (tSensor *sensor, uint8_t amplification_factor);
 void sensor_update_ua (tSensor *sensor, uint16_t ua_millis);
-// int16_t calculate_ip (uint16_t Ua_ref, uint16_t Ua, uint8_t amp);
-// uint16_t calculate_lambda (int16_t Ip);
-// uint16_t calculate_o2(int16_t Ip)
+void sensor_update_ur (tSensor *sensor, uint16_t ur_millis);
 
 // heater stuff...
 void heater_init (void);
 void heater_setDuty (uint16_t duty);
 void heater_setVoltage (uint16_t voltageMillis);
 void heater_shutdown (void);
+void sensor_update_status (void);
 uint16_t heater_pid_control (uint16_t Ur, uint16_t Ur_calibration);
 
 

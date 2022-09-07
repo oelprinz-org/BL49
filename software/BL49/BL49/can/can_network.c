@@ -39,6 +39,7 @@ void can_network_init (uint8_t mode)
 void can_send_aem_message(tSensor sensor, uint16_t vBatt)
 {
 	st_cmd_t aem_message;
+	uint16_t tmpLambda;
 	
 	T_BYTE6_AEM byte6;
 	T_BYTE7_AEM byte7;	
@@ -50,9 +51,9 @@ void can_send_aem_message(tSensor sensor, uint16_t vBatt)
 	aem_message.cmd = CMD_TX_DATA;
 	uint8_t aem_pt_data[aem_message.dlc];
 	
-	
-	aem_pt_data[0] = high(sensor.Lambda*10);
-	aem_pt_data[1] = low(sensor.Lambda*10);
+	tmpLambda = sensor.Lambda*10;
+	aem_pt_data[0] = high(tmpLambda);
+	aem_pt_data[1] = low(tmpLambda);
 
 	aem_pt_data[2] = high(sensor.O2);
 	aem_pt_data[3] = low(sensor.O2);
@@ -60,17 +61,39 @@ void can_send_aem_message(tSensor sensor, uint16_t vBatt)
 	aem_pt_data[4] = (vBatt / 100);
 	aem_pt_data[5] = (sensor.HeaterVoltage / 100);
 	
-	byte6.signals.SensorDetectedStatus = sensor.DetectedStatus;
+	byte6.signals.SensorDetectedStatus = sensor.SensorDetectedStatus;
 	byte6.signals.DataValidState = 0x1;
 	byte6.signals.UsingFreeAirCal = 0x0;
 	aem_pt_data[6] = byte6.raw_byte;
 	
-	byte7.signals.SensorFaultState = sensor.Status == ERROR ? 0x1 : 0x00;
-	byte7.signals.SensorStatus = sensor.Status;
+	byte7.signals.SensorFaultState = sensor.SensorFaultState;
+	byte7.signals.SensorStatus = sensor.SensorStatus;
 	aem_pt_data[7] = byte7.raw_byte;
 	
 	aem_message.pt_data = &aem_pt_data[0];
 	
 	while(can_cmd(&aem_message) != CAN_CMD_ACCEPTED);					// wait for MOb to configure
 	while(can_get_status(&aem_message) == CAN_STATUS_NOT_COMPLETED);	// wait for a transmit request to come in, and send a response
+}
+
+void can_send_debug_message(uint16_t ur_ref_raw, uint16_t ur_raw, uint8_t pid)
+{
+	st_cmd_t debug_message;
+	debug_message.id.ext = 0x200;
+	debug_message.ctrl.ide = 1;
+	debug_message.ctrl.rtr = 0;
+	debug_message.dlc = 8;
+	debug_message.cmd = CMD_TX_DATA;
+	uint8_t pt_data[debug_message.dlc];
+	
+	pt_data[0] = low(ur_ref_raw);
+	pt_data[1] = high(ur_ref_raw);
+	pt_data[2] = low(ur_raw);
+	pt_data[3] = high(ur_raw);
+	pt_data[4] = pid;
+	
+	debug_message.pt_data = &pt_data[0];
+	
+	while(can_cmd(&debug_message) != CAN_CMD_ACCEPTED);					// wait for MOb to configure
+	while(can_get_status(&debug_message) == CAN_STATUS_NOT_COMPLETED);	// wait for a transmit request to come in, and send a response
 }

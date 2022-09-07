@@ -24,21 +24,22 @@ extern volatile uint16_t ms_counter;
 
 int main(void)
 {
-	uint8_t signature;
-	uint16_t dac_value = 0;
-	uint16_t tmp_voltage = 1500;
-	uint8_t loopCounter = 0;
-	uint16_t dty = 0;
+	uint8_t counter = 0;
+	uint16_t adcValue = 0;
+	uint16_t pid = 0;
 
 	adc_init();
 	spi_init();
+	dac_init();
 	can_network_init(1);
 
 	board_init(&board);	
 	sensor_init(&sensor1, 8);
 	board_read_inputs(&board);
 	
-	sei();	
+	
+	
+	sei();
 
 	cj125_set_calibration_mode();
 	timer_delay_ms(500);
@@ -49,13 +50,38 @@ int main(void)
 	
 	sensor1.Ua_ref = adc2voltage_millis(adc_read_UA());
 	sensor1.Ur_ref = adc2voltage_millis(adc_read_UR());
+	sensor1.Ur_ref_raw = adc_read_UR();
 	
 	cj125_set_running_mode_v8();
 	timer_delay_ms(500);
 	
-	// check activation input before this both steps!!!
-	sensor1.Status = EVAP_START_UP;
-	heater_setVoltage(8500);
+	sensor_update_status();
+	sensor_update_status();
+
+	// check activation input before this both steps!!!	
+	
+	while (counter < 100) 
+	{
+		can_send_aem_message(sensor1, board.vBatt);
+		
+		timer_delay_ms(100);
+		counter++;
+	}
+	
+	counter = 0;
+	
+	sensor1.SensorStatus = EVAP_START_UP;
+	
+	heater_setVoltage(1500);
+	
+	while (counter < 100)
+	{
+		can_send_aem_message(sensor1, board.vBatt);
+		timer_delay_ms(100);
+		counter++;
+	}
+	
+	sensor1.SensorStatus = WARMING_UP;
 	
 	init_1ms_timer();
 	
@@ -64,17 +90,55 @@ int main(void)
 		if (BIT_CHECK(TIMER_TASKS, BIT_TIMER_10ms))
 		{
 			BIT_CLEAR(TIMER_TASKS, BIT_TIMER_10ms);
+				
+			if (sensor1.SensorStatus == RUN && board.battery_status == BATTERY_OKAY && sensor1.SensorFaultState == OK)
+			{
+				sensor_update_ua(&sensor1, adc2voltage_millis(adc_read_UA()));
+				dac_update_output(sensor1.Lambda);
+			} else {
+				dac_setValue(0);
+			}
 			
-			sensor_update_ua (&sensor1, 2490);
-						
-			can_send_aem_message(sensor1, board.vBatt);
+			can_send_aem_message(sensor1, board.vBatt);			
 		}
 		
 		if (BIT_CHECK(TIMER_TASKS, BIT_TIMER_100ms))
 		{
 			BIT_CLEAR(TIMER_TASKS, BIT_TIMER_100ms);
+			sensor_update_status();
 			board_read_inputs(&board);
+			
+			if (sensor1.SensorFaultState == OK && sensor1.SensorStatus == RUN && board.battery_status == BATTERY_OKAY)
+			{
+				adcValue = adc_read_UR();
+				pid = heater_pid_control (adcValue, sensor1.Ur_ref_raw);
+				
+				sensor_update_ur(&sensor1, adc2voltage_millis(adcValue));
+				
+				can_send_debug_message(sensor1.Ur_ref_raw, adcValue, pid);
+			}
+			
+			// here we have to check heater und adjust PID!
+			// for now we stay at 13v...
 			PORTB ^= (1 << PINB5);
+		}
+		
+		if (BIT_CHECK(TIMER_TASKS, BIT_TIMER_250ms))
+		{
+			BIT_CLEAR(TIMER_TASKS, BIT_TIMER_250ms);
+			
+			if (sensor1.SensorStatus == WARMING_UP && board.battery_status == BATTERY_OKAY  && sensor1.SensorFaultState == OK)
+			{
+				// we are warming up the sensor in 0.4v/s or 0.1v in 250ms
+				sensor1.HeaterVoltage += 100;
+				if (sensor1.HeaterVoltage > 13000)
+				{
+					sensor1.HeaterVoltage = 13000;	
+					sensor1.SensorStatus = RUN;				
+				}
+				
+				heater_setVoltage(sensor1.HeaterVoltage);				
+			}
 		}
 	}
 }

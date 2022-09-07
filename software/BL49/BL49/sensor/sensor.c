@@ -38,7 +38,9 @@ const uint16_t pwmMax = 255;										/* we have 8 bit fast mode PWM, max value*
 
 void sensor_init (tSensor *sensor, uint8_t amplification_factor)
 {
-	sensor->Status = RESET;
+	sensor->SensorStatus = RESET;
+	sensor->SensorFaultState = OK;
+	sensor->Shunt = 61900;
 	sensor->Ip = 0;
 	sensor->Lambda = 0;
 	sensor->Ua = 0;
@@ -47,16 +49,15 @@ void sensor_init (tSensor *sensor, uint8_t amplification_factor)
 	sensor->Ur_ref = 0;
 	sensor->O2 = 0;
 	sensor->HeaterVoltage = 0;
-	sensor->DetectedStatus = BOSCH_LSU49;
+	sensor->SensorDetectedStatus = BOSCH_LSU49;
 	sensor->Amplification = amplification_factor;
 	
 	heater_init();
 }
 
-tSensorStatus sensor_get_diag_status (void)
+void sensor_update_status (void)
 {
 	uint8_t diagReg;
-	tSensorStatus status;
 	
 	
 	if (cj125_readStatus(&diagReg) == COMMAND_VALID)
@@ -64,32 +65,31 @@ tSensorStatus sensor_get_diag_status (void)
 		// check that everythingis okay...
 		if (diagReg == CJ125_DIAG_REG_STATUS_OK)
 		{
-			return SENSOR_OKAY;
+			sensor1.SensorFaultState = OK;
 		}
-		
-		// if not, check what's wrong.
-		// check the heater
-		switch ((diagReg >> 6)&CJ125_DIAG_MASK)
-		{
-			case 0:
-			case 2:
-				status = HEATER_SHORT_CIRCUIT;
-				break;
+		else
+		{	
+			sensor1.SensorFaultState = FAULT;
+			// if not, check what's wrong.
+			// check the heater
+			switch ((diagReg >> 6)&CJ125_DIAG_MASK)
+			{
+				case 0:
+				case 2:
+					sensor1.SensorStatus = HEATER_SHORT_CIRCUIT;
+					break;
 				
-			case 1:
-				status = HEATER_OPEN_CIRCUIT;
-				break;
-			case 3:
-				status = SENSOR_OKAY;
-				break;
+				case 1:
+					sensor1.SensorStatus = HEATER_OPEN_CIRCUIT;
+					break;
+			}
 		}
 	}
 	else
 	{
-		status = ERROR;
+		sensor1.SensorStatus = ERROR;
+		sensor1.SensorFaultState = FAULT;
 	}
-	
-	return status;
 }
 
 int16_t calculate_ip (uint16_t Ua_ref, uint16_t Ua, uint8_t amp)
@@ -99,7 +99,8 @@ int16_t calculate_ip (uint16_t Ua_ref, uint16_t Ua, uint8_t amp)
 	int32_t divisor;
 	// pump current calculation formula: Ip = (((Ua - Ua_ref) * PUMP_FACTOR ) / (SENSOR_SHUT * AMPLIFICATION)) * 1000
 	delta = ((int32_t)Ua - (int32_t)Ua_ref) * 1000;
-	divisor = (int32_t)SENSOR_SHUNT * (int32_t)amp;	
+	// divisor = (int32_t)SENSOR_SHUNT * (int32_t)amp;	
+	divisor = (int32_t)sensor1.Shunt * (int32_t)amp;	
 	ip = (int16_t)(((float)delta / (float)divisor)*1000);
 	return ip;
 }
@@ -114,15 +115,15 @@ uint16_t calculate_lambda (int16_t Ip)
 	// check against the both ends
 	if (Ip <= ip_values[0])
 	{
-		return lambda_values[0];
+		Lambda = lambda_values[0];
 	}
 	
-	if (Ip >= ip_values[23])
+	if (Ip >= ip_values[22])
 	{
-		return lambda_values[23];
+		Lambda = lambda_values[22];
 	}
 	
-	while ((Lambda == 0) && (counter < 23))
+	while ((Lambda == 0) && (counter < 22))
 	{
 		// exists an exact value?
 		if ( ip_values[counter] == Ip)
@@ -141,6 +142,12 @@ uint16_t calculate_lambda (int16_t Ip)
 		}
 		counter++;
 	}
+	
+	if (Lambda > 6600)
+	{
+		Lambda = 6553;
+	}
+	
 	return Lambda;
 }
 
@@ -190,6 +197,11 @@ void sensor_update_ua (tSensor *sensor, uint16_t ua_millis)
 	sensor->Ip = calculate_ip (sensor->Ua_ref, sensor->Ua, sensor->Amplification);
 	sensor->Lambda = calculate_lambda(sensor->Ip);
 	sensor->O2 = calculate_o2(sensor->Ip);
+}
+
+void sensor_update_ur (tSensor *sensor, uint16_t ur_millis)
+{
+	sensor->Ur = ur_millis;
 }
 
 void heater_init (void)
