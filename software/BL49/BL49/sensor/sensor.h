@@ -53,7 +53,8 @@ typedef enum
 	, Reserved3		= 0x8	
 } tSensorDetectedStatus;
 
-typedef struct {
+typedef struct 
+{
 	uint16_t Shunt;
 	uint8_t Amplification;
 	uint16_t Ua_ref;
@@ -70,6 +71,19 @@ typedef struct {
 	tSensorDetectedStatus SensorDetectedStatus;
 } tSensor;
 
+typedef struct 
+{
+	float pGain;
+	float iGain;
+	float dGain;
+	int16_t iState;
+	int16_t dState;
+	int16_t iMin;
+	int16_t iMax;
+	uint16_t pwmMin;
+	uint16_t pwmMax;
+} tPIDController;
+
 void sensor_init (tSensor *sensor, uint8_t amplification_factor);
 void sensor_update_ua (tSensor *sensor, uint16_t ua_millis);
 void sensor_update_ur (tSensor *sensor, uint16_t ur_millis);
@@ -80,7 +94,7 @@ void heater_setDuty (uint16_t duty);
 void heater_setVoltage (uint16_t voltageMillis);
 void heater_shutdown (void);
 void sensor_update_status (void);
-uint16_t heater_pid_control (uint16_t Ur, uint16_t Ur_calibration);
+uint16_t calc_pid (uint16_t referenceValue, uint16_t measuredValue);
 
 
 #endif /* SENSOR_H_ */

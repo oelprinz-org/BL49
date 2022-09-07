@@ -21,20 +21,9 @@ uint16_t lambda_values[] = {650, 700, 750, 800, 822, 850, 900, 950, 970, 990, 10
 int16_t ip_values_o2[] = {0, 330, 670, 940, 1380, 2540};
 uint16_t o2_values_percent[] = {0, 3000, 6000, 8290, 12000, 20950};
 
+tPIDController pidController;
 tSensor sensor1;
 extern tBoard board;
-
-//PID regulation variables.
-int dState;                                                         /* Last position input. */
-int iState;                                                         /* Integrator state. */
-const int iMax = 250;                                               /* Maximum allowable integrator state. */
-const int iMin = -250;                                              /* Minimum allowable integrator state. */
-const float pGain = 120;                                            /* Proportional gain. Default = 120*/
-const float iGain = 0.8;                                            /* Integral gain. Default = 0.8*/
-const float dGain = 10;                                             /* Derivative gain. Default = 10*/
-
-const uint16_t pwmMin = 0;											/* we have 8 bit fast mode PWM, min value*/
-const uint16_t pwmMax = 255;										/* we have 8 bit fast mode PWM, max value*/
 
 void sensor_init (tSensor *sensor, uint8_t amplification_factor)
 {
@@ -53,6 +42,40 @@ void sensor_init (tSensor *sensor, uint8_t amplification_factor)
 	sensor->Amplification = amplification_factor;
 	
 	heater_init();
+}
+
+void heater_init (void)
+{
+	// init COM1B1 as GPIO (PC1) and default low:
+	// if bit COM1B1 is 0, then pc1 acts as gpio with original state (so, output and low)
+	DDRC |= (1 << PINC1);		// PC1 is an output
+	PORTC &= ~(1 << PINC1);	// and is low
+	
+	// pin pc1 (OC1B, Timer 1 output compare B) connected to sensor heater
+	// fast pwm mode, prescaler 64,  top 0x03ff (1023) = 244Hz
+	// pwm mode 7, 10-bit resolution
+	// clear oc1b on compare match
+	// TCCR1A |= (1 << WGM11)|(1 << WGM10)|(1 << COM1B1);
+	// TCCR1B |= (1 << WGM12)|(1 << CS11)|(1 << CS10);
+	
+	// pin pc1 (OC1B, Timer 1 output compare B) connected to sensor heater
+	// fast pwm mode, prescaler 256,  top 0x0ff (255) = 244Hz
+	// pwm mode 5, 8-bit resolution
+	// clear oc1b on compare match
+	TCCR1A |= (1 << WGM10)|(1 << COM1B1);
+	TCCR1B |= (1 << WGM12)|(1 << CS12);
+	
+	// init pid controller...
+	pidController.pGain = 120;
+	pidController.iGain = 0.8;
+	pidController.dGain = 10;
+	
+	pidController.iMin = -250;
+	pidController.iMax = 250;
+	pidController.pwmMin = 0;
+	pidController.pwmMax = 200;
+		
+	heater_setDuty(0);
 }
 
 void sensor_update_status (void)
@@ -204,30 +227,6 @@ void sensor_update_ur (tSensor *sensor, uint16_t ur_millis)
 	sensor->Ur = ur_millis;
 }
 
-void heater_init (void)
-{
-	// init COM1B1 as GPIO (PC1) and default low:
-	// if bit COM1B1 is 0, then pc1 acts as gpio with original state (so, output and low)
-	DDRC |= (1 << PINC1);		// PC1 is an output
-	PORTC &= ~(1 << PINC1);	// and is low
-	
-	// pin pc1 (OC1B, Timer 1 output compare B) connected to sensor heater
-	// fast pwm mode, prescaler 64,  top 0x03ff (1023) = 244Hz
-	// pwm mode 7, 10-bit resolution
-	// clear oc1b on compare match
-	// TCCR1A |= (1 << WGM11)|(1 << WGM10)|(1 << COM1B1);
-	// TCCR1B |= (1 << WGM12)|(1 << CS11)|(1 << CS10);
-	
-	// pin pc1 (OC1B, Timer 1 output compare B) connected to sensor heater
-	// fast pwm mode, prescaler 256,  top 0x0ff (255) = 244Hz
-	// pwm mode 5, 8-bit resolution
-	// clear oc1b on compare match
-	TCCR1A |= (1 << WGM10)|(1 << COM1B1);
-	TCCR1B |= (1 << WGM12)|(1 << CS12);
-	
-	heater_setDuty(0);
-}
-
 void heater_setVoltage (uint16_t voltageMillis)
 {
 	uint16_t duty = 0;
@@ -266,39 +265,36 @@ void heater_shutdown (void)
 	sensor1.HeaterVoltage = 0;
 }
 
-uint16_t heater_pid_control (uint16_t Ur, uint16_t Ur_calibration)
+uint16_t calc_pid (uint16_t referenceValue, uint16_t measuredValue)
 {
-	//Calculate error term.
-	int16_t error = (int16_t)Ur_calibration - (int16_t)Ur;
+	// calculation error:
+	int16_t error = (int16_t) referenceValue - (int16_t) measuredValue;
+	int16_t position = (int16_t) measuredValue;
 	
-	//Set current position.
-	int16_t position = (int16_t)Ur;
+	// calculate p-term;
+	float pTerm = pidController.pGain * error;
 	
-	//Calculate proportional term.
-	float pTerm = -pGain * error;
+	//Calculate the integral state
+	pidController.iState += error;
 	
-	//Calculate the integral state with appropriate limiting.
-	iState += error;
-	
-	if (iState > iMax) iState = iMax;
-	if (iState < iMin) iState = iMin;
+	// check limits of iState
+	if (pidController.iState > pidController.iMax) pidController.iState = pidController.iMax;
+	if (pidController.iState < pidController.iMin) pidController.iState = pidController.iMin;
 	
 	//Calculate the integral term.
-	float iTerm = -iGain * iState;
+	float iTerm = pidController.iGain * pidController.iState;
 	
 	//Calculate the derivative term.
-	float dTerm = -dGain * (dState - position);
-	dState = position;
+	float dTerm = pidController.dGain * (pidController.dState - position);
+	pidController.dState = position;
 	
 	//Calculate regulation (PI).
-	uint16_t RegulationOutput = pTerm + iTerm + dTerm;
+	int16_t RegulationOutput = pTerm + iTerm + dTerm;
 	
-	//Set maximum heater output (full power).
-	if (RegulationOutput > pwmMax) RegulationOutput = pwmMax;
+	// check limits of pwm here....
 	
-	//Set minimum heater value (cooling).
-	if (RegulationOutput < pwmMin) RegulationOutput = pwmMin;
-
-	//Return calculated PWM output.
-	return RegulationOutput;
+	if (RegulationOutput > pidController.pwmMax) RegulationOutput = pidController.pwmMax;
+	if (RegulationOutput < pidController.pwmMin) RegulationOutput = pidController.pwmMin;
+		
+	return  (uint16_t) RegulationOutput;
 }

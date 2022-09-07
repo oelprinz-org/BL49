@@ -37,8 +37,6 @@ int main(void)
 	sensor_init(&sensor1, 8);
 	board_read_inputs(&board);
 	
-	
-	
 	sei();
 
 	cj125_set_calibration_mode();
@@ -54,8 +52,7 @@ int main(void)
 	
 	cj125_set_running_mode_v8();
 	timer_delay_ms(500);
-	
-	sensor_update_status();
+
 	sensor_update_status();
 
 	// check activation input before this both steps!!!	
@@ -111,7 +108,10 @@ int main(void)
 			if (sensor1.SensorFaultState == OK && sensor1.SensorStatus == RUN && board.battery_status == BATTERY_OKAY)
 			{
 				adcValue = adc_read_UR();
-				pid = heater_pid_control (adcValue, sensor1.Ur_ref_raw);
+				pid = calc_pid (adcValue, sensor1.Ur_ref_raw);
+				
+				sensor1.HeaterVoltage = duty_cycle2voltage(board.vBatt, pid, 256);			
+				heater_setVoltage(sensor1.HeaterVoltage);
 				
 				sensor_update_ur(&sensor1, adc2voltage_millis(adcValue));
 				
