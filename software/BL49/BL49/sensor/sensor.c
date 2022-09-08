@@ -68,8 +68,8 @@ void heater_init (void)
 	// init pid controller...
 	// original values: p = 120; i = 0.8; d = 10;
 	
-	pidController.pGain = 3.1;
-	pidController.iGain = 0;
+	pidController.pGain = 7.1;
+	pidController.iGain = 0.18;
 	pidController.dGain = 0;
 	
 	pidController.iMin = -250;
