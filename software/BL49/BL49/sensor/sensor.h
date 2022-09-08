@@ -80,8 +80,8 @@ typedef struct
 	int16_t dState;
 	int16_t iMin;
 	int16_t iMax;
-	uint16_t pwmMin;
-	uint16_t pwmMax;
+	int16_t pwmMin;
+	int16_t pwmMax;
 } tPIDController;
 
 void sensor_init (tSensor *sensor, uint8_t amplification_factor);
@@ -94,7 +94,7 @@ void heater_setDuty (uint16_t duty);
 void heater_setVoltage (uint16_t voltageMillis);
 void heater_shutdown (void);
 void sensor_update_status (void);
-uint16_t calc_pid (uint16_t referenceValue, uint16_t measuredValue);
+uint16_t calc_pid (uint16_t referenceValue, uint16_t measuredValue, bool inverted);
 
 
 #endif /* SENSOR_H_ */

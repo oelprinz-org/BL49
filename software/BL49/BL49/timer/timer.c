@@ -14,7 +14,8 @@ volatile uint8_t timer_20ms;
 volatile uint8_t timer_50ms;
 volatile uint8_t timer_100ms;
 volatile uint8_t timer_250ms;
-volatile uint8_t timer_500ms;
+volatile uint16_t timer_500ms;
+volatile uint16_t timer_1000ms;
 
 void init_1ms_timer (void)
 {
@@ -30,6 +31,7 @@ void init_1ms_timer (void)
 	timer_100ms = 0;
 	timer_250ms = 0;
 	timer_500ms = 0;
+	timer_1000ms = 0;
 	TIMER_TASKS = 0;
 
 	OCR0A = 249;
@@ -61,6 +63,7 @@ ISR (TIMER0_COMPA_vect)
 	timer_100ms++;
 	timer_250ms++;
 	timer_500ms++;
+	timer_1000ms++;
 	
 	if (timer_10ms == 10)
 	{
@@ -96,5 +99,11 @@ ISR (TIMER0_COMPA_vect)
 	{
 		timer_500ms = 0;
 		BIT_SET(TIMER_TASKS, BIT_TIMER_500ms);
+	}
+	
+	if (timer_1000ms == 1000)
+	{
+		timer_1000ms = 0;
+		BIT_SET(TIMER_TASKS, BIT_TIMER_1000ms);
 	}
 }

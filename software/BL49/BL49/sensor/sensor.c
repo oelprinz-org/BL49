@@ -66,14 +66,16 @@ void heater_init (void)
 	TCCR1B |= (1 << WGM12)|(1 << CS12);
 	
 	// init pid controller...
-	pidController.pGain = 120;
-	pidController.iGain = 0.8;
-	pidController.dGain = 10;
+	// original values: p = 120; i = 0.8; d = 10;
+	
+	pidController.pGain = 3.1;
+	pidController.iGain = 0;
+	pidController.dGain = 0;
 	
 	pidController.iMin = -250;
 	pidController.iMax = 250;
 	pidController.pwmMin = 0;
-	pidController.pwmMax = 200;
+	pidController.pwmMax = 240;
 		
 	heater_setDuty(0);
 }
@@ -265,14 +267,21 @@ void heater_shutdown (void)
 	sensor1.HeaterVoltage = 0;
 }
 
-uint16_t calc_pid (uint16_t referenceValue, uint16_t measuredValue)
+uint16_t calc_pid (uint16_t referenceValue, uint16_t measuredValue, bool inverted)
 {
+	float pTerm = 0, iTerm = 0, dTerm = 0;
 	// calculation error:
 	int16_t error = (int16_t) referenceValue - (int16_t) measuredValue;
 	int16_t position = (int16_t) measuredValue;
 	
 	// calculate p-term;
-	float pTerm = pidController.pGain * error;
+	if (inverted)
+	{
+		pTerm = -pidController.pGain * error;
+	} else {
+		pTerm = pidController.pGain * error;
+	}
+	
 	
 	//Calculate the integral state
 	pidController.iState += error;
@@ -282,10 +291,20 @@ uint16_t calc_pid (uint16_t referenceValue, uint16_t measuredValue)
 	if (pidController.iState < pidController.iMin) pidController.iState = pidController.iMin;
 	
 	//Calculate the integral term.
-	float iTerm = pidController.iGain * pidController.iState;
+	if (inverted)
+	{
+		iTerm = -pidController.iGain * pidController.iState;
+	} else {
+		iTerm = pidController.iGain * pidController.iState;
+	}
 	
 	//Calculate the derivative term.
-	float dTerm = pidController.dGain * (pidController.dState - position);
+	if (inverted)
+	{
+		dTerm = -pidController.dGain * (pidController.dState - position);
+	} else {
+		dTerm = pidController.dGain * (pidController.dState - position);
+	}
 	pidController.dState = position;
 	
 	//Calculate regulation (PI).
@@ -293,8 +312,15 @@ uint16_t calc_pid (uint16_t referenceValue, uint16_t measuredValue)
 	
 	// check limits of pwm here....
 	
-	if (RegulationOutput > pidController.pwmMax) RegulationOutput = pidController.pwmMax;
-	if (RegulationOutput < pidController.pwmMin) RegulationOutput = pidController.pwmMin;
+	if (RegulationOutput > pidController.pwmMax) 
+	{
+		RegulationOutput = pidController.pwmMax;
+	}
+	
+	if (RegulationOutput < pidController.pwmMin)
+	{
+		 RegulationOutput = pidController.pwmMin;
+	}
 		
 	return  (uint16_t) RegulationOutput;
 }

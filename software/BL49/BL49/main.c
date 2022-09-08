@@ -57,9 +57,10 @@ int main(void)
 
 	// check activation input before this both steps!!!	
 	
-	while (counter < 100) 
+	while (counter < 10) 
 	{
 		can_send_aem_message(sensor1, board.vBatt);
+		can_send_debug_message(sensor1.Ur_ref_raw, 0, 0);
 		
 		timer_delay_ms(100);
 		counter++;
@@ -71,9 +72,10 @@ int main(void)
 	
 	heater_setVoltage(1500);
 	
-	while (counter < 100)
+	while (counter < 25)
 	{
 		can_send_aem_message(sensor1, board.vBatt);
+		can_send_debug_message(sensor1.Ur_ref_raw, 0, 0);
 		timer_delay_ms(100);
 		counter++;
 	}
@@ -108,10 +110,9 @@ int main(void)
 			if (sensor1.SensorFaultState == OK && sensor1.SensorStatus == RUN && board.battery_status == BATTERY_OKAY)
 			{
 				adcValue = adc_read_UR();
-				pid = calc_pid (adcValue, sensor1.Ur_ref_raw);
-				
-				sensor1.HeaterVoltage = duty_cycle2voltage(board.vBatt, pid, 256);			
-				heater_setVoltage(sensor1.HeaterVoltage);
+				pid = calc_pid (208, adcValue, true);
+							
+				heater_setVoltage(duty_cycle2voltage(board.vBatt, pid, 256));
 				
 				sensor_update_ur(&sensor1, adc2voltage_millis(adcValue));
 				
@@ -134,8 +135,11 @@ int main(void)
 				if (sensor1.HeaterVoltage > 13000)
 				{
 					sensor1.HeaterVoltage = 13000;	
-					sensor1.SensorStatus = RUN;				
+					sensor1.SensorStatus = RUN;
 				}
+				
+				adcValue = adc_read_UR();
+				can_send_debug_message(sensor1.Ur_ref_raw, adcValue, 0);
 				
 				heater_setVoltage(sensor1.HeaterVoltage);				
 			}
