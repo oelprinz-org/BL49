@@ -36,7 +36,7 @@ void can_network_init (uint8_t mode)
 	can_init(mode);
 }
 
-void can_send_aem_message(tSensor sensor, uint16_t vBatt)
+void can_send_aem_message(tSensor sensor)
 {
 	st_cmd_t aem_message;
 	uint16_t tmpLambda;
@@ -58,7 +58,7 @@ void can_send_aem_message(tSensor sensor, uint16_t vBatt)
 	aem_pt_data[2] = high(sensor.O2);
 	aem_pt_data[3] = low(sensor.O2);
 
-	aem_pt_data[4] = (vBatt / 100);
+	aem_pt_data[4] = (sensor.SystemVoltage / 100);
 	aem_pt_data[5] = (sensor.HeaterVoltage / 100);
 	
 	byte6.signals.SensorDetectedStatus = sensor.SensorDetectedStatus;
@@ -76,13 +76,13 @@ void can_send_aem_message(tSensor sensor, uint16_t vBatt)
 	while(can_get_status(&aem_message) == CAN_STATUS_NOT_COMPLETED);	// wait for a transmit request to come in, and send a response
 }
 
-void can_send_debug_message(uint16_t ur_ref_raw, uint16_t ur_raw, uint8_t pid)
+void can_send_debug_message(uint16_t ur_ref_raw, uint16_t ur_raw, uint8_t pid, uint8_t signature, uint8_t diagRegister)
 {
 	st_cmd_t debug_message;
 	debug_message.id.ext = 0x200;
 	debug_message.ctrl.ide = 1;
 	debug_message.ctrl.rtr = 0;
-	debug_message.dlc = 8;
+	debug_message.dlc = 7;
 	debug_message.cmd = CMD_TX_DATA;
 	uint8_t pt_data[debug_message.dlc];
 	
@@ -91,6 +91,8 @@ void can_send_debug_message(uint16_t ur_ref_raw, uint16_t ur_raw, uint8_t pid)
 	pt_data[2] = low(ur_raw);
 	pt_data[3] = high(ur_raw);
 	pt_data[4] = pid;
+	pt_data[5] = signature;
+	pt_data[6] = diagRegister;
 	
 	debug_message.pt_data = &pt_data[0];
 	

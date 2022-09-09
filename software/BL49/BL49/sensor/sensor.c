@@ -35,9 +35,10 @@ void sensor_init (tSensor *sensor, uint8_t amplification_factor)
 	sensor->Ua = 0;
 	sensor->Ua_ref = 0;
 	sensor->Ur = 0;
-	sensor->Ur_ref = 0;
+	sensor->Ur_ref_raw = 0;
 	sensor->O2 = 0;
 	sensor->HeaterVoltage = 0;
+	sensor->diagRegister = 0;
 	sensor->SensorDetectedStatus = BOSCH_LSU49;
 	sensor->Amplification = amplification_factor;
 	
@@ -67,9 +68,10 @@ void heater_init (void)
 	
 	// init pid controller...
 	// original values: p = 120; i = 0.8; d = 10;
+	// optimal values seems to be p=7.1, i=0.3, d=0
 	
-	pidController.pGain = 7.1;
-	pidController.iGain = 0.18;
+	pidController.pGain = 6.5;
+	pidController.iGain = 0.6;
 	pidController.dGain = 0;
 	
 	pidController.iMin = -250;
@@ -81,14 +83,24 @@ void heater_init (void)
 }
 
 void sensor_update_status (void)
-{
-	uint8_t diagReg;
+{	
 	
+	sensor1.SystemVoltage = adc2voltage_millis(adc_read_battery()) * 5;
 	
-	if (cj125_readStatus(&diagReg) == COMMAND_VALID)
+	if (is_between(sensor1.SystemVoltage, 11000, 16500))
 	{
+		sensor1.SystemVoltageOK = true;
+	}
+	else
+	{
+		sensor1.SystemVoltageOK = false;
+	}
+	
+	if (cj125_readStatus(&sensor1.diagRegister) == COMMAND_VALID)
+	{
+
 		// check that everythingis okay...
-		if (diagReg == CJ125_DIAG_REG_STATUS_OK)
+		if (sensor1.diagRegister == CJ125_DIAG_REG_STATUS_OK)
 		{
 			sensor1.SensorFaultState = OK;
 		}
@@ -97,7 +109,7 @@ void sensor_update_status (void)
 			sensor1.SensorFaultState = FAULT;
 			// if not, check what's wrong.
 			// check the heater
-			switch ((diagReg >> 6)&CJ125_DIAG_MASK)
+			switch ((sensor1.diagRegister >> 6)&CJ125_DIAG_MASK)
 			{
 				case 0:
 				case 2:
@@ -240,7 +252,7 @@ void heater_setVoltage (uint16_t voltageMillis)
 	}
 	else
 	{
-		duty = voltage2duty_cycle (voltageMillis, board.vBatt, 256);
+		duty = voltage2duty_cycle (voltageMillis, sensor1.SystemVoltage, 256);
 		heater_setDuty(duty);	
 	}
 }

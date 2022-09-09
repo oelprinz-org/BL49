@@ -39,8 +39,8 @@ typedef union
 
 
 void can_network_init (uint8_t mode);
-void can_send_aem_message(tSensor sensor, uint16_t vBatt);
-void can_send_debug_message(uint16_t ur_ref_raw, uint16_t ur_raw, uint8_t pid);
+void can_send_aem_message(tSensor sensor);
+void can_send_debug_message(uint16_t ur_ref_raw, uint16_t ur_raw, uint8_t pid, uint8_t signature, uint8_t diagRegister);
 
 
 #endif /* CAN_NETWORK_H_ */

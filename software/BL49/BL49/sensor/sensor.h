@@ -66,6 +66,9 @@ typedef struct
 	uint16_t Lambda;
 	uint16_t O2;
 	uint16_t HeaterVoltage;
+	uint16_t SystemVoltage;
+	bool SystemVoltageOK;
+	uint8_t diagRegister;
 	tSensorStatus SensorStatus;
 	tSensorFaultState SensorFaultState;
 	tSensorDetectedStatus SensorDetectedStatus;
@@ -83,6 +86,8 @@ typedef struct
 	int16_t pwmMin;
 	int16_t pwmMax;
 } tPIDController;
+
+extern uint16_t adc_read_battery (void);
 
 void sensor_init (tSensor *sensor, uint8_t amplification_factor);
 void sensor_update_ua (tSensor *sensor, uint16_t ua_millis);
