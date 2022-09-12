@@ -21,75 +21,112 @@ uint16_t lambda_values[] = {650, 700, 750, 800, 822, 850, 900, 950, 970, 990, 10
 int16_t ip_values_o2[] = {0, 330, 670, 940, 1380, 2540};
 uint16_t o2_values_percent[] = {0, 3000, 6000, 8290, 12000, 20950};
 
+tPIDController pidController;
 tSensor sensor1;
 extern tBoard board;
 
-//PID regulation variables.
-int dState;                                                         /* Last position input. */
-int iState;                                                         /* Integrator state. */
-const int iMax = 250;                                               /* Maximum allowable integrator state. */
-const int iMin = -250;                                              /* Minimum allowable integrator state. */
-const float pGain = 120;                                            /* Proportional gain. Default = 120*/
-const float iGain = 0.8;                                            /* Integral gain. Default = 0.8*/
-const float dGain = 10;                                             /* Derivative gain. Default = 10*/
-
-const uint16_t pwmMin = 0;											/* we have 8 bit fast mode PWM, min value*/
-const uint16_t pwmMax = 255;										/* we have 8 bit fast mode PWM, max value*/
-
 void sensor_init (tSensor *sensor, uint8_t amplification_factor)
 {
-	sensor->Status = RESET;
+	sensor->SensorStatus = RESET;
+	sensor->SensorFaultState = OK;
+	sensor->Shunt = 61900;
 	sensor->Ip = 0;
 	sensor->Lambda = 0;
 	sensor->Ua = 0;
 	sensor->Ua_ref = 0;
 	sensor->Ur = 0;
-	sensor->Ur_ref = 0;
+	sensor->Ur_ref_raw = 0;
 	sensor->O2 = 0;
 	sensor->HeaterVoltage = 0;
-	sensor->DetectedStatus = BOSCH_LSU49;
+	sensor->diagRegister = 0;
+	sensor->SensorDetectedStatus = BOSCH_LSU49;
 	sensor->Amplification = amplification_factor;
 	
 	heater_init();
 }
 
-tSensorStatus sensor_get_diag_status (void)
+void heater_init (void)
 {
-	uint8_t diagReg;
-	tSensorStatus status;
+	// init COM1B1 as GPIO (PC1) and default low:
+	// if bit COM1B1 is 0, then pc1 acts as gpio with original state (so, output and low)
+	DDRC |= (1 << PINC1);		// PC1 is an output
+	PORTC &= ~(1 << PINC1);	// and is low
 	
+	// pin pc1 (OC1B, Timer 1 output compare B) connected to sensor heater
+	// fast pwm mode, prescaler 64,  top 0x03ff (1023) = 244Hz
+	// pwm mode 7, 10-bit resolution
+	// clear oc1b on compare match
+	// TCCR1A |= (1 << WGM11)|(1 << WGM10)|(1 << COM1B1);
+	// TCCR1B |= (1 << WGM12)|(1 << CS11)|(1 << CS10);
 	
-	if (cj125_readStatus(&diagReg) == COMMAND_VALID)
-	{
-		// check that everythingis okay...
-		if (diagReg == CJ125_DIAG_REG_STATUS_OK)
-		{
-			return SENSOR_OKAY;
-		}
+	// pin pc1 (OC1B, Timer 1 output compare B) connected to sensor heater
+	// fast pwm mode, prescaler 256,  top 0x0ff (255) = 244Hz
+	// pwm mode 5, 8-bit resolution
+	// clear oc1b on compare match
+	TCCR1A |= (1 << WGM10)|(1 << COM1B1);
+	TCCR1B |= (1 << WGM12)|(1 << CS12);
+	
+	// init pid controller...
+	// original values: p = 120; i = 0.8; d = 10;
+	// optimal values seems to be p=7.1, i=0.3, d=0
+	
+	pidController.pGain = 6.5;
+	pidController.iGain = 0.6;
+	pidController.dGain = 0;
+	
+	pidController.iMin = -250;
+	pidController.iMax = 250;
+	pidController.pwmMin = 0;
+	pidController.pwmMax = 240;
 		
-		// if not, check what's wrong.
-		// check the heater
-		switch ((diagReg >> 6)&CJ125_DIAG_MASK)
+	heater_setDuty(0);
+}
+
+void sensor_update_status (void)
+{	
+	
+	sensor1.SystemVoltage = adc2voltage_millis(adc_read_battery()) * 5;
+	
+	if (is_between(sensor1.SystemVoltage, 11000, 16500))
+	{
+		sensor1.SystemVoltageOK = true;
+	}
+	else
+	{
+		sensor1.SystemVoltageOK = false;
+	}
+	
+	if (cj125_readStatus(&sensor1.diagRegister) == COMMAND_VALID)
+	{
+
+		// check that everythingis okay...
+		if (sensor1.diagRegister == CJ125_DIAG_REG_STATUS_OK)
 		{
-			case 0:
-			case 2:
-				status = HEATER_SHORT_CIRCUIT;
-				break;
+			sensor1.SensorFaultState = OK;
+		}
+		else
+		{	
+			sensor1.SensorFaultState = FAULT;
+			// if not, check what's wrong.
+			// check the heater
+			switch ((sensor1.diagRegister >> 6)&CJ125_DIAG_MASK)
+			{
+				case 0:
+				case 2:
+					sensor1.SensorStatus = HEATER_SHORT_CIRCUIT;
+					break;
 				
-			case 1:
-				status = HEATER_OPEN_CIRCUIT;
-				break;
-			case 3:
-				status = SENSOR_OKAY;
-				break;
+				case 1:
+					sensor1.SensorStatus = HEATER_OPEN_CIRCUIT;
+					break;
+			}
 		}
 	}
 	else
 	{
-		status = ERROR;
+		sensor1.SensorStatus = ERROR;
+		sensor1.SensorFaultState = FAULT;
 	}
-	
-	return status;
 }
 
 int16_t calculate_ip (uint16_t Ua_ref, uint16_t Ua, uint8_t amp)
@@ -99,7 +136,8 @@ int16_t calculate_ip (uint16_t Ua_ref, uint16_t Ua, uint8_t amp)
 	int32_t divisor;
 	// pump current calculation formula: Ip = (((Ua - Ua_ref) * PUMP_FACTOR ) / (SENSOR_SHUT * AMPLIFICATION)) * 1000
 	delta = ((int32_t)Ua - (int32_t)Ua_ref) * 1000;
-	divisor = (int32_t)SENSOR_SHUNT * (int32_t)amp;	
+	// divisor = (int32_t)SENSOR_SHUNT * (int32_t)amp;	
+	divisor = (int32_t)sensor1.Shunt * (int32_t)amp;	
 	ip = (int16_t)(((float)delta / (float)divisor)*1000);
 	return ip;
 }
@@ -114,15 +152,15 @@ uint16_t calculate_lambda (int16_t Ip)
 	// check against the both ends
 	if (Ip <= ip_values[0])
 	{
-		return lambda_values[0];
+		Lambda = lambda_values[0];
 	}
 	
-	if (Ip >= ip_values[23])
+	if (Ip >= ip_values[22])
 	{
-		return lambda_values[23];
+		Lambda = lambda_values[22];
 	}
 	
-	while ((Lambda == 0) && (counter < 23))
+	while ((Lambda == 0) && (counter < 22))
 	{
 		// exists an exact value?
 		if ( ip_values[counter] == Ip)
@@ -141,6 +179,12 @@ uint16_t calculate_lambda (int16_t Ip)
 		}
 		counter++;
 	}
+	
+	if (Lambda > 6600)
+	{
+		Lambda = 6553;
+	}
+	
 	return Lambda;
 }
 
@@ -192,35 +236,32 @@ void sensor_update_ua (tSensor *sensor, uint16_t ua_millis)
 	sensor->O2 = calculate_o2(sensor->Ip);
 }
 
-void heater_init (void)
+void sensor_update_ur (tSensor *sensor, uint16_t ur_millis)
 {
-	// init COM1B1 as GPIO (PC1) and default low:
-	// if bit COM1B1 is 0, then pc1 acts as gpio with original state (so, output and low)
-	DDRC |= (1 << PINC1);		// PC1 is an output
-	PORTC &= ~(1 << PINC1);	// and is low
+	sensor->Ur = ur_millis;
+}
+
+void heater_setVoltage (uint16_t voltageMillis)
+{
+	uint16_t duty = 0;
+	sensor1.HeaterVoltage = voltageMillis;
 	
-	// pin pc1 (OC1B, Timer 1 output compare B) connected to sensor heater
-	// fast pwm mode, prescaler 64,  top 0x03ff (1023) = 244Hz
-	// pwm mode 7, 10-bit resolution
-	// clear oc1b on compare match
-	// TCCR1A |= (1 << WGM11)|(1 << WGM10)|(1 << COM1B1);
-	// TCCR1B |= (1 << WGM12)|(1 << CS11)|(1 << CS10);
-	
-	// pin pc1 (OC1B, Timer 1 output compare B) connected to sensor heater
-	// fast pwm mode, prescaler 256,  top 0x0ff (255) = 244Hz
-	// pwm mode 5, 8-bit resolution
-	// clear oc1b on compare match
-	TCCR1A |= (1 << WGM10)|(1 << COM1B1);
-	TCCR1B |= (1 << WGM12)|(1 << CS12);
-	
-	heater_setDuty(0);
+	if (voltageMillis == 0)
+	{
+		heater_shutdown();
+	}
+	else
+	{
+		duty = voltage2duty_cycle (voltageMillis, sensor1.SystemVoltage, 256);
+		heater_setDuty(duty);	
+	}
 }
 
 void heater_setDuty (uint16_t duty)
 {
 	if (duty == 0)
 	{
-		TCCR1A &= ~(1 << COM1B1);
+		
 	}
 	else
 	{
@@ -230,8 +271,6 @@ void heater_setDuty (uint16_t duty)
 			TCCR1A |= (1 << COM1B1);
 		}
 	}
-	
-	sensor1.HeaterVoltage = duty_cycle2voltage(board.vBatt, duty, 256);
 }
 
 void heater_shutdown (void)
@@ -240,39 +279,60 @@ void heater_shutdown (void)
 	sensor1.HeaterVoltage = 0;
 }
 
-uint16_t heater_pid_control (uint16_t Ur, uint16_t Ur_calibration)
+uint16_t calc_pid (uint16_t referenceValue, uint16_t measuredValue, bool inverted)
 {
-	//Calculate error term.
-	uint16_t error = Ur_calibration - Ur;
+	float pTerm = 0, iTerm = 0, dTerm = 0;
+	// calculation error:
+	int16_t error = (int16_t) referenceValue - (int16_t) measuredValue;
+	int16_t position = (int16_t) measuredValue;
 	
-	//Set current position.
-	uint16_t position = Ur;
+	// calculate p-term;
+	if (inverted)
+	{
+		pTerm = -pidController.pGain * error;
+	} else {
+		pTerm = pidController.pGain * error;
+	}
 	
-	//Calculate proportional term.
-	float pTerm = -pGain * error;
 	
-	//Calculate the integral state with appropriate limiting.
-	iState += error;
+	//Calculate the integral state
+	pidController.iState += error;
 	
-	if (iState > iMax) iState = iMax;
-	if (iState < iMin) iState = iMin;
+	// check limits of iState
+	if (pidController.iState > pidController.iMax) pidController.iState = pidController.iMax;
+	if (pidController.iState < pidController.iMin) pidController.iState = pidController.iMin;
 	
 	//Calculate the integral term.
-	float iTerm = -iGain * iState;
+	if (inverted)
+	{
+		iTerm = -pidController.iGain * pidController.iState;
+	} else {
+		iTerm = pidController.iGain * pidController.iState;
+	}
 	
 	//Calculate the derivative term.
-	float dTerm = -dGain * (dState - position);
-	dState = position;
+	if (inverted)
+	{
+		dTerm = -pidController.dGain * (pidController.dState - position);
+	} else {
+		dTerm = pidController.dGain * (pidController.dState - position);
+	}
+	pidController.dState = position;
 	
 	//Calculate regulation (PI).
-	uint16_t RegulationOutput = pTerm + iTerm + dTerm;
+	int16_t RegulationOutput = pTerm + iTerm + dTerm;
 	
-	//Set maximum heater output (full power).
-	if (RegulationOutput > pwmMax) RegulationOutput = pwmMax;
+	// check limits of pwm here....
 	
-	//Set minimum heater value (cooling).
-	if (RegulationOutput < pwmMin) RegulationOutput = pwmMin;
-
-	//Return calculated PWM output.
-	return RegulationOutput;
+	if (RegulationOutput > pidController.pwmMax) 
+	{
+		RegulationOutput = pidController.pwmMax;
+	}
+	
+	if (RegulationOutput < pidController.pwmMin)
+	{
+		 RegulationOutput = pidController.pwmMin;
+	}
+		
+	return  (uint16_t) RegulationOutput;
 }

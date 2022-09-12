@@ -13,7 +13,6 @@ tBoard board;
 
 void board_init (tBoard *board)
 {
-	board->state = BOARD_IDLE;
 	board->input1_state = LOW;
 	board->input2_state = LOW;
 	
@@ -26,11 +25,6 @@ void board_init (tBoard *board)
 	DDRB |= (1 << PINB5)|(1 << PINB6);
 	// switch them on
 	PORTB |= (1 << PINB5)|(1 << PINB6);
-		
-	// pc7 is output:
-	DDRC |= (1 << PINC7);
-	// bring them high:
-	PORTC |= (1 << PINC7);
 }
 
 void board_read_inputs (tBoard *board)
@@ -54,15 +48,6 @@ void board_read_inputs (tBoard *board)
 	{
 		board->input2_state = LOW;
 	}
-	
-	board->vBatt = adc2voltage_millis(adc_read_battery()) * 5;
-	
-	if (is_between(board->vBatt, 11000, 16500))
-	{
-		board->battery_status = BATTERY_OKAY;
-	}
-	else
-	{
-		board->battery_status = BATTERY_NOT_OKAY;
-	}
 }
+
+ 

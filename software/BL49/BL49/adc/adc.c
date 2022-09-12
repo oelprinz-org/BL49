@@ -54,7 +54,12 @@ uint16_t adc_read_UA (void)
 
 uint16_t adc_read_UR (void)
 {
-	return (uint16_t)((int16_t)adc_readAvg (9, 5) + v_reference_offset);
+	uint16_t tmp = adc_readAvg (9, 5);
+	int16_t tmpAdc = (int16_t)tmp;
+	tmpAdc += v_reference_offset;
+	
+	
+	return (uint16_t)tmpAdc;
 }
 
 uint16_t adc_read_reference (void)

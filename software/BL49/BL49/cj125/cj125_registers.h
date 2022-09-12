@@ -31,7 +31,7 @@
 #define CJ125_DIAG_REG_STATUS_NOSENSOR  0x7F  /* The response of the diagnostic register when no sensor is connected. */
 
 #define CJ125_DIAG_MASK					0x3		// we need only two bits from diag register...
-#define CJ125_IDENT_MASK				0xF8	// mask for ident register, after masking the value should by 0x60
+#define CJ125_IDENT_MASK				0xF0	// mask for ident register, after masking the value should by 0x60
 
 #define CJ125_DIAG_INSTR_F				0
 #define CJ125_DIAG_PARITY				1

@@ -16,7 +16,7 @@ tcj125_command_status cj125_readSignature (uint8_t *sig)
 	
 	if (high(reg) == 0x28 || high(reg) == 0x2e)
 	{
-		*sig = (low(reg) & CJ125_IDENT_MASK);
+		*sig = (low(reg));
 		return COMMAND_VALID;
 	}
 	
