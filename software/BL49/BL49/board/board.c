@@ -50,4 +50,7 @@ void board_read_inputs (tBoard *board)
 	}
 }
 
- 
+bool isEnabled (void)
+{
+	return (bool) ((PINC & (1 << PINC6)) == 1);
+}

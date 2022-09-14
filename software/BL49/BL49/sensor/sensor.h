@@ -97,7 +97,6 @@ void sensor_update_ur (tSensor *sensor, uint16_t ur_millis);
 void heater_init (void);
 void heater_setDuty (uint16_t duty);
 void heater_setVoltage (uint16_t voltageMillis);
-void heater_shutdown (void);
 void sensor_update_status (void);
 uint16_t calc_pid (uint16_t referenceValue, uint16_t measuredValue, bool inverted);
 

@@ -26,6 +26,7 @@ typedef enum
 	, NORMAL_V17
 } tcj125_mode;
 
+tcj125_command_status cj125_sreset (void);
 tcj125_command_status cj125_readSignature (uint8_t *sig);
 tcj125_command_status cj125_readStatus (uint8_t *diagRegister);
 tcj125_command_status cj125_set_calibration_mode (void);
