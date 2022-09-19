@@ -11,9 +11,9 @@ Feature list
 - fast: 10ms refresh rate (reading the probe, calculation lambda and O2, sending CAN message and setting analog output)
 - Bosch recommended heating strategy
 
-09.09.2022 - Current status of firmware development
+19.09.2022 - Current status of firmware development
 
-- analog output for lambda 0.65 to 1.3 (0.25v to 4.8V): implemented, not tested yet
+- analog output for lambda 0.65 to 1.3 (0.25v to 4.8V): done
 - CAN output (AEM X-Series UEGO protocol): done
 - debug messages over CAN: done
 - Bosch recommended heating strategy: done

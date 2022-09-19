@@ -27,15 +27,12 @@ void dac_init (void)
 {
 	// dac output enable, dac enable, no autotrigger
 	DACON = (1 << DAOE) |(1 << DAEN);
-	DAC = 0;
+	
+	// set DAC to default 0.1v 
+	DAC = 20;
 }
 
-void dac_setValue (uint16_t value)
-{
-	DAC = value;
-}
-
-uint16_t get_dac_value (uint16_t lambda_millis)
+uint16_t calculate_dac_value (uint16_t lambda_millis)
 {
 	uint16_t retVal = 0;
 	uint8_t counter = 0;
@@ -74,10 +71,15 @@ uint16_t get_dac_value (uint16_t lambda_millis)
 	return retVal;	
 }
 
+void dac_setValue(uint16_t value)
+{
+	DAC = value;
+}
+
 void dac_update_output (uint16_t lambda_millis)
 {
 	uint16_t tmpValue = 0;
 	
-	tmpValue = get_dac_value(lambda_millis);
-	dac_setValue(tmpValue);
+	tmpValue = calculate_dac_value(lambda_millis);
+	DAC = tmpValue;
 }

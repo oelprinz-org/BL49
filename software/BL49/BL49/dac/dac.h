@@ -14,8 +14,8 @@
 #include "../helpers.h"
 
 void dac_init (void);
-void dac_setValue (uint16_t value);
-uint16_t get_dac_value (uint16_t lambda_millis);
+uint16_t calculate_dac_value (uint16_t lambda_millis);
+void dac_setValue(uint16_t value);
 void dac_update_output (uint16_t lambda_millis);
 
 #endif /* DAC_H_ */

@@ -12,6 +12,13 @@
 
 int16_t v_reference_offset = 0;
 
+uint16_t adc_readAvg (uint8_t channel, uint8_t samples);
+
+void update_reference (void)
+{
+	v_reference_offset = 251 - (int16_t) adc_readAvg (3, 3);
+}
+
 void adc_init (void)
 {
 	// avcc with cap on aref
@@ -49,11 +56,13 @@ uint16_t adc_readAvg (uint8_t channel, uint8_t samples)
 
 uint16_t adc_read_UA (void)
 {
+	update_reference();
 	return (uint16_t)((int16_t)adc_readAvg (8, 5) + v_reference_offset);
 }
 
 uint16_t adc_read_UR (void)
 {
+	update_reference();
 	uint16_t tmp = adc_readAvg (9, 5);
 	int16_t tmpAdc = (int16_t)tmp;
 	tmpAdc += v_reference_offset;
@@ -64,16 +73,19 @@ uint16_t adc_read_UR (void)
 
 uint16_t adc_read_reference (void)
 {
-	uint16_t v_reference = 0;
+	int16_t v_reference = 0;
 	
-	v_reference = adc_readAvg (3, 5);
+	v_reference = adc_readAvg (3, 3);
 	
 	v_reference_offset = 251 - (int16_t) v_reference;
 	
 	return v_reference;
 }
 
+
+
 uint16_t adc_read_battery (void)
 {
+	update_reference();
 	return (uint16_t)((int16_t)adc_readAvg (5, 5) + v_reference_offset);
 }

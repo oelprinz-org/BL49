@@ -112,6 +112,7 @@
             <Value>F_CPU=16000000</Value>
             <Value>CAN_BAUDRATE=500</Value>
             <Value>FOSC=F_CPU/1000</Value>
+            <Value>DEBUG_CAN</Value>
           </ListValues>
         </avrgcc.compiler.symbols.DefSymbols>
         <avrgcc.compiler.directories.IncludePaths>

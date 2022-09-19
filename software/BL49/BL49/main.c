@@ -34,7 +34,7 @@ int main(void)
 
 	adc_init();
 	spi_init();
-//	dac_init();
+	dac_init();
 	can_network_init(1);
 
 	board_init(&board);	
@@ -52,6 +52,7 @@ int main(void)
 	commStatus = cj125_readSignature(&board.cj125_signature);
 
 	commStatus = cj125_set_calibration_mode();
+	
 	timer_delay_ms(500);
 	
 	commStatus = cj125_read_init1_register(&registerData);
@@ -77,7 +78,9 @@ int main(void)
 	{
 		sensor_update_status();
 		can_send_aem_message(sensor1);
-		can_send_debug_message(sensor1.Ur_ref_raw, 0, 0, board.cj125_signature, sensor1.diagRegister);
+		#ifdef DEBUG_CAN
+			can_send_debug_message(sensor1.Ur_ref_raw, 0, 0, board.cj125_signature, sensor1.diagRegister);
+		#endif
 		
 		timer_delay_ms(100);
 		counter++;
@@ -95,7 +98,9 @@ int main(void)
 	{
 		sensor_update_status();
 		can_send_aem_message(sensor1);
-		can_send_debug_message(sensor1.Ur_ref_raw, 0, 0, board.cj125_signature, sensor1.diagRegister);
+		#ifdef DEBUG_CAN
+			can_send_debug_message(sensor1.Ur_ref_raw, 0, 0, board.cj125_signature, sensor1.diagRegister);
+		#endif
 		timer_delay_ms(100);
 		counter++;
 	}
@@ -103,8 +108,6 @@ int main(void)
 	sensor1.SensorStatus = WARMING_UP;
 	
 	init_1ms_timer();
-	
-	
 	
 	while(1)
 	{
@@ -143,8 +146,11 @@ int main(void)
 				heater_setVoltage(duty_cycle2voltage(sensor1.SystemVoltage, pid, 256));
 				
 				sensor_update_ur(&sensor1, adc2voltage_millis(adcValue));
-				can_send_debug_message(sensor1.Ur_ref_raw, adcValue, pid, board.cj125_signature, sensor1.diagRegister);
 			}
+			
+			#ifdef DEBUG_CAN
+				can_send_debug_message(sensor1.Ur_ref_raw, adcValue, pid, board.cj125_signature, sensor1.diagRegister);
+			#endif
 			
 			// here we have to check heater und adjust PID!
 			// for now we stay at 13v...
@@ -154,8 +160,6 @@ int main(void)
 		if (BIT_CHECK(TIMER_TASKS, BIT_TIMER_250ms))
 		{
 			BIT_CLEAR(TIMER_TASKS, BIT_TIMER_250ms);
-			
-			
 			
 			if (sensor1.SensorStatus == WARMING_UP && sensor1.SystemVoltageOK && sensor1.SensorFaultState == OK)
 			{
@@ -167,9 +171,7 @@ int main(void)
 					sensor1.SensorStatus = RUN;
 				}
 				
-				adcValue = adc_read_UR();
-				can_send_debug_message(sensor1.Ur_ref_raw, adcValue, 0, board.cj125_signature, sensor1.diagRegister);
-				
+				adcValue = adc_read_UR();				
 				heater_setVoltage(sensor1.HeaterVoltage);				
 			}
 		}
