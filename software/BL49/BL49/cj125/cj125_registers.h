@@ -10,20 +10,22 @@
 #define CJ125_REGISTERS_H_
 
 // cj125 registers
+#define CJ125_RD_IDENT				0x4800	/* Identify request, gives revision of the chip. */
+#define CJ125_RD_INIT1				0x6C00 	/* Requests the first init register. */
+#define CJ125_RD_DIAG				0x7800	/* Dignostic request, gives the current status. */
+#define CJ125_RD_INIT2				0x7E00  /* Requests the second init register. */
 
-#define CJ125_IDENT_REG_REQUEST         0x4800	/* Identify request, gives revision of the chip. */
-#define CJ125_INIT_REG1_REQUEST         0x6C00 	/* Requests the first init register. */
-#define CJ125_DIAG_REG_REQUEST          0x7800	/* Dignostic request, gives the current status. */
-#define CJ125_INIT_REG2_REQUEST         0x7E00  /* Requests the second init register. */
+// return mode in init1 register
+#define CJ125_RD_MODE_CAL			0x289D  /* The response of the init register when in calibration mode. */
+#define CJ125_RD_MODE_V8			0x2888  /* The response of the init register when V=8 amplification is in use. */
+#define CJ125_RD_MODE_V17			0x2889	/* The response of the init register when V=17 amplification is in use. */
 
-#define CJ125_INIT_REG1_STATUS_CAL      0x289D  /* The response of the init register when in calibration mode. */
-#define CJ125_INIT_REG1_STATUS_V8       0x2888  /* The response of the init register when V=8 amplification is in use. */
-#define CJ125_INIT_REG1_STATUS_V17      0x2889	/* The response of the init register when V=17 amplification is in use. */
-
-// set status:
-#define CJ125_INIT_REG1_MODE_CALIBRATE	0x569D  /* Sets the first init register in calibration mode. */
-#define CJ125_INIT_REG1_MODE_NORMAL_V8  0x5688  /* Sets the first init register in operation mode. V=8 amplification. */
-#define CJ125_INIT_REG1_MODE_NORMAL_V17 0x5689  /* Sets the first init register in operation mode. V=17 amplification. */
+// set mode:
+#define CJ125_WR_SRESET				0x5A40	/* Software-RESET of SPI and all registers */ 
+#define CJ125_WR_SRESET_END			0x5A00	/* Default value of init2 register */ 
+#define CJ125_WR_MODE_CAL			0x569D  /* Sets the first init register in calibration mode. */
+#define CJ125_WR_MODE_V8			0x5688  /* Sets the first init register in operation mode. V=8 amplification. */
+#define CJ125_WR_MODE_V17			0x5689  /* Sets the first init register in operation mode. V=17 amplification. */
 
 // diag register status:
 #define CJ125_DIAG_REG_STATUS_OK        0xFF  /* The response of the diagnostic register when everything is ok. */

@@ -11,6 +11,7 @@
 
 #include <avr/io.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 typedef enum
 {
@@ -27,5 +28,6 @@ typedef struct
 
 void board_init (tBoard *board);
 void board_read_inputs (tBoard *board);
+bool isEnabled (void);
 
 #endif /* BOARD_H_ */

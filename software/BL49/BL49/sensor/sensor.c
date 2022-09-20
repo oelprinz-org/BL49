@@ -70,9 +70,9 @@ void heater_init (void)
 	// original values: p = 120; i = 0.8; d = 10;
 	// optimal values seems to be p=7.1, i=0.3, d=0
 	
-	pidController.pGain = 6.5;
-	pidController.iGain = 0.6;
-	pidController.dGain = 0;
+	pidController.pGain = 5;
+	pidController.iGain = 0.8;
+	pidController.dGain = 3.2;
 	
 	pidController.iMin = -250;
 	pidController.iMax = 250;
@@ -248,7 +248,7 @@ void heater_setVoltage (uint16_t voltageMillis)
 	
 	if (voltageMillis == 0)
 	{
-		heater_shutdown();
+		heater_setDuty(0);
 	}
 	else
 	{
@@ -261,7 +261,7 @@ void heater_setDuty (uint16_t duty)
 {
 	if (duty == 0)
 	{
-		
+		TCCR1A &= ~(1 << COM1B1);
 	}
 	else
 	{
@@ -271,12 +271,6 @@ void heater_setDuty (uint16_t duty)
 			TCCR1A |= (1 << COM1B1);
 		}
 	}
-}
-
-void heater_shutdown (void)
-{
-	TCCR1A &= ~(1 << COM1B1);
-	sensor1.HeaterVoltage = 0;
 }
 
 uint16_t calc_pid (uint16_t referenceValue, uint16_t measuredValue, bool inverted)
