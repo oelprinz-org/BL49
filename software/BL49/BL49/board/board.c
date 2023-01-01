@@ -8,7 +8,7 @@
 #include "board.h"
 #include "../helpers.h"
 // #include "../adc/adc.h"
-
+#include <avr/sfr_defs.h>
 tBoard board;
 
 void board_init (tBoard *board)
@@ -28,7 +28,8 @@ void board_init (tBoard *board)
 }
 
 void board_read_inputs (tBoard *board)
-{
+{	
+	// bit_is_set from sfr_def.h
 	// is pinc6 high?
 	if ((PINC & (1 << PINC6)) == 1)
 	{
