@@ -55,6 +55,7 @@ typedef enum
 
 typedef struct 
 {
+	uint8_t Signature;
 	uint16_t Shunt;
 	uint8_t Amplification;
 	uint16_t Ua_ref;
@@ -99,6 +100,6 @@ void heater_setDuty (uint16_t duty);
 void heater_setVoltage (uint16_t voltageMillis);
 void sensor_update_status (void);
 uint16_t calc_pid (uint16_t referenceValue, uint16_t measuredValue, bool inverted);
-
+void sensor_shutdown (void);
 
 #endif /* SENSOR_H_ */

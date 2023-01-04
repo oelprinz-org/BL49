@@ -68,42 +68,42 @@ ISR (TIMER0_COMPA_vect)
 	if (timer_10ms == 10)
 	{
 		timer_10ms = 0;
-		BIT_SET(TIMER_TASKS, BIT_TIMER_10ms);
+		bit_set(TIMER_TASKS, BIT_TIMER_10ms);
 	}
 	
 	if (timer_20ms == 20)
 	{
 		timer_20ms = 0;
-		BIT_SET(TIMER_TASKS, BIT_TIMER_20ms);
+		bit_set(TIMER_TASKS, BIT_TIMER_20ms);
 	}
 	
 	if (timer_50ms == 50)
 	{
 		timer_50ms = 0;
-		BIT_SET(TIMER_TASKS, BIT_TIMER_50ms);
+		bit_set(TIMER_TASKS, BIT_TIMER_50ms);
 	}
 	
 	if (timer_100ms == 100)
 	{
 		timer_100ms = 0;
-		BIT_SET(TIMER_TASKS, BIT_TIMER_100ms);
+		bit_set(TIMER_TASKS, BIT_TIMER_100ms);
 	}
 	
 	if (timer_250ms == 250)
 	{
 		timer_250ms = 0;
-		BIT_SET(TIMER_TASKS, BIT_TIMER_250ms);
+		bit_set(TIMER_TASKS, BIT_TIMER_250ms);
 	}
 	
 	if (timer_500ms == 500)
 	{
 		timer_500ms = 0;
-		BIT_SET(TIMER_TASKS, BIT_TIMER_500ms);
+		bit_set(TIMER_TASKS, BIT_TIMER_500ms);
 	}
 	
 	if (timer_1000ms == 1000)
 	{
 		timer_1000ms = 0;
-		BIT_SET(TIMER_TASKS, BIT_TIMER_1000ms);
+		bit_set(TIMER_TASKS, BIT_TIMER_1000ms);
 	}
 }

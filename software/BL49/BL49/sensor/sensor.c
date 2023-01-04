@@ -35,12 +35,13 @@ void sensor_init (tSensor *sensor, uint8_t amplification_factor)
 	sensor->Ua = 0;
 	sensor->Ua_ref = 0;
 	sensor->Ur = 0;
-	sensor->Ur_ref_raw = 0;
 	sensor->O2 = 0;
 	sensor->HeaterVoltage = 0;
 	sensor->diagRegister = 0;
 	sensor->SensorDetectedStatus = BOSCH_LSU49;
 	sensor->Amplification = amplification_factor;
+	
+	cj125_readSignature(&sensor->Signature);
 	
 	heater_init();
 }
@@ -84,17 +85,9 @@ void heater_init (void)
 
 void sensor_update_status (void)
 {	
-	
 	sensor1.SystemVoltage = adc2voltage_millis(adc_read_battery()) * 5;
 	
-	if (is_between(sensor1.SystemVoltage, 11000, 16500))
-	{
-		sensor1.SystemVoltageOK = true;
-	}
-	else
-	{
-		sensor1.SystemVoltageOK = false;
-	}
+	sensor1.SystemVoltageOK = is_between(sensor1.SystemVoltage, 11000, 16500) ? true : false;
 	
 	if (cj125_readStatus(&sensor1.diagRegister) == COMMAND_VALID)
 	{
@@ -329,4 +322,15 @@ uint16_t calc_pid (uint16_t referenceValue, uint16_t measuredValue, bool inverte
 	}
 		
 	return  (uint16_t) RegulationOutput;
+}
+
+void sensor_shutdown (void)
+{
+	sensor1.SensorStatus = RESET;
+	sensor1.HeaterVoltage = 0;
+	heater_setVoltage(sensor1.HeaterVoltage);
+	sensor1.Ua = 0;
+	sensor1.Ur = 0;
+	sensor1.Ip = 0;
+	sensor1.Lambda = 0;	
 }

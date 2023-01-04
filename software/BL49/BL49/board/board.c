@@ -7,8 +7,7 @@
 
 #include "board.h"
 #include "../helpers.h"
-// #include "../adc/adc.h"
-#include <avr/sfr_defs.h>
+
 tBoard board;
 
 void board_init (tBoard *board)
@@ -19,6 +18,10 @@ void board_init (tBoard *board)
 	// init the both inputs, in1 = pc6, in2 = pb4
 	DDRC  &= ~(1 << PINC6);
 	DDRB  &= ~(1 << PINB4);
+	
+	// activate internal pull-ups, since the inputs are "active low"
+	PORTC |= (1 << PINC6);
+	PORTB |= (1 << PINB4);
 	
 	// init LED2 (pb5) and LED2 (pb6)
 	// led1 is power
@@ -31,7 +34,8 @@ void board_read_inputs (tBoard *board)
 {	
 	// bit_is_set from sfr_def.h
 	// is pinc6 high?
-	if ((PINC & (1 << PINC6)) == 1)
+	
+	if (bit_is_set(PINC, PINC6))
 	{
 		board->input1_state = HIGH;
 	}
@@ -41,7 +45,7 @@ void board_read_inputs (tBoard *board)
 	}
 	
 	// is pinb4 high?
-	if ((PINB & (1 << PINB4)) == 1)
+	if (bit_is_set(PINB,PINB4))
 	{
 		board->input2_state = HIGH;
 	}
@@ -51,7 +55,8 @@ void board_read_inputs (tBoard *board)
 	}
 }
 
-bool isEnabled (void)
+// input 1 is "active low", so we check for LOW state of this input!
+bool isActive (void)
 {
-	return (bool) ((PINC & (1 << PINC6)) == 1);
+	return (bool) (bit_is_clear(PINC, PINC6));
 }

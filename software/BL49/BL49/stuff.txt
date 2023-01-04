@@ -1,169 +1,195 @@
-
 /*
- * stuff.txt
+ * BL49.c
  *
- * Created: 05.09.2022 17:26:35
- *  Author: Heinrich
+ * Created: 22.05.2022 20:35:45
+ * Author : Heinrich
  */ 
 
-     while (1) 
-    {		
-		if (BIT_CHECK(TIMER_TASKS, BIT_TIMER_10ms))
+#include <avr/io.h>
+#include <avr/interrupt.h>
+
+#include "helpers.h"
+#include "adc/adc.h"
+#include "spi/spi.h"
+#include "dac/dac.h"
+#include "cj125/cj125.h"
+#include "timer/timer.h"
+#include "sensor/sensor.h"
+#include "board/board.h"
+#include "can/can_network.h"
+
+extern tSensor sensor1;
+extern tBoard board;
+extern volatile uint16_t ms_counter;
+
+int main(void)
+{
+	uint8_t counter = 0;
+	uint16_t adcValue = 0;
+	uint16_t pid = 0;
+	tcj125_command_status commStatus;
+	bool enabled = false;
+	uint8_t evapCounter = 0;
+	uint16_t registerData = 0;
+
+	adc_init();
+	spi_init();
+	dac_init();
+	can_network_init(1);
+
+	board_init(&board);	
+	sensor_init(&sensor1, 8);
+	board_read_inputs(&board);
+	
+	
+	while (1)
+	{
+		enabled = isEnabled();
+		timer_delay_ms(100);
+	}
+	
+	timer_delay_ms(100);
+	
+	sei();
+	
+	commStatus = cj125_sreset();
+	
+	commStatus = cj125_read_init1_register(&registerData);
+	
+	commStatus = cj125_readSignature(&board.cj125_signature);
+
+	commStatus = cj125_set_calibration_mode();
+	
+	timer_delay_ms(500);
+	
+	commStatus = cj125_read_init1_register(&registerData);
+	
+	
+	// Ur value: lower value means hotter sensor...
+	// Ur_ref is something round about 1v (ADC 208 = 1015mV)
+	// Ua_ref is something round about 1.5v (ADC 309 =  1503mV)
+	
+	
+	sensor1.Ur_ref_raw = adc_read_UR();
+	sensor1.Ur_ref = adc2voltage_millis(sensor1.Ur_ref_raw);
+	sensor1.Ua_ref = adc2voltage_millis(adc_read_UA());
+
+	cj125_set_running_mode_v8();
+	timer_delay_ms(500);
+
+	sensor_update_status();
+
+	// check activation input before this both steps!!!	
+	
+	while (counter < 10) 
+	{
+		sensor_update_status();
+		can_send_aem_message(sensor1);
+		#ifdef DEBUG_CAN
+			can_send_debug_message(sensor1.Ur_ref_raw, 0, 0, board.cj125_signature, sensor1.diagRegister);
+		#endif
+		
+		timer_delay_ms(100);
+		counter++;
+	}
+	
+	counter = 0;
+	
+	sensor1.SensorStatus = EVAP_START_UP;
+	
+	enabled = isEnabled();
+	
+	heater_setVoltage(1500);
+	
+	while (counter < 25)
+	{
+		sensor_update_status();
+		can_send_aem_message(sensor1);
+		#ifdef DEBUG_CAN
+			can_send_debug_message(sensor1.Ur_ref_raw, 0, 0, board.cj125_signature, sensor1.diagRegister);
+		#endif
+		timer_delay_ms(100);
+		counter++;
+	}
+	
+	sensor1.SensorStatus = WARMING_UP;
+	
+	init_1ms_timer();
+	
+	while(1)
+	{
+		
+		if (bit_check(TIMER_TASKS, BIT_TIMER_10ms))
 		{
-			BIT_CLEAR(TIMER_TASKS, BIT_TIMER_10ms);
-			
-			/*
-			board_read_inputs(&board);
-			// we are in running state, so :
-			// check cj125 status, read Ur, adjust PID, read Ua, do calculation stuff....
-			if (sensor1.State == SENSOR_RUNNING && board.input1_state == HIGH)
+			bit_clear(TIMER_TASKS, BIT_TIMER_10ms);
+				
+			if (sensor1.SensorStatus == RUN && sensor1.SystemVoltageOK == true && sensor1.SensorFaultState == OK)
 			{
-				if (cj125_readStatus() == CJ125_STATUS_OKAY)
-				{
-					sensor1.Ua = adc2voltage_millis(adc_read_UA());
-					calculate_ip(&sensor1);
-					calculate_lambda(&sensor1);
-					sensor1.Ur = adc2voltage_millis(adc_read_UR());
-				}
-				else
-				{
-					sensor1.State == SENSOR_ERROR;
-					heater_shutdown();
-				}
+				sensor_update_ua(&sensor1, adc2voltage_millis(adc_read_UA()));
+				dac_update_output(sensor1.Lambda);
+			} else {
+				dac_setValue(0);
 			}
-			*/
 			
-			// TODO: send can message here
+			can_send_aem_message(sensor1);			
 		}
 		
-		if (BIT_CHECK(TIMER_TASKS, BIT_TIMER_20ms))
+		if (bit_check(TIMER_TASKS, BIT_TIMER_100ms))
 		{
-			BIT_CLEAR(TIMER_TASKS, BIT_TIMER_20ms);
-			// do some 20ms stuff...
-		}
-		
-		if (BIT_CHECK(TIMER_TASKS, BIT_TIMER_50ms))
-		{
-			BIT_CLEAR(TIMER_TASKS, BIT_TIMER_50ms);
-			// do some 50ms stuff...
-		}
-		
-		if (BIT_CHECK(TIMER_TASKS, BIT_TIMER_100ms))
-		{
-			BIT_CLEAR(TIMER_TASKS, BIT_TIMER_100ms);
+			bit_clear(TIMER_TASKS, BIT_TIMER_100ms);
+			sensor_update_status();
 			board_read_inputs(&board);
 			
-			sensor_update_ua (&sensor1, 2100);
+			// waiting for activation
+			if (sensor1.SensorStatus == RESET && isEnabled())
+			{
+				// sensor1.SensorStatus = EVAP_START_UP;
+			}
 			
-			sensor1.Status = RUN;
+			if (sensor1.SensorFaultState == OK && sensor1.SensorStatus == RUN && sensor1.SystemVoltageOK)
+			{
+				adcValue = adc_read_UR();
+				pid = calc_pid (sensor1.Ur_ref_raw, adcValue, true);
+							
+				heater_setVoltage(duty_cycle2voltage(sensor1.SystemVoltage, pid, 256));
+				
+				sensor_update_ur(&sensor1, adc2voltage_millis(adcValue));
+			}
 			
-			// do some 100ms stuff...
+			#ifdef DEBUG_CAN
+				can_send_debug_message(sensor1.Ur_ref_raw, adcValue, pid, board.cj125_signature, sensor1.diagRegister);
+			#endif
+			
+			// here we have to check heater und adjust PID!
+			// for now we stay at 13v...
 			PORTB ^= (1 << PINB5);
 		}
 		
-		if (BIT_CHECK(TIMER_TASKS, BIT_TIMER_250ms))
+		if (bit_check(TIMER_TASKS, BIT_TIMER_250ms))
 		{
-			BIT_CLEAR(TIMER_TASKS, BIT_TIMER_250ms);
+			bit_clear(TIMER_TASKS, BIT_TIMER_250ms);
 			
-			sensor1.Ur = adc2voltage_millis(adc_read_UR());		
-			
-			
-			/*
-			// do some 250ms stuff...
-			board_read_inputs(&board);
-			
-			if (board.input1_state == HIGH)
+			if (sensor1.SensorStatus == WARMING_UP && sensor1.SystemVoltageOK && sensor1.SensorFaultState == OK)
 			{
-				// means: engine is running
-				switch (sensor1.State)
+				// we are warming up the sensor in 0.4v/s or 0.1v in 250ms
+				sensor1.HeaterVoltage += 100;
+				if (sensor1.HeaterVoltage > 13000)
 				{
-					case SENSOR_OFF:
-						// means engine is started right now so we need to init the sensor and stuff...
-						cj125_set_calibration_mode();
-					
-						if (cj125_readStatus() == CJ125_STATUS_OKAY)
-						{
-							// everything is fine, we are in calibration mode...
-							sensor1.Ua_ref = adc2voltage_millis(adc_read_UA());
-							sensor1.Ur_ref = adc2voltage_millis(adc_read_UR());
-							
-							cj125_set_running_mode_v8();
-							
-							if (cj125_readStatus() == CJ125_STATUS_OKAY)
-							{
-								// stuff stored, go for condensation...1.5v for 5 seconds
-								// 5 s = 5000 ms = 20
-								loopCounter = 19;
-								sensor1.State = SENSOR_CONDENSATION;
-							}
-						}
-						else
-						{
-							sensor1.State == SENSOR_ERROR;
-							heater_shutdown();
-						}
-					break;
-					
-					case SENSOR_CONDENSATION:
-						dty = target_voltage_duty_cycle(1500, board.vBatt);
-						heater_setDuty(dty);
-						loopCounter--;
-						
-						if (loopCounter == 0)
-						{
-							// condensation done, next step heating up the sensor
-							sensor1.State = SENSOR_HEATING_UP;
-							loopCounter = 0;
-						}
-						
-					case SENSOR_HEATING_UP:
-						// we heat up the sensor, start with 8.5v and goes up to 13v in 0.4v/s steps
-						// start with 8.5v
-						
-						// first loop:
-						// set voltage to 8.5v
-						if (loopCounter == 0)
-						{
-							tmp_voltage = 8500;
-						}
-						
-						// can we modulo 4? if so, a second is over and we hve to increase the voltage...
-						if (loopCounter % 4 == 0 && loopCounter != 0)
-						{
-							tmp_voltage += 400;
-							
-							if (tmp_voltage > 13000)
-							{
-								tmp_voltage = 13000;
-							}
-						}
-						
-						// adjust heater voltage to supply voltage
-						dty = target_voltage_duty_cycle(tmp_voltage, board.vBatt);
-						heater_setDuty(dty);
-						
-						if (loopCounter == 48)
-						{
-							// heating up is done, switch to PID controller and go over to running...
-							sensor1.State = SENSOR_RUNNING;
-						}
-						
-						loopCounter++;
-					
-					break;
+					sensor1.HeaterVoltage = 13000;	
+					sensor1.SensorStatus = RUN;
 				}
 				
-				
-				
+				adcValue = adc_read_UR();				
+				heater_setVoltage(sensor1.HeaterVoltage);				
 			}
-			*/
-
-			PORTB ^= (1 << PINB6);
 		}
 		
-		if (BIT_CHECK(TIMER_TASKS, BIT_TIMER_500ms))
+		if (bit_check(TIMER_TASKS, BIT_TIMER_500ms))
 		{
-			BIT_CLEAR(TIMER_TASKS, BIT_TIMER_500ms);
+			bit_clear(TIMER_TASKS, BIT_TIMER_500ms);
+			
+			if (isEnabled() && sensor1.sta)
+			
 		}
-
-    }
+	}
+}
