@@ -51,7 +51,7 @@ tcj125_command_status cj125_readStatus (uint8_t *diagRegister)
 	// bit0 = 1 --> current command is not valid
 	// so just check this bit...
 	
-	if (BIT_CHECK(high(statusReg), CJ125_DIAG_INSTR_F))
+	if (bit_check(high(statusReg), CJ125_DIAG_INSTR_F))
 	{
 		return COMMAND_NOT_VALID;
 	}
@@ -71,7 +71,7 @@ tcj125_command_status cj125_set_calibration_mode (void)
 	
 	statusReg = spi_read_write(CJ125_RD_INIT1);
 	
-	if (BIT_CHECK(high(statusReg), CJ125_DIAG_INSTR_F))
+	if (bit_check(high(statusReg), CJ125_DIAG_INSTR_F))
 	{
 		return COMMAND_NOT_VALID;
 	}
@@ -86,7 +86,7 @@ tcj125_command_status cj125_set_running_mode_v8 (void)
 
 	statusReg = spi_read_write(CJ125_WR_MODE_V8);
 	
-	if (BIT_CHECK(high(statusReg), CJ125_DIAG_INSTR_F))
+	if (bit_check(high(statusReg), CJ125_DIAG_INSTR_F))
 	{
 		return COMMAND_NOT_VALID;
 	}
@@ -101,7 +101,7 @@ tcj125_command_status cj125_set_running_mode_v17 (void)
 
 	statusReg = spi_read_write(CJ125_WR_MODE_V17);
 	
-	if (BIT_CHECK(high(statusReg), CJ125_DIAG_INSTR_F))
+	if (bit_check(high(statusReg), CJ125_DIAG_INSTR_F))
 	{
 		return COMMAND_NOT_VALID;
 	}
@@ -115,7 +115,7 @@ tcj125_command_status cj125_get_mode (tcj125_mode *mode)
 
 	statusReg = spi_read_write(CJ125_RD_INIT1);
 	
-	if (BIT_CHECK(high(statusReg), CJ125_DIAG_INSTR_F))
+	if (bit_check(high(statusReg), CJ125_DIAG_INSTR_F))
 	{
 		return COMMAND_NOT_VALID;
 	}
@@ -144,7 +144,7 @@ tcj125_command_status cj125_read_init1_register (uint16_t *reg)
 
 	statusReg = spi_read_write(CJ125_RD_INIT1);
 	
-	if (BIT_CHECK(high(statusReg), CJ125_DIAG_INSTR_F))
+	if (bit_check(high(statusReg), CJ125_DIAG_INSTR_F))
 	{
 		return COMMAND_NOT_VALID;
 	}
@@ -160,7 +160,7 @@ tcj125_command_status cj125_read_init2_register (uint16_t *reg)
 
 	statusReg = spi_read_write(CJ125_RD_INIT2);
 	
-	if (BIT_CHECK(high(statusReg), CJ125_DIAG_INSTR_F))
+	if (bit_check(high(statusReg), CJ125_DIAG_INSTR_F))
 	{
 		return COMMAND_NOT_VALID;
 	}

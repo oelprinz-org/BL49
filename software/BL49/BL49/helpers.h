@@ -89,9 +89,10 @@ static __inline uint8_t __is_between(uint16_t x, uint16_t y, uint16_t z)
 #define low(x)	__low(x)
 #define high(x)	__high(x)
 
-#define BIT_SET(a,b) ((a) |= (1U<<(b)))
-#define BIT_CLEAR(a,b) ((a) &= ~(1U<<(b)))
-#define BIT_CHECK(var,pos) !!((var) & (1U<<(pos)))
-#define BIT_TOGGLE(var,pos) ((var)^= 1UL << (pos))
+
+#define bit_set(a,b) ((a) |= (1U<<(b)))
+#define bit_clear(a,b) ((a) &= ~(1U<<(b)))
+#define bit_check(var,pos) !!((var) & (1U<<(pos)))
+#define bit_toggle(var,pos) ((var)^= 1UL << (pos))
 
 #endif /* HELPERS_H_ */

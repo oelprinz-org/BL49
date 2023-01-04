@@ -21,13 +21,12 @@ typedef enum
 
 typedef struct 
 {
-	uint8_t cj125_signature;
 	tInputState input1_state;
 	tInputState input2_state;
 } tBoard;
 
 void board_init (tBoard *board);
 void board_read_inputs (tBoard *board);
-bool isEnabled (void);
+bool isActive (void);
 
 #endif /* BOARD_H_ */
