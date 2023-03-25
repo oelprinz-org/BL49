@@ -34,6 +34,10 @@
 void can_network_init (uint8_t mode)
 {
 	can_init(mode);
+	
+	// CANGIE |= (1 << ENIT)|(1 << ENRX); // enable receive interrupt...
+	
+	
 }
 
 void can_send_aem_message(tSensor sensor)
@@ -98,4 +102,11 @@ void can_send_debug_message(uint16_t ur_ref_raw, uint16_t ur_raw, uint8_t pid, u
 	
 	while(can_cmd(&debug_message) != CAN_CMD_ACCEPTED);					// wait for MOb to configure
 	while(can_get_status(&debug_message) == CAN_STATUS_NOT_COMPLETED);	// wait for a transmit request to come in, and send a response
+}
+
+ISR (CAN_INT_vect)
+{
+	int i = 10;
+	i++;
+	
 }

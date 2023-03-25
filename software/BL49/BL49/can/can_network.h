@@ -11,6 +11,7 @@
 
 #include "can_lib.h"
 #include "../sensor/sensor.h"
+#include <avr/interrupt.h>
 
 typedef union
 {
