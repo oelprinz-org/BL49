@@ -560,20 +560,20 @@ END GROUP
  .text.can_get_status
                 0x00001a4c      0x266 can/can_lib.o
                 0x00001a4c                can_get_status
- .text.__low    0x00001cb2       0x1a can/can_network.o
- .text.__high   0x00001ccc       0x20 can/can_network.o
- .text.can_network_init
-                0x00001cec       0x1c can/can_network.o
-                0x00001cec                can_network_init
- .text.can_send_aem_message
-                0x00001d08      0x1c0 can/can_network.o
-                0x00001d08                can_send_aem_message
- .text.can_send_debug_message
-                0x00001ec8      0x138 can/can_network.o
-                0x00001ec8                can_send_debug_message
  .text.__vector_18
-                0x00002000       0x46 can/can_network.o
-                0x00002000                __vector_18
+                0x00001cb2       0x46 can/can_lib.o
+                0x00001cb2                __vector_18
+ .text.__low    0x00001cf8       0x1a can/can_network.o
+ .text.__high   0x00001d12       0x20 can/can_network.o
+ .text.can_network_init
+                0x00001d32       0x1c can/can_network.o
+                0x00001d32                can_network_init
+ .text.can_send_aem_message
+                0x00001d4e      0x1c0 can/can_network.o
+                0x00001d4e                can_send_aem_message
+ .text.can_send_debug_message
+                0x00001f0e      0x138 can/can_network.o
+                0x00001f0e                can_send_debug_message
  .text.__low    0x00002046       0x1a cj125/cj125.o
  .text.__high   0x00002060       0x20 cj125/cj125.o
  .text.cj125_readSignature
@@ -912,9 +912,9 @@ END GROUP
  .debug_aranges
                 0x00000058       0x48 can/can_drv.o
  .debug_aranges
-                0x000000a0       0x30 can/can_lib.o
+                0x000000a0       0x38 can/can_lib.o
  .debug_aranges
-                0x000000d0       0x48 can/can_network.o
+                0x000000d8       0x40 can/can_network.o
  .debug_aranges
                 0x00000118       0x70 cj125/cj125.o
  .debug_aranges
@@ -933,57 +933,57 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x2d1b
+.debug_info     0x00000000     0x2d1d
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0xa40 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega32m1/avr5/crtatmega32m1.o
  .debug_info    0x00000a40      0x1f4 adc/adc.o
  .debug_info    0x00000c34      0x2dc can/can_drv.o
- .debug_info    0x00000f10      0x2dd can/can_lib.o
- .debug_info    0x000011ed      0x6a9 can/can_network.o
- .debug_info    0x00001896      0x307 cj125/cj125.o
- .debug_info    0x00001b9d      0x1be dac/dac.o
- .debug_info    0x00001d5b      0x401 main.o
- .debug_info    0x0000215c      0x7d2 sensor/sensor.o
- .debug_info    0x0000292e      0x10d spi/spi.o
- .debug_info    0x00002a3b      0x157 board/board.o
- .debug_info    0x00002b92      0x189 timer/timer.o
+ .debug_info    0x00000f10      0x306 can/can_lib.o
+ .debug_info    0x00001216      0x682 can/can_network.o
+ .debug_info    0x00001898      0x307 cj125/cj125.o
+ .debug_info    0x00001b9f      0x1be dac/dac.o
+ .debug_info    0x00001d5d      0x401 main.o
+ .debug_info    0x0000215e      0x7d2 sensor/sensor.o
+ .debug_info    0x00002930      0x10d spi/spi.o
+ .debug_info    0x00002a3d      0x157 board/board.o
+ .debug_info    0x00002b94      0x189 timer/timer.o
 
-.debug_abbrev   0x00000000     0x1567
+.debug_abbrev   0x00000000     0x1570
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x9b2 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega32m1/avr5/crtatmega32m1.o
  .debug_abbrev  0x000009b2      0x102 adc/adc.o
  .debug_abbrev  0x00000ab4       0xf6 can/can_drv.o
- .debug_abbrev  0x00000baa      0x151 can/can_lib.o
- .debug_abbrev  0x00000cfb      0x16d can/can_network.o
- .debug_abbrev  0x00000e68       0xe6 cj125/cj125.o
- .debug_abbrev  0x00000f4e       0xfc dac/dac.o
- .debug_abbrev  0x0000104a      0x13a main.o
- .debug_abbrev  0x00001184      0x1db sensor/sensor.o
- .debug_abbrev  0x0000135f       0xa3 spi/spi.o
- .debug_abbrev  0x00001402       0xd3 board/board.o
- .debug_abbrev  0x000014d5       0x92 timer/timer.o
+ .debug_abbrev  0x00000baa      0x17a can/can_lib.o
+ .debug_abbrev  0x00000d24      0x14d can/can_network.o
+ .debug_abbrev  0x00000e71       0xe6 cj125/cj125.o
+ .debug_abbrev  0x00000f57       0xfc dac/dac.o
+ .debug_abbrev  0x00001053      0x13a main.o
+ .debug_abbrev  0x0000118d      0x1db sensor/sensor.o
+ .debug_abbrev  0x00001368       0xa3 spi/spi.o
+ .debug_abbrev  0x0000140b       0xd3 board/board.o
+ .debug_abbrev  0x000014de       0x92 timer/timer.o
 
-.debug_line     0x00000000     0x2387
+.debug_line     0x00000000     0x2385
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x151 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega32m1/avr5/crtatmega32m1.o
  .debug_line    0x00000151      0x218 adc/adc.o
  .debug_line    0x00000369      0x5ac can/can_drv.o
- .debug_line    0x00000915      0x535 can/can_lib.o
- .debug_line    0x00000e4a      0x2d9 can/can_network.o
- .debug_line    0x00001123      0x33f cj125/cj125.o
- .debug_line    0x00001462      0x1bd dac/dac.o
- .debug_line    0x0000161f      0x2fe main.o
- .debug_line    0x0000191d      0x5b3 sensor/sensor.o
- .debug_line    0x00001ed0      0x15b spi/spi.o
- .debug_line    0x0000202b      0x14d board/board.o
- .debug_line    0x00002178      0x20f timer/timer.o
+ .debug_line    0x00000915      0x558 can/can_lib.o
+ .debug_line    0x00000e6d      0x2b4 can/can_network.o
+ .debug_line    0x00001121      0x33f cj125/cj125.o
+ .debug_line    0x00001460      0x1bd dac/dac.o
+ .debug_line    0x0000161d      0x2fe main.o
+ .debug_line    0x0000191b      0x5b3 sensor/sensor.o
+ .debug_line    0x00001ece      0x15b spi/spi.o
+ .debug_line    0x00002029      0x14d board/board.o
+ .debug_line    0x00002176      0x20f timer/timer.o
 
 .debug_frame    0x00000000      0x9f8
  *(.debug_frame)
  .debug_frame   0x00000000      0x114 adc/adc.o
  .debug_frame   0x00000114       0xd4 can/can_drv.o
- .debug_frame   0x000001e8       0x74 can/can_lib.o
- .debug_frame   0x0000025c      0x110 can/can_network.o
+ .debug_frame   0x000001e8       0xa8 can/can_lib.o
+ .debug_frame   0x00000290       0xdc can/can_network.o
  .debug_frame   0x0000036c      0x174 cj125/cj125.o
  .debug_frame   0x000004e0       0xb4 dac/dac.o
  .debug_frame   0x00000594       0x90 main.o
@@ -999,10 +999,10 @@ END GROUP
                                 0x207 (size before relaxing)
  .debug_str     0x0000059b      0x14f can/can_drv.o
                                 0x2a7 (size before relaxing)
- .debug_str     0x000006ea      0x137 can/can_lib.o
-                                0x2a8 (size before relaxing)
- .debug_str     0x00000821      0x310 can/can_network.o
-                                0x5c3 (size before relaxing)
+ .debug_str     0x000006ea      0x143 can/can_lib.o
+                                0x2b4 (size before relaxing)
+ .debug_str     0x0000082d      0x304 can/can_network.o
+                                0x5b7 (size before relaxing)
  .debug_str     0x00000b31      0x143 cj125/cj125.o
                                 0x2aa (size before relaxing)
  .debug_str     0x00000c74       0xb0 dac/dac.o
@@ -1022,8 +1022,8 @@ END GROUP
  *(.debug_loc)
  .debug_loc     0x00000000      0x20b adc/adc.o
  .debug_loc     0x0000020b      0x1af can/can_drv.o
- .debug_loc     0x000003ba       0xd7 can/can_lib.o
- .debug_loc     0x00000491      0x24a can/can_network.o
+ .debug_loc     0x000003ba      0x153 can/can_lib.o
+ .debug_loc     0x0000050d      0x1ce can/can_network.o
  .debug_loc     0x000006db      0x318 cj125/cj125.o
  .debug_loc     0x000009f3      0x15a dac/dac.o
  .debug_loc     0x00000b4d      0x119 main.o
@@ -1054,8 +1054,8 @@ END GROUP
  *(.debug_ranges)
  .debug_ranges  0x00000000       0x48 adc/adc.o
  .debug_ranges  0x00000048       0x38 can/can_drv.o
- .debug_ranges  0x00000080       0x20 can/can_lib.o
- .debug_ranges  0x000000a0       0x38 can/can_network.o
+ .debug_ranges  0x00000080       0x28 can/can_lib.o
+ .debug_ranges  0x000000a8       0x30 can/can_network.o
  .debug_ranges  0x000000d8       0x60 cj125/cj125.o
  .debug_ranges  0x00000138       0x30 dac/dac.o
  .debug_ranges  0x00000168       0x20 main.o

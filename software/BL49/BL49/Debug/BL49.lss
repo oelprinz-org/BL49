@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 00000318  00000000  00000000  00004100  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00002d1b  00000000  00000000  00004418  2**0
+  6 .debug_info   00002d1d  00000000  00000000  00004418  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00001567  00000000  00000000  00007133  2**0
+  7 .debug_abbrev 00001570  00000000  00000000  00007135  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00002387  00000000  00000000  0000869a  2**0
+  8 .debug_line   00002385  00000000  00000000  000086a5  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000009f8  00000000  00000000  0000aa24  2**2
+  9 .debug_frame  000009f8  00000000  00000000  0000aa2c  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00001126  00000000  00000000  0000b41c  2**0
+ 10 .debug_str    00001126  00000000  00000000  0000b424  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00001426  00000000  00000000  0000c542  2**0
+ 11 .debug_loc    00001426  00000000  00000000  0000c54a  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000268  00000000  00000000  0000d968  2**0
+ 12 .debug_ranges 00000268  00000000  00000000  0000d970  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -51,7 +51,7 @@ Disassembly of section .text:
       3c:	0c 94 8f 1c 	jmp	0x391e	; 0x391e <__vector_15>
       40:	0c 94 66 00 	jmp	0xcc	; 0xcc <__bad_interrupt>
       44:	0c 94 66 00 	jmp	0xcc	; 0xcc <__bad_interrupt>
-      48:	0c 94 00 10 	jmp	0x2000	; 0x2000 <__vector_18>
+      48:	0c 94 59 0e 	jmp	0x1cb2	; 0x1cb2 <__vector_18>
       4c:	0c 94 66 00 	jmp	0xcc	; 0xcc <__bad_interrupt>
       50:	0c 94 66 00 	jmp	0xcc	; 0xcc <__bad_interrupt>
       54:	0c 94 66 00 	jmp	0xcc	; 0xcc <__bad_interrupt>
@@ -671,8 +671,8 @@ uint8_t can_init(uint8_t mode)
     can_clear_all_mob();                        // c.f. function in "can_drv.c"
      4cc:	0e 94 75 01 	call	0x2ea	; 0x2ea <can_clear_all_mob>
 	
-	CANIE1 = (1 << IEMOB0);   			// Enable interrupts on mob1 for reception and transmission
-     4d0:	8f ed       	ldi	r24, 0xDF	; 223
+	CANIE2 = (1 << IEMOB0);   			// Enable interrupts on mob1 for reception and transmission
+     4d0:	8e ed       	ldi	r24, 0xDE	; 222
      4d2:	90 e0       	ldi	r25, 0x00	; 0
      4d4:	21 e0       	ldi	r18, 0x01	; 1
      4d6:	fc 01       	movw	r30, r24
@@ -3956,576 +3956,576 @@ uint8_t can_get_status (st_cmd_t* cmd)
     1cae:	cf 91       	pop	r28
     1cb0:	08 95       	ret
 
-00001cb2 <__low>:
+00001cb2 <__vector_18>:
+    
+ISR (CAN_INT_vect)
+{
+    1cb2:	1f 92       	push	r1
+    1cb4:	0f 92       	push	r0
+    1cb6:	00 90 5f 00 	lds	r0, 0x005F	; 0x80005f <__TEXT_REGION_LENGTH__+0x7f805f>
+    1cba:	0f 92       	push	r0
+    1cbc:	11 24       	eor	r1, r1
+    1cbe:	8f 93       	push	r24
+    1cc0:	9f 93       	push	r25
+    1cc2:	cf 93       	push	r28
+    1cc4:	df 93       	push	r29
+    1cc6:	00 d0       	rcall	.+0      	; 0x1cc8 <__vector_18+0x16>
+    1cc8:	cd b7       	in	r28, 0x3d	; 61
+    1cca:	de b7       	in	r29, 0x3e	; 62
+	int i = 10;
+    1ccc:	8a e0       	ldi	r24, 0x0A	; 10
+    1cce:	90 e0       	ldi	r25, 0x00	; 0
+    1cd0:	9a 83       	std	Y+2, r25	; 0x02
+    1cd2:	89 83       	std	Y+1, r24	; 0x01
+	i++;
+    1cd4:	89 81       	ldd	r24, Y+1	; 0x01
+    1cd6:	9a 81       	ldd	r25, Y+2	; 0x02
+    1cd8:	01 96       	adiw	r24, 0x01	; 1
+    1cda:	9a 83       	std	Y+2, r25	; 0x02
+    1cdc:	89 83       	std	Y+1, r24	; 0x01
+	
+    1cde:	00 00       	nop
+    1ce0:	0f 90       	pop	r0
+    1ce2:	0f 90       	pop	r0
+    1ce4:	df 91       	pop	r29
+    1ce6:	cf 91       	pop	r28
+    1ce8:	9f 91       	pop	r25
+    1cea:	8f 91       	pop	r24
+    1cec:	0f 90       	pop	r0
+    1cee:	00 92 5f 00 	sts	0x005F, r0	; 0x80005f <__TEXT_REGION_LENGTH__+0x7f805f>
+    1cf2:	0f 90       	pop	r0
+    1cf4:	1f 90       	pop	r1
+    1cf6:	18 95       	reti
+
+00001cf8 <__low>:
 	return (__x1 & ( 1 << __x2));
 }
 */
 
 static __inline uint8_t __low(uint16_t __x)
 {
-    1cb2:	cf 93       	push	r28
-    1cb4:	df 93       	push	r29
-    1cb6:	00 d0       	rcall	.+0      	; 0x1cb8 <__low+0x6>
-    1cb8:	cd b7       	in	r28, 0x3d	; 61
-    1cba:	de b7       	in	r29, 0x3e	; 62
-    1cbc:	9a 83       	std	Y+2, r25	; 0x02
-    1cbe:	89 83       	std	Y+1, r24	; 0x01
+    1cf8:	cf 93       	push	r28
+    1cfa:	df 93       	push	r29
+    1cfc:	00 d0       	rcall	.+0      	; 0x1cfe <__low+0x6>
+    1cfe:	cd b7       	in	r28, 0x3d	; 61
+    1d00:	de b7       	in	r29, 0x3e	; 62
+    1d02:	9a 83       	std	Y+2, r25	; 0x02
+    1d04:	89 83       	std	Y+1, r24	; 0x01
 	return (uint8_t) ((__x) & 0xFF);
-    1cc0:	89 81       	ldd	r24, Y+1	; 0x01
+    1d06:	89 81       	ldd	r24, Y+1	; 0x01
 }
-    1cc2:	0f 90       	pop	r0
-    1cc4:	0f 90       	pop	r0
-    1cc6:	df 91       	pop	r29
-    1cc8:	cf 91       	pop	r28
-    1cca:	08 95       	ret
+    1d08:	0f 90       	pop	r0
+    1d0a:	0f 90       	pop	r0
+    1d0c:	df 91       	pop	r29
+    1d0e:	cf 91       	pop	r28
+    1d10:	08 95       	ret
 
-00001ccc <__high>:
+00001d12 <__high>:
 
 static __inline uint8_t __high(uint16_t __x)
 {
-    1ccc:	cf 93       	push	r28
-    1cce:	df 93       	push	r29
-    1cd0:	00 d0       	rcall	.+0      	; 0x1cd2 <__high+0x6>
-    1cd2:	cd b7       	in	r28, 0x3d	; 61
-    1cd4:	de b7       	in	r29, 0x3e	; 62
-    1cd6:	9a 83       	std	Y+2, r25	; 0x02
-    1cd8:	89 83       	std	Y+1, r24	; 0x01
+    1d12:	cf 93       	push	r28
+    1d14:	df 93       	push	r29
+    1d16:	00 d0       	rcall	.+0      	; 0x1d18 <__high+0x6>
+    1d18:	cd b7       	in	r28, 0x3d	; 61
+    1d1a:	de b7       	in	r29, 0x3e	; 62
+    1d1c:	9a 83       	std	Y+2, r25	; 0x02
+    1d1e:	89 83       	std	Y+1, r24	; 0x01
 	return (uint8_t) (((__x)>>8) & 0xFF);
-    1cda:	89 81       	ldd	r24, Y+1	; 0x01
-    1cdc:	9a 81       	ldd	r25, Y+2	; 0x02
-    1cde:	89 2f       	mov	r24, r25
-    1ce0:	99 27       	eor	r25, r25
+    1d20:	89 81       	ldd	r24, Y+1	; 0x01
+    1d22:	9a 81       	ldd	r25, Y+2	; 0x02
+    1d24:	89 2f       	mov	r24, r25
+    1d26:	99 27       	eor	r25, r25
 }
-    1ce2:	0f 90       	pop	r0
-    1ce4:	0f 90       	pop	r0
-    1ce6:	df 91       	pop	r29
-    1ce8:	cf 91       	pop	r28
-    1cea:	08 95       	ret
+    1d28:	0f 90       	pop	r0
+    1d2a:	0f 90       	pop	r0
+    1d2c:	df 91       	pop	r29
+    1d2e:	cf 91       	pop	r28
+    1d30:	08 95       	ret
 
-00001cec <can_network_init>:
+00001d32 <can_network_init>:
 	while(can_cmd(&message) != CAN_CMD_ACCEPTED);					// wait for MOb to configure
 	while(can_get_status(&message) == CAN_STATUS_NOT_COMPLETED);	// wait for a transmit request to come in, and send a response
 	*/
 
 void can_network_init (uint8_t mode)
 {
-    1cec:	cf 93       	push	r28
-    1cee:	df 93       	push	r29
-    1cf0:	1f 92       	push	r1
-    1cf2:	cd b7       	in	r28, 0x3d	; 61
-    1cf4:	de b7       	in	r29, 0x3e	; 62
-    1cf6:	89 83       	std	Y+1, r24	; 0x01
+    1d32:	cf 93       	push	r28
+    1d34:	df 93       	push	r29
+    1d36:	1f 92       	push	r1
+    1d38:	cd b7       	in	r28, 0x3d	; 61
+    1d3a:	de b7       	in	r29, 0x3e	; 62
+    1d3c:	89 83       	std	Y+1, r24	; 0x01
 	can_init(mode);
-    1cf8:	89 81       	ldd	r24, Y+1	; 0x01
-    1cfa:	0e 94 59 02 	call	0x4b2	; 0x4b2 <can_init>
+    1d3e:	89 81       	ldd	r24, Y+1	; 0x01
+    1d40:	0e 94 59 02 	call	0x4b2	; 0x4b2 <can_init>
 	
 	// CANGIE |= (1 << ENIT)|(1 << ENRX); // enable receive interrupt...
 	
 	
 }
-    1cfe:	00 00       	nop
-    1d00:	0f 90       	pop	r0
-    1d02:	df 91       	pop	r29
-    1d04:	cf 91       	pop	r28
-    1d06:	08 95       	ret
+    1d44:	00 00       	nop
+    1d46:	0f 90       	pop	r0
+    1d48:	df 91       	pop	r29
+    1d4a:	cf 91       	pop	r28
+    1d4c:	08 95       	ret
 
-00001d08 <can_send_aem_message>:
+00001d4e <can_send_aem_message>:
 
 void can_send_aem_message(tSensor sensor)
 {
-    1d08:	ef 92       	push	r14
-    1d0a:	ff 92       	push	r15
-    1d0c:	0f 93       	push	r16
-    1d0e:	1f 93       	push	r17
-    1d10:	cf 93       	push	r28
-    1d12:	df 93       	push	r29
-    1d14:	cd b7       	in	r28, 0x3d	; 61
-    1d16:	de b7       	in	r29, 0x3e	; 62
-    1d18:	64 97       	sbiw	r28, 0x14	; 20
-    1d1a:	0f b6       	in	r0, 0x3f	; 63
-    1d1c:	f8 94       	cli
-    1d1e:	de bf       	out	0x3e, r29	; 62
-    1d20:	0f be       	out	0x3f, r0	; 63
-    1d22:	cd bf       	out	0x3d, r28	; 61
+    1d4e:	ef 92       	push	r14
+    1d50:	ff 92       	push	r15
+    1d52:	0f 93       	push	r16
+    1d54:	1f 93       	push	r17
+    1d56:	cf 93       	push	r28
+    1d58:	df 93       	push	r29
+    1d5a:	cd b7       	in	r28, 0x3d	; 61
+    1d5c:	de b7       	in	r29, 0x3e	; 62
+    1d5e:	64 97       	sbiw	r28, 0x14	; 20
+    1d60:	0f b6       	in	r0, 0x3f	; 63
+    1d62:	f8 94       	cli
+    1d64:	de bf       	out	0x3e, r29	; 62
+    1d66:	0f be       	out	0x3f, r0	; 63
+    1d68:	cd bf       	out	0x3d, r28	; 61
 	
 	aem_message.pt_data = &aem_pt_data[0];
 	
 	while(can_cmd(&aem_message) != CAN_CMD_ACCEPTED);					// wait for MOb to configure
 	while(can_get_status(&aem_message) == CAN_STATUS_NOT_COMPLETED);	// wait for a transmit request to come in, and send a response
 }
-    1d24:	0d b7       	in	r16, 0x3d	; 61
-    1d26:	1e b7       	in	r17, 0x3e	; 62
+    1d6a:	0d b7       	in	r16, 0x3d	; 61
+    1d6c:	1e b7       	in	r17, 0x3e	; 62
 	
 	
 }
 
 void can_send_aem_message(tSensor sensor)
 {
-    1d28:	8d b7       	in	r24, 0x3d	; 61
-    1d2a:	9e b7       	in	r25, 0x3e	; 62
-    1d2c:	7c 01       	movw	r14, r24
+    1d6e:	8d b7       	in	r24, 0x3d	; 61
+    1d70:	9e b7       	in	r25, 0x3e	; 62
+    1d72:	7c 01       	movw	r14, r24
 	uint16_t tmpLambda;
 	
 	T_BYTE6_AEM byte6;
 	T_BYTE7_AEM byte7;	
 	
 	aem_message.id.ext = 0x180;
-    1d2e:	80 e8       	ldi	r24, 0x80	; 128
-    1d30:	91 e0       	ldi	r25, 0x01	; 1
-    1d32:	a0 e0       	ldi	r26, 0x00	; 0
-    1d34:	b0 e0       	ldi	r27, 0x00	; 0
-    1d36:	89 87       	std	Y+9, r24	; 0x09
-    1d38:	9a 87       	std	Y+10, r25	; 0x0a
-    1d3a:	ab 87       	std	Y+11, r26	; 0x0b
-    1d3c:	bc 87       	std	Y+12, r27	; 0x0c
+    1d74:	80 e8       	ldi	r24, 0x80	; 128
+    1d76:	91 e0       	ldi	r25, 0x01	; 1
+    1d78:	a0 e0       	ldi	r26, 0x00	; 0
+    1d7a:	b0 e0       	ldi	r27, 0x00	; 0
+    1d7c:	89 87       	std	Y+9, r24	; 0x09
+    1d7e:	9a 87       	std	Y+10, r25	; 0x0a
+    1d80:	ab 87       	std	Y+11, r26	; 0x0b
+    1d82:	bc 87       	std	Y+12, r27	; 0x0c
 	aem_message.ctrl.ide = 1;
-    1d3e:	81 e0       	ldi	r24, 0x01	; 1
-    1d40:	8a 8b       	std	Y+18, r24	; 0x12
+    1d84:	81 e0       	ldi	r24, 0x01	; 1
+    1d86:	8a 8b       	std	Y+18, r24	; 0x12
 	aem_message.ctrl.rtr = 0;
-    1d42:	19 8a       	std	Y+17, r1	; 0x11
+    1d88:	19 8a       	std	Y+17, r1	; 0x11
 	aem_message.dlc = 8;
-    1d44:	88 e0       	ldi	r24, 0x08	; 8
-    1d46:	8d 87       	std	Y+13, r24	; 0x0d
+    1d8a:	88 e0       	ldi	r24, 0x08	; 8
+    1d8c:	8d 87       	std	Y+13, r24	; 0x0d
 	aem_message.cmd = CMD_TX_DATA;
-    1d48:	82 e0       	ldi	r24, 0x02	; 2
-    1d4a:	88 87       	std	Y+8, r24	; 0x08
+    1d8e:	82 e0       	ldi	r24, 0x02	; 2
+    1d90:	88 87       	std	Y+8, r24	; 0x08
 	uint8_t aem_pt_data[aem_message.dlc];
-    1d4c:	2d 85       	ldd	r18, Y+13	; 0x0d
-    1d4e:	82 2f       	mov	r24, r18
-    1d50:	90 e0       	ldi	r25, 0x00	; 0
-    1d52:	01 97       	sbiw	r24, 0x01	; 1
-    1d54:	9a 83       	std	Y+2, r25	; 0x02
-    1d56:	89 83       	std	Y+1, r24	; 0x01
-    1d58:	82 2f       	mov	r24, r18
-    1d5a:	90 e0       	ldi	r25, 0x00	; 0
-    1d5c:	2d b7       	in	r18, 0x3d	; 61
-    1d5e:	3e b7       	in	r19, 0x3e	; 62
-    1d60:	28 1b       	sub	r18, r24
-    1d62:	39 0b       	sbc	r19, r25
-    1d64:	0f b6       	in	r0, 0x3f	; 63
-    1d66:	f8 94       	cli
-    1d68:	3e bf       	out	0x3e, r19	; 62
-    1d6a:	0f be       	out	0x3f, r0	; 63
-    1d6c:	2d bf       	out	0x3d, r18	; 61
-    1d6e:	8d b7       	in	r24, 0x3d	; 61
-    1d70:	9e b7       	in	r25, 0x3e	; 62
-    1d72:	01 96       	adiw	r24, 0x01	; 1
-    1d74:	9c 83       	std	Y+4, r25	; 0x04
-    1d76:	8b 83       	std	Y+3, r24	; 0x03
+    1d92:	2d 85       	ldd	r18, Y+13	; 0x0d
+    1d94:	82 2f       	mov	r24, r18
+    1d96:	90 e0       	ldi	r25, 0x00	; 0
+    1d98:	01 97       	sbiw	r24, 0x01	; 1
+    1d9a:	9a 83       	std	Y+2, r25	; 0x02
+    1d9c:	89 83       	std	Y+1, r24	; 0x01
+    1d9e:	82 2f       	mov	r24, r18
+    1da0:	90 e0       	ldi	r25, 0x00	; 0
+    1da2:	2d b7       	in	r18, 0x3d	; 61
+    1da4:	3e b7       	in	r19, 0x3e	; 62
+    1da6:	28 1b       	sub	r18, r24
+    1da8:	39 0b       	sbc	r19, r25
+    1daa:	0f b6       	in	r0, 0x3f	; 63
+    1dac:	f8 94       	cli
+    1dae:	3e bf       	out	0x3e, r19	; 62
+    1db0:	0f be       	out	0x3f, r0	; 63
+    1db2:	2d bf       	out	0x3d, r18	; 61
+    1db4:	8d b7       	in	r24, 0x3d	; 61
+    1db6:	9e b7       	in	r25, 0x3e	; 62
+    1db8:	01 96       	adiw	r24, 0x01	; 1
+    1dba:	9c 83       	std	Y+4, r25	; 0x04
+    1dbc:	8b 83       	std	Y+3, r24	; 0x03
 	
 	tmpLambda = sensor.Lambda*10;
-    1d78:	8d a5       	ldd	r24, Y+45	; 0x2d
-    1d7a:	9e a5       	ldd	r25, Y+46	; 0x2e
-    1d7c:	88 0f       	add	r24, r24
-    1d7e:	99 1f       	adc	r25, r25
-    1d80:	9c 01       	movw	r18, r24
-    1d82:	22 0f       	add	r18, r18
-    1d84:	33 1f       	adc	r19, r19
-    1d86:	22 0f       	add	r18, r18
-    1d88:	33 1f       	adc	r19, r19
-    1d8a:	82 0f       	add	r24, r18
-    1d8c:	93 1f       	adc	r25, r19
-    1d8e:	9e 83       	std	Y+6, r25	; 0x06
-    1d90:	8d 83       	std	Y+5, r24	; 0x05
+    1dbe:	8d a5       	ldd	r24, Y+45	; 0x2d
+    1dc0:	9e a5       	ldd	r25, Y+46	; 0x2e
+    1dc2:	88 0f       	add	r24, r24
+    1dc4:	99 1f       	adc	r25, r25
+    1dc6:	9c 01       	movw	r18, r24
+    1dc8:	22 0f       	add	r18, r18
+    1dca:	33 1f       	adc	r19, r19
+    1dcc:	22 0f       	add	r18, r18
+    1dce:	33 1f       	adc	r19, r19
+    1dd0:	82 0f       	add	r24, r18
+    1dd2:	93 1f       	adc	r25, r19
+    1dd4:	9e 83       	std	Y+6, r25	; 0x06
+    1dd6:	8d 83       	std	Y+5, r24	; 0x05
 	aem_pt_data[0] = high(tmpLambda);
-    1d92:	8d 81       	ldd	r24, Y+5	; 0x05
-    1d94:	9e 81       	ldd	r25, Y+6	; 0x06
-    1d96:	0e 94 66 0e 	call	0x1ccc	; 0x1ccc <__high>
-    1d9a:	28 2f       	mov	r18, r24
-    1d9c:	8b 81       	ldd	r24, Y+3	; 0x03
-    1d9e:	9c 81       	ldd	r25, Y+4	; 0x04
-    1da0:	fc 01       	movw	r30, r24
-    1da2:	20 83       	st	Z, r18
+    1dd8:	8d 81       	ldd	r24, Y+5	; 0x05
+    1dda:	9e 81       	ldd	r25, Y+6	; 0x06
+    1ddc:	0e 94 89 0e 	call	0x1d12	; 0x1d12 <__high>
+    1de0:	28 2f       	mov	r18, r24
+    1de2:	8b 81       	ldd	r24, Y+3	; 0x03
+    1de4:	9c 81       	ldd	r25, Y+4	; 0x04
+    1de6:	fc 01       	movw	r30, r24
+    1de8:	20 83       	st	Z, r18
 	aem_pt_data[1] = low(tmpLambda);
-    1da4:	8d 81       	ldd	r24, Y+5	; 0x05
-    1da6:	9e 81       	ldd	r25, Y+6	; 0x06
-    1da8:	0e 94 59 0e 	call	0x1cb2	; 0x1cb2 <__low>
-    1dac:	28 2f       	mov	r18, r24
-    1dae:	8b 81       	ldd	r24, Y+3	; 0x03
-    1db0:	9c 81       	ldd	r25, Y+4	; 0x04
-    1db2:	fc 01       	movw	r30, r24
-    1db4:	21 83       	std	Z+1, r18	; 0x01
+    1dea:	8d 81       	ldd	r24, Y+5	; 0x05
+    1dec:	9e 81       	ldd	r25, Y+6	; 0x06
+    1dee:	0e 94 7c 0e 	call	0x1cf8	; 0x1cf8 <__low>
+    1df2:	28 2f       	mov	r18, r24
+    1df4:	8b 81       	ldd	r24, Y+3	; 0x03
+    1df6:	9c 81       	ldd	r25, Y+4	; 0x04
+    1df8:	fc 01       	movw	r30, r24
+    1dfa:	21 83       	std	Z+1, r18	; 0x01
 
 	aem_pt_data[2] = high(sensor.O2);
-    1db6:	8f a5       	ldd	r24, Y+47	; 0x2f
-    1db8:	98 a9       	ldd	r25, Y+48	; 0x30
-    1dba:	0e 94 66 0e 	call	0x1ccc	; 0x1ccc <__high>
-    1dbe:	28 2f       	mov	r18, r24
-    1dc0:	8b 81       	ldd	r24, Y+3	; 0x03
-    1dc2:	9c 81       	ldd	r25, Y+4	; 0x04
-    1dc4:	fc 01       	movw	r30, r24
-    1dc6:	22 83       	std	Z+2, r18	; 0x02
+    1dfc:	8f a5       	ldd	r24, Y+47	; 0x2f
+    1dfe:	98 a9       	ldd	r25, Y+48	; 0x30
+    1e00:	0e 94 89 0e 	call	0x1d12	; 0x1d12 <__high>
+    1e04:	28 2f       	mov	r18, r24
+    1e06:	8b 81       	ldd	r24, Y+3	; 0x03
+    1e08:	9c 81       	ldd	r25, Y+4	; 0x04
+    1e0a:	fc 01       	movw	r30, r24
+    1e0c:	22 83       	std	Z+2, r18	; 0x02
 	aem_pt_data[3] = low(sensor.O2);
-    1dc8:	8f a5       	ldd	r24, Y+47	; 0x2f
-    1dca:	98 a9       	ldd	r25, Y+48	; 0x30
-    1dcc:	0e 94 59 0e 	call	0x1cb2	; 0x1cb2 <__low>
-    1dd0:	28 2f       	mov	r18, r24
-    1dd2:	8b 81       	ldd	r24, Y+3	; 0x03
-    1dd4:	9c 81       	ldd	r25, Y+4	; 0x04
-    1dd6:	fc 01       	movw	r30, r24
-    1dd8:	23 83       	std	Z+3, r18	; 0x03
+    1e0e:	8f a5       	ldd	r24, Y+47	; 0x2f
+    1e10:	98 a9       	ldd	r25, Y+48	; 0x30
+    1e12:	0e 94 7c 0e 	call	0x1cf8	; 0x1cf8 <__low>
+    1e16:	28 2f       	mov	r18, r24
+    1e18:	8b 81       	ldd	r24, Y+3	; 0x03
+    1e1a:	9c 81       	ldd	r25, Y+4	; 0x04
+    1e1c:	fc 01       	movw	r30, r24
+    1e1e:	23 83       	std	Z+3, r18	; 0x03
 
 	aem_pt_data[4] = (sensor.SystemVoltage / 100);
-    1dda:	8b a9       	ldd	r24, Y+51	; 0x33
-    1ddc:	9c a9       	ldd	r25, Y+52	; 0x34
-    1dde:	96 95       	lsr	r25
-    1de0:	87 95       	ror	r24
-    1de2:	96 95       	lsr	r25
-    1de4:	87 95       	ror	r24
-    1de6:	9c 01       	movw	r18, r24
-    1de8:	ab e7       	ldi	r26, 0x7B	; 123
-    1dea:	b4 e1       	ldi	r27, 0x14	; 20
-    1dec:	0e 94 89 1f 	call	0x3f12	; 0x3f12 <__umulhisi3>
-    1df0:	96 95       	lsr	r25
-    1df2:	87 95       	ror	r24
-    1df4:	28 2f       	mov	r18, r24
-    1df6:	8b 81       	ldd	r24, Y+3	; 0x03
-    1df8:	9c 81       	ldd	r25, Y+4	; 0x04
-    1dfa:	fc 01       	movw	r30, r24
-    1dfc:	24 83       	std	Z+4, r18	; 0x04
+    1e20:	8b a9       	ldd	r24, Y+51	; 0x33
+    1e22:	9c a9       	ldd	r25, Y+52	; 0x34
+    1e24:	96 95       	lsr	r25
+    1e26:	87 95       	ror	r24
+    1e28:	96 95       	lsr	r25
+    1e2a:	87 95       	ror	r24
+    1e2c:	9c 01       	movw	r18, r24
+    1e2e:	ab e7       	ldi	r26, 0x7B	; 123
+    1e30:	b4 e1       	ldi	r27, 0x14	; 20
+    1e32:	0e 94 89 1f 	call	0x3f12	; 0x3f12 <__umulhisi3>
+    1e36:	96 95       	lsr	r25
+    1e38:	87 95       	ror	r24
+    1e3a:	28 2f       	mov	r18, r24
+    1e3c:	8b 81       	ldd	r24, Y+3	; 0x03
+    1e3e:	9c 81       	ldd	r25, Y+4	; 0x04
+    1e40:	fc 01       	movw	r30, r24
+    1e42:	24 83       	std	Z+4, r18	; 0x04
 	aem_pt_data[5] = (sensor.HeaterVoltage / 100);
-    1dfe:	89 a9       	ldd	r24, Y+49	; 0x31
-    1e00:	9a a9       	ldd	r25, Y+50	; 0x32
-    1e02:	96 95       	lsr	r25
-    1e04:	87 95       	ror	r24
-    1e06:	96 95       	lsr	r25
-    1e08:	87 95       	ror	r24
-    1e0a:	9c 01       	movw	r18, r24
-    1e0c:	ab e7       	ldi	r26, 0x7B	; 123
-    1e0e:	b4 e1       	ldi	r27, 0x14	; 20
-    1e10:	0e 94 89 1f 	call	0x3f12	; 0x3f12 <__umulhisi3>
-    1e14:	96 95       	lsr	r25
-    1e16:	87 95       	ror	r24
-    1e18:	28 2f       	mov	r18, r24
-    1e1a:	8b 81       	ldd	r24, Y+3	; 0x03
-    1e1c:	9c 81       	ldd	r25, Y+4	; 0x04
-    1e1e:	fc 01       	movw	r30, r24
-    1e20:	25 83       	std	Z+5, r18	; 0x05
+    1e44:	89 a9       	ldd	r24, Y+49	; 0x31
+    1e46:	9a a9       	ldd	r25, Y+50	; 0x32
+    1e48:	96 95       	lsr	r25
+    1e4a:	87 95       	ror	r24
+    1e4c:	96 95       	lsr	r25
+    1e4e:	87 95       	ror	r24
+    1e50:	9c 01       	movw	r18, r24
+    1e52:	ab e7       	ldi	r26, 0x7B	; 123
+    1e54:	b4 e1       	ldi	r27, 0x14	; 20
+    1e56:	0e 94 89 1f 	call	0x3f12	; 0x3f12 <__umulhisi3>
+    1e5a:	96 95       	lsr	r25
+    1e5c:	87 95       	ror	r24
+    1e5e:	28 2f       	mov	r18, r24
+    1e60:	8b 81       	ldd	r24, Y+3	; 0x03
+    1e62:	9c 81       	ldd	r25, Y+4	; 0x04
+    1e64:	fc 01       	movw	r30, r24
+    1e66:	25 83       	std	Z+5, r18	; 0x05
 	
 	byte6.signals.SensorDetectedStatus = sensor.SensorDetectedStatus;
-    1e22:	89 ad       	ldd	r24, Y+57	; 0x39
-    1e24:	8f 70       	andi	r24, 0x0F	; 15
-    1e26:	8f 70       	andi	r24, 0x0F	; 15
-    1e28:	9b 89       	ldd	r25, Y+19	; 0x13
-    1e2a:	90 7f       	andi	r25, 0xF0	; 240
-    1e2c:	89 2b       	or	r24, r25
-    1e2e:	8b 8b       	std	Y+19, r24	; 0x13
+    1e68:	89 ad       	ldd	r24, Y+57	; 0x39
+    1e6a:	8f 70       	andi	r24, 0x0F	; 15
+    1e6c:	8f 70       	andi	r24, 0x0F	; 15
+    1e6e:	9b 89       	ldd	r25, Y+19	; 0x13
+    1e70:	90 7f       	andi	r25, 0xF0	; 240
+    1e72:	89 2b       	or	r24, r25
+    1e74:	8b 8b       	std	Y+19, r24	; 0x13
 	byte6.signals.DataValidState = 0x1;
-    1e30:	8b 89       	ldd	r24, Y+19	; 0x13
-    1e32:	80 68       	ori	r24, 0x80	; 128
-    1e34:	8b 8b       	std	Y+19, r24	; 0x13
+    1e76:	8b 89       	ldd	r24, Y+19	; 0x13
+    1e78:	80 68       	ori	r24, 0x80	; 128
+    1e7a:	8b 8b       	std	Y+19, r24	; 0x13
 	byte6.signals.UsingFreeAirCal = 0x0;
-    1e36:	8b 89       	ldd	r24, Y+19	; 0x13
-    1e38:	8f 7d       	andi	r24, 0xDF	; 223
-    1e3a:	8b 8b       	std	Y+19, r24	; 0x13
+    1e7c:	8b 89       	ldd	r24, Y+19	; 0x13
+    1e7e:	8f 7d       	andi	r24, 0xDF	; 223
+    1e80:	8b 8b       	std	Y+19, r24	; 0x13
 	aem_pt_data[6] = byte6.raw_byte;
-    1e3c:	2b 89       	ldd	r18, Y+19	; 0x13
-    1e3e:	8b 81       	ldd	r24, Y+3	; 0x03
-    1e40:	9c 81       	ldd	r25, Y+4	; 0x04
-    1e42:	fc 01       	movw	r30, r24
-    1e44:	26 83       	std	Z+6, r18	; 0x06
+    1e82:	2b 89       	ldd	r18, Y+19	; 0x13
+    1e84:	8b 81       	ldd	r24, Y+3	; 0x03
+    1e86:	9c 81       	ldd	r25, Y+4	; 0x04
+    1e88:	fc 01       	movw	r30, r24
+    1e8a:	26 83       	std	Z+6, r18	; 0x06
 	
 	byte7.signals.SensorFaultState = sensor.SensorFaultState;
-    1e46:	88 ad       	ldd	r24, Y+56	; 0x38
-    1e48:	81 70       	andi	r24, 0x01	; 1
-    1e4a:	81 70       	andi	r24, 0x01	; 1
-    1e4c:	82 95       	swap	r24
-    1e4e:	88 0f       	add	r24, r24
-    1e50:	88 0f       	add	r24, r24
-    1e52:	80 7c       	andi	r24, 0xC0	; 192
-    1e54:	9c 89       	ldd	r25, Y+20	; 0x14
-    1e56:	9f 7b       	andi	r25, 0xBF	; 191
-    1e58:	89 2b       	or	r24, r25
-    1e5a:	8c 8b       	std	Y+20, r24	; 0x14
+    1e8c:	88 ad       	ldd	r24, Y+56	; 0x38
+    1e8e:	81 70       	andi	r24, 0x01	; 1
+    1e90:	81 70       	andi	r24, 0x01	; 1
+    1e92:	82 95       	swap	r24
+    1e94:	88 0f       	add	r24, r24
+    1e96:	88 0f       	add	r24, r24
+    1e98:	80 7c       	andi	r24, 0xC0	; 192
+    1e9a:	9c 89       	ldd	r25, Y+20	; 0x14
+    1e9c:	9f 7b       	andi	r25, 0xBF	; 191
+    1e9e:	89 2b       	or	r24, r25
+    1ea0:	8c 8b       	std	Y+20, r24	; 0x14
 	byte7.signals.SensorStatus = sensor.SensorStatus;
-    1e5c:	8f a9       	ldd	r24, Y+55	; 0x37
-    1e5e:	8f 71       	andi	r24, 0x1F	; 31
-    1e60:	8f 71       	andi	r24, 0x1F	; 31
-    1e62:	9c 89       	ldd	r25, Y+20	; 0x14
-    1e64:	90 7e       	andi	r25, 0xE0	; 224
-    1e66:	89 2b       	or	r24, r25
-    1e68:	8c 8b       	std	Y+20, r24	; 0x14
+    1ea2:	8f a9       	ldd	r24, Y+55	; 0x37
+    1ea4:	8f 71       	andi	r24, 0x1F	; 31
+    1ea6:	8f 71       	andi	r24, 0x1F	; 31
+    1ea8:	9c 89       	ldd	r25, Y+20	; 0x14
+    1eaa:	90 7e       	andi	r25, 0xE0	; 224
+    1eac:	89 2b       	or	r24, r25
+    1eae:	8c 8b       	std	Y+20, r24	; 0x14
 	aem_pt_data[7] = byte7.raw_byte;
-    1e6a:	2c 89       	ldd	r18, Y+20	; 0x14
-    1e6c:	8b 81       	ldd	r24, Y+3	; 0x03
-    1e6e:	9c 81       	ldd	r25, Y+4	; 0x04
-    1e70:	fc 01       	movw	r30, r24
-    1e72:	27 83       	std	Z+7, r18	; 0x07
+    1eb0:	2c 89       	ldd	r18, Y+20	; 0x14
+    1eb2:	8b 81       	ldd	r24, Y+3	; 0x03
+    1eb4:	9c 81       	ldd	r25, Y+4	; 0x04
+    1eb6:	fc 01       	movw	r30, r24
+    1eb8:	27 83       	std	Z+7, r18	; 0x07
 	
 	aem_message.pt_data = &aem_pt_data[0];
-    1e74:	8b 81       	ldd	r24, Y+3	; 0x03
-    1e76:	9c 81       	ldd	r25, Y+4	; 0x04
-    1e78:	9f 87       	std	Y+15, r25	; 0x0f
-    1e7a:	8e 87       	std	Y+14, r24	; 0x0e
+    1eba:	8b 81       	ldd	r24, Y+3	; 0x03
+    1ebc:	9c 81       	ldd	r25, Y+4	; 0x04
+    1ebe:	9f 87       	std	Y+15, r25	; 0x0f
+    1ec0:	8e 87       	std	Y+14, r24	; 0x0e
 	
 	while(can_cmd(&aem_message) != CAN_CMD_ACCEPTED);					// wait for MOb to configure
-    1e7c:	00 00       	nop
-    1e7e:	ce 01       	movw	r24, r28
-    1e80:	07 96       	adiw	r24, 0x07	; 7
-    1e82:	0e 94 90 02 	call	0x520	; 0x520 <can_cmd>
-    1e86:	88 23       	and	r24, r24
-    1e88:	d1 f7       	brne	.-12     	; 0x1e7e <can_send_aem_message+0x176>
+    1ec2:	00 00       	nop
+    1ec4:	ce 01       	movw	r24, r28
+    1ec6:	07 96       	adiw	r24, 0x07	; 7
+    1ec8:	0e 94 90 02 	call	0x520	; 0x520 <can_cmd>
+    1ecc:	88 23       	and	r24, r24
+    1ece:	d1 f7       	brne	.-12     	; 0x1ec4 <can_send_aem_message+0x176>
 	while(can_get_status(&aem_message) == CAN_STATUS_NOT_COMPLETED);	// wait for a transmit request to come in, and send a response
-    1e8a:	00 00       	nop
-    1e8c:	ce 01       	movw	r24, r28
-    1e8e:	07 96       	adiw	r24, 0x07	; 7
-    1e90:	0e 94 26 0d 	call	0x1a4c	; 0x1a4c <can_get_status>
-    1e94:	81 30       	cpi	r24, 0x01	; 1
-    1e96:	d1 f3       	breq	.-12     	; 0x1e8c <can_send_aem_message+0x184>
-    1e98:	0f b6       	in	r0, 0x3f	; 63
-    1e9a:	f8 94       	cli
-    1e9c:	fe be       	out	0x3e, r15	; 62
-    1e9e:	0f be       	out	0x3f, r0	; 63
-    1ea0:	ed be       	out	0x3d, r14	; 61
+    1ed0:	00 00       	nop
+    1ed2:	ce 01       	movw	r24, r28
+    1ed4:	07 96       	adiw	r24, 0x07	; 7
+    1ed6:	0e 94 26 0d 	call	0x1a4c	; 0x1a4c <can_get_status>
+    1eda:	81 30       	cpi	r24, 0x01	; 1
+    1edc:	d1 f3       	breq	.-12     	; 0x1ed2 <can_send_aem_message+0x184>
+    1ede:	0f b6       	in	r0, 0x3f	; 63
+    1ee0:	f8 94       	cli
+    1ee2:	fe be       	out	0x3e, r15	; 62
+    1ee4:	0f be       	out	0x3f, r0	; 63
+    1ee6:	ed be       	out	0x3d, r14	; 61
 }
-    1ea2:	00 00       	nop
-    1ea4:	0f b6       	in	r0, 0x3f	; 63
-    1ea6:	f8 94       	cli
-    1ea8:	1e bf       	out	0x3e, r17	; 62
-    1eaa:	0f be       	out	0x3f, r0	; 63
-    1eac:	0d bf       	out	0x3d, r16	; 61
-    1eae:	64 96       	adiw	r28, 0x14	; 20
-    1eb0:	0f b6       	in	r0, 0x3f	; 63
-    1eb2:	f8 94       	cli
-    1eb4:	de bf       	out	0x3e, r29	; 62
-    1eb6:	0f be       	out	0x3f, r0	; 63
-    1eb8:	cd bf       	out	0x3d, r28	; 61
-    1eba:	df 91       	pop	r29
-    1ebc:	cf 91       	pop	r28
-    1ebe:	1f 91       	pop	r17
-    1ec0:	0f 91       	pop	r16
-    1ec2:	ff 90       	pop	r15
-    1ec4:	ef 90       	pop	r14
-    1ec6:	08 95       	ret
+    1ee8:	00 00       	nop
+    1eea:	0f b6       	in	r0, 0x3f	; 63
+    1eec:	f8 94       	cli
+    1eee:	1e bf       	out	0x3e, r17	; 62
+    1ef0:	0f be       	out	0x3f, r0	; 63
+    1ef2:	0d bf       	out	0x3d, r16	; 61
+    1ef4:	64 96       	adiw	r28, 0x14	; 20
+    1ef6:	0f b6       	in	r0, 0x3f	; 63
+    1ef8:	f8 94       	cli
+    1efa:	de bf       	out	0x3e, r29	; 62
+    1efc:	0f be       	out	0x3f, r0	; 63
+    1efe:	cd bf       	out	0x3d, r28	; 61
+    1f00:	df 91       	pop	r29
+    1f02:	cf 91       	pop	r28
+    1f04:	1f 91       	pop	r17
+    1f06:	0f 91       	pop	r16
+    1f08:	ff 90       	pop	r15
+    1f0a:	ef 90       	pop	r14
+    1f0c:	08 95       	ret
 
-00001ec8 <can_send_debug_message>:
+00001f0e <can_send_debug_message>:
 
 void can_send_debug_message(uint16_t ur_ref_raw, uint16_t ur_raw, uint8_t pid, uint8_t signature, uint8_t diagRegister)
 {
-    1ec8:	ef 92       	push	r14
-    1eca:	ff 92       	push	r15
-    1ecc:	0f 93       	push	r16
-    1ece:	1f 93       	push	r17
-    1ed0:	cf 93       	push	r28
-    1ed2:	df 93       	push	r29
-    1ed4:	cd b7       	in	r28, 0x3d	; 61
-    1ed6:	de b7       	in	r29, 0x3e	; 62
-    1ed8:	67 97       	sbiw	r28, 0x17	; 23
-    1eda:	0f b6       	in	r0, 0x3f	; 63
-    1edc:	f8 94       	cli
-    1ede:	de bf       	out	0x3e, r29	; 62
-    1ee0:	0f be       	out	0x3f, r0	; 63
-    1ee2:	cd bf       	out	0x3d, r28	; 61
-    1ee4:	9a 8b       	std	Y+18, r25	; 0x12
-    1ee6:	89 8b       	std	Y+17, r24	; 0x11
-    1ee8:	7c 8b       	std	Y+20, r23	; 0x14
-    1eea:	6b 8b       	std	Y+19, r22	; 0x13
-    1eec:	4d 8b       	std	Y+21, r20	; 0x15
-    1eee:	2e 8b       	std	Y+22, r18	; 0x16
-    1ef0:	0f 8b       	std	Y+23, r16	; 0x17
+    1f0e:	ef 92       	push	r14
+    1f10:	ff 92       	push	r15
+    1f12:	0f 93       	push	r16
+    1f14:	1f 93       	push	r17
+    1f16:	cf 93       	push	r28
+    1f18:	df 93       	push	r29
+    1f1a:	cd b7       	in	r28, 0x3d	; 61
+    1f1c:	de b7       	in	r29, 0x3e	; 62
+    1f1e:	67 97       	sbiw	r28, 0x17	; 23
+    1f20:	0f b6       	in	r0, 0x3f	; 63
+    1f22:	f8 94       	cli
+    1f24:	de bf       	out	0x3e, r29	; 62
+    1f26:	0f be       	out	0x3f, r0	; 63
+    1f28:	cd bf       	out	0x3d, r28	; 61
+    1f2a:	9a 8b       	std	Y+18, r25	; 0x12
+    1f2c:	89 8b       	std	Y+17, r24	; 0x11
+    1f2e:	7c 8b       	std	Y+20, r23	; 0x14
+    1f30:	6b 8b       	std	Y+19, r22	; 0x13
+    1f32:	4d 8b       	std	Y+21, r20	; 0x15
+    1f34:	2e 8b       	std	Y+22, r18	; 0x16
+    1f36:	0f 8b       	std	Y+23, r16	; 0x17
 	
 	debug_message.pt_data = &pt_data[0];
 	
 	while(can_cmd(&debug_message) != CAN_CMD_ACCEPTED);					// wait for MOb to configure
 	while(can_get_status(&debug_message) == CAN_STATUS_NOT_COMPLETED);	// wait for a transmit request to come in, and send a response
 }
-    1ef2:	0d b7       	in	r16, 0x3d	; 61
-    1ef4:	1e b7       	in	r17, 0x3e	; 62
+    1f38:	0d b7       	in	r16, 0x3d	; 61
+    1f3a:	1e b7       	in	r17, 0x3e	; 62
 	while(can_cmd(&aem_message) != CAN_CMD_ACCEPTED);					// wait for MOb to configure
 	while(can_get_status(&aem_message) == CAN_STATUS_NOT_COMPLETED);	// wait for a transmit request to come in, and send a response
 }
 
 void can_send_debug_message(uint16_t ur_ref_raw, uint16_t ur_raw, uint8_t pid, uint8_t signature, uint8_t diagRegister)
 {
-    1ef6:	8d b7       	in	r24, 0x3d	; 61
-    1ef8:	9e b7       	in	r25, 0x3e	; 62
-    1efa:	7c 01       	movw	r14, r24
-	st_cmd_t debug_message;
-	debug_message.id.ext = 0x200;
-    1efc:	80 e0       	ldi	r24, 0x00	; 0
-    1efe:	92 e0       	ldi	r25, 0x02	; 2
-    1f00:	a0 e0       	ldi	r26, 0x00	; 0
-    1f02:	b0 e0       	ldi	r27, 0x00	; 0
-    1f04:	8f 83       	std	Y+7, r24	; 0x07
-    1f06:	98 87       	std	Y+8, r25	; 0x08
-    1f08:	a9 87       	std	Y+9, r26	; 0x09
-    1f0a:	ba 87       	std	Y+10, r27	; 0x0a
-	debug_message.ctrl.ide = 1;
-    1f0c:	81 e0       	ldi	r24, 0x01	; 1
-    1f0e:	88 8b       	std	Y+16, r24	; 0x10
-	debug_message.ctrl.rtr = 0;
-    1f10:	1f 86       	std	Y+15, r1	; 0x0f
-	debug_message.dlc = 7;
-    1f12:	87 e0       	ldi	r24, 0x07	; 7
-    1f14:	8b 87       	std	Y+11, r24	; 0x0b
-	debug_message.cmd = CMD_TX_DATA;
-    1f16:	82 e0       	ldi	r24, 0x02	; 2
-    1f18:	8e 83       	std	Y+6, r24	; 0x06
-	uint8_t pt_data[debug_message.dlc];
-    1f1a:	2b 85       	ldd	r18, Y+11	; 0x0b
-    1f1c:	82 2f       	mov	r24, r18
-    1f1e:	90 e0       	ldi	r25, 0x00	; 0
-    1f20:	01 97       	sbiw	r24, 0x01	; 1
-    1f22:	9a 83       	std	Y+2, r25	; 0x02
-    1f24:	89 83       	std	Y+1, r24	; 0x01
-    1f26:	82 2f       	mov	r24, r18
-    1f28:	90 e0       	ldi	r25, 0x00	; 0
-    1f2a:	2d b7       	in	r18, 0x3d	; 61
-    1f2c:	3e b7       	in	r19, 0x3e	; 62
-    1f2e:	28 1b       	sub	r18, r24
-    1f30:	39 0b       	sbc	r19, r25
-    1f32:	0f b6       	in	r0, 0x3f	; 63
-    1f34:	f8 94       	cli
-    1f36:	3e bf       	out	0x3e, r19	; 62
-    1f38:	0f be       	out	0x3f, r0	; 63
-    1f3a:	2d bf       	out	0x3d, r18	; 61
     1f3c:	8d b7       	in	r24, 0x3d	; 61
     1f3e:	9e b7       	in	r25, 0x3e	; 62
-    1f40:	01 96       	adiw	r24, 0x01	; 1
-    1f42:	9c 83       	std	Y+4, r25	; 0x04
-    1f44:	8b 83       	std	Y+3, r24	; 0x03
+    1f40:	7c 01       	movw	r14, r24
+	st_cmd_t debug_message;
+	debug_message.id.ext = 0x200;
+    1f42:	80 e0       	ldi	r24, 0x00	; 0
+    1f44:	92 e0       	ldi	r25, 0x02	; 2
+    1f46:	a0 e0       	ldi	r26, 0x00	; 0
+    1f48:	b0 e0       	ldi	r27, 0x00	; 0
+    1f4a:	8f 83       	std	Y+7, r24	; 0x07
+    1f4c:	98 87       	std	Y+8, r25	; 0x08
+    1f4e:	a9 87       	std	Y+9, r26	; 0x09
+    1f50:	ba 87       	std	Y+10, r27	; 0x0a
+	debug_message.ctrl.ide = 1;
+    1f52:	81 e0       	ldi	r24, 0x01	; 1
+    1f54:	88 8b       	std	Y+16, r24	; 0x10
+	debug_message.ctrl.rtr = 0;
+    1f56:	1f 86       	std	Y+15, r1	; 0x0f
+	debug_message.dlc = 7;
+    1f58:	87 e0       	ldi	r24, 0x07	; 7
+    1f5a:	8b 87       	std	Y+11, r24	; 0x0b
+	debug_message.cmd = CMD_TX_DATA;
+    1f5c:	82 e0       	ldi	r24, 0x02	; 2
+    1f5e:	8e 83       	std	Y+6, r24	; 0x06
+	uint8_t pt_data[debug_message.dlc];
+    1f60:	2b 85       	ldd	r18, Y+11	; 0x0b
+    1f62:	82 2f       	mov	r24, r18
+    1f64:	90 e0       	ldi	r25, 0x00	; 0
+    1f66:	01 97       	sbiw	r24, 0x01	; 1
+    1f68:	9a 83       	std	Y+2, r25	; 0x02
+    1f6a:	89 83       	std	Y+1, r24	; 0x01
+    1f6c:	82 2f       	mov	r24, r18
+    1f6e:	90 e0       	ldi	r25, 0x00	; 0
+    1f70:	2d b7       	in	r18, 0x3d	; 61
+    1f72:	3e b7       	in	r19, 0x3e	; 62
+    1f74:	28 1b       	sub	r18, r24
+    1f76:	39 0b       	sbc	r19, r25
+    1f78:	0f b6       	in	r0, 0x3f	; 63
+    1f7a:	f8 94       	cli
+    1f7c:	3e bf       	out	0x3e, r19	; 62
+    1f7e:	0f be       	out	0x3f, r0	; 63
+    1f80:	2d bf       	out	0x3d, r18	; 61
+    1f82:	8d b7       	in	r24, 0x3d	; 61
+    1f84:	9e b7       	in	r25, 0x3e	; 62
+    1f86:	01 96       	adiw	r24, 0x01	; 1
+    1f88:	9c 83       	std	Y+4, r25	; 0x04
+    1f8a:	8b 83       	std	Y+3, r24	; 0x03
 	
 	pt_data[0] = low(ur_ref_raw);
-    1f46:	89 89       	ldd	r24, Y+17	; 0x11
-    1f48:	9a 89       	ldd	r25, Y+18	; 0x12
-    1f4a:	0e 94 59 0e 	call	0x1cb2	; 0x1cb2 <__low>
-    1f4e:	28 2f       	mov	r18, r24
-    1f50:	8b 81       	ldd	r24, Y+3	; 0x03
-    1f52:	9c 81       	ldd	r25, Y+4	; 0x04
-    1f54:	fc 01       	movw	r30, r24
-    1f56:	20 83       	st	Z, r18
+    1f8c:	89 89       	ldd	r24, Y+17	; 0x11
+    1f8e:	9a 89       	ldd	r25, Y+18	; 0x12
+    1f90:	0e 94 7c 0e 	call	0x1cf8	; 0x1cf8 <__low>
+    1f94:	28 2f       	mov	r18, r24
+    1f96:	8b 81       	ldd	r24, Y+3	; 0x03
+    1f98:	9c 81       	ldd	r25, Y+4	; 0x04
+    1f9a:	fc 01       	movw	r30, r24
+    1f9c:	20 83       	st	Z, r18
 	pt_data[1] = high(ur_ref_raw);
-    1f58:	89 89       	ldd	r24, Y+17	; 0x11
-    1f5a:	9a 89       	ldd	r25, Y+18	; 0x12
-    1f5c:	0e 94 66 0e 	call	0x1ccc	; 0x1ccc <__high>
-    1f60:	28 2f       	mov	r18, r24
-    1f62:	8b 81       	ldd	r24, Y+3	; 0x03
-    1f64:	9c 81       	ldd	r25, Y+4	; 0x04
-    1f66:	fc 01       	movw	r30, r24
-    1f68:	21 83       	std	Z+1, r18	; 0x01
+    1f9e:	89 89       	ldd	r24, Y+17	; 0x11
+    1fa0:	9a 89       	ldd	r25, Y+18	; 0x12
+    1fa2:	0e 94 89 0e 	call	0x1d12	; 0x1d12 <__high>
+    1fa6:	28 2f       	mov	r18, r24
+    1fa8:	8b 81       	ldd	r24, Y+3	; 0x03
+    1faa:	9c 81       	ldd	r25, Y+4	; 0x04
+    1fac:	fc 01       	movw	r30, r24
+    1fae:	21 83       	std	Z+1, r18	; 0x01
 	pt_data[2] = low(ur_raw);
-    1f6a:	8b 89       	ldd	r24, Y+19	; 0x13
-    1f6c:	9c 89       	ldd	r25, Y+20	; 0x14
-    1f6e:	0e 94 59 0e 	call	0x1cb2	; 0x1cb2 <__low>
-    1f72:	28 2f       	mov	r18, r24
-    1f74:	8b 81       	ldd	r24, Y+3	; 0x03
-    1f76:	9c 81       	ldd	r25, Y+4	; 0x04
-    1f78:	fc 01       	movw	r30, r24
-    1f7a:	22 83       	std	Z+2, r18	; 0x02
+    1fb0:	8b 89       	ldd	r24, Y+19	; 0x13
+    1fb2:	9c 89       	ldd	r25, Y+20	; 0x14
+    1fb4:	0e 94 7c 0e 	call	0x1cf8	; 0x1cf8 <__low>
+    1fb8:	28 2f       	mov	r18, r24
+    1fba:	8b 81       	ldd	r24, Y+3	; 0x03
+    1fbc:	9c 81       	ldd	r25, Y+4	; 0x04
+    1fbe:	fc 01       	movw	r30, r24
+    1fc0:	22 83       	std	Z+2, r18	; 0x02
 	pt_data[3] = high(ur_raw);
-    1f7c:	8b 89       	ldd	r24, Y+19	; 0x13
-    1f7e:	9c 89       	ldd	r25, Y+20	; 0x14
-    1f80:	0e 94 66 0e 	call	0x1ccc	; 0x1ccc <__high>
-    1f84:	28 2f       	mov	r18, r24
-    1f86:	8b 81       	ldd	r24, Y+3	; 0x03
-    1f88:	9c 81       	ldd	r25, Y+4	; 0x04
-    1f8a:	fc 01       	movw	r30, r24
-    1f8c:	23 83       	std	Z+3, r18	; 0x03
+    1fc2:	8b 89       	ldd	r24, Y+19	; 0x13
+    1fc4:	9c 89       	ldd	r25, Y+20	; 0x14
+    1fc6:	0e 94 89 0e 	call	0x1d12	; 0x1d12 <__high>
+    1fca:	28 2f       	mov	r18, r24
+    1fcc:	8b 81       	ldd	r24, Y+3	; 0x03
+    1fce:	9c 81       	ldd	r25, Y+4	; 0x04
+    1fd0:	fc 01       	movw	r30, r24
+    1fd2:	23 83       	std	Z+3, r18	; 0x03
 	pt_data[4] = pid;
-    1f8e:	8b 81       	ldd	r24, Y+3	; 0x03
-    1f90:	9c 81       	ldd	r25, Y+4	; 0x04
-    1f92:	2d 89       	ldd	r18, Y+21	; 0x15
-    1f94:	fc 01       	movw	r30, r24
-    1f96:	24 83       	std	Z+4, r18	; 0x04
+    1fd4:	8b 81       	ldd	r24, Y+3	; 0x03
+    1fd6:	9c 81       	ldd	r25, Y+4	; 0x04
+    1fd8:	2d 89       	ldd	r18, Y+21	; 0x15
+    1fda:	fc 01       	movw	r30, r24
+    1fdc:	24 83       	std	Z+4, r18	; 0x04
 	pt_data[5] = signature;
-    1f98:	8b 81       	ldd	r24, Y+3	; 0x03
-    1f9a:	9c 81       	ldd	r25, Y+4	; 0x04
-    1f9c:	2e 89       	ldd	r18, Y+22	; 0x16
-    1f9e:	fc 01       	movw	r30, r24
-    1fa0:	25 83       	std	Z+5, r18	; 0x05
+    1fde:	8b 81       	ldd	r24, Y+3	; 0x03
+    1fe0:	9c 81       	ldd	r25, Y+4	; 0x04
+    1fe2:	2e 89       	ldd	r18, Y+22	; 0x16
+    1fe4:	fc 01       	movw	r30, r24
+    1fe6:	25 83       	std	Z+5, r18	; 0x05
 	pt_data[6] = diagRegister;
-    1fa2:	8b 81       	ldd	r24, Y+3	; 0x03
-    1fa4:	9c 81       	ldd	r25, Y+4	; 0x04
-    1fa6:	2f 89       	ldd	r18, Y+23	; 0x17
-    1fa8:	fc 01       	movw	r30, r24
-    1faa:	26 83       	std	Z+6, r18	; 0x06
+    1fe8:	8b 81       	ldd	r24, Y+3	; 0x03
+    1fea:	9c 81       	ldd	r25, Y+4	; 0x04
+    1fec:	2f 89       	ldd	r18, Y+23	; 0x17
+    1fee:	fc 01       	movw	r30, r24
+    1ff0:	26 83       	std	Z+6, r18	; 0x06
 	
 	debug_message.pt_data = &pt_data[0];
-    1fac:	8b 81       	ldd	r24, Y+3	; 0x03
-    1fae:	9c 81       	ldd	r25, Y+4	; 0x04
-    1fb0:	9d 87       	std	Y+13, r25	; 0x0d
-    1fb2:	8c 87       	std	Y+12, r24	; 0x0c
+    1ff2:	8b 81       	ldd	r24, Y+3	; 0x03
+    1ff4:	9c 81       	ldd	r25, Y+4	; 0x04
+    1ff6:	9d 87       	std	Y+13, r25	; 0x0d
+    1ff8:	8c 87       	std	Y+12, r24	; 0x0c
 	
 	while(can_cmd(&debug_message) != CAN_CMD_ACCEPTED);					// wait for MOb to configure
-    1fb4:	00 00       	nop
-    1fb6:	ce 01       	movw	r24, r28
-    1fb8:	05 96       	adiw	r24, 0x05	; 5
-    1fba:	0e 94 90 02 	call	0x520	; 0x520 <can_cmd>
-    1fbe:	88 23       	and	r24, r24
-    1fc0:	d1 f7       	brne	.-12     	; 0x1fb6 <can_send_debug_message+0xee>
+    1ffa:	00 00       	nop
+    1ffc:	ce 01       	movw	r24, r28
+    1ffe:	05 96       	adiw	r24, 0x05	; 5
+    2000:	0e 94 90 02 	call	0x520	; 0x520 <can_cmd>
+    2004:	88 23       	and	r24, r24
+    2006:	d1 f7       	brne	.-12     	; 0x1ffc <can_send_debug_message+0xee>
 	while(can_get_status(&debug_message) == CAN_STATUS_NOT_COMPLETED);	// wait for a transmit request to come in, and send a response
-    1fc2:	00 00       	nop
-    1fc4:	ce 01       	movw	r24, r28
-    1fc6:	05 96       	adiw	r24, 0x05	; 5
-    1fc8:	0e 94 26 0d 	call	0x1a4c	; 0x1a4c <can_get_status>
-    1fcc:	81 30       	cpi	r24, 0x01	; 1
-    1fce:	d1 f3       	breq	.-12     	; 0x1fc4 <can_send_debug_message+0xfc>
-    1fd0:	0f b6       	in	r0, 0x3f	; 63
-    1fd2:	f8 94       	cli
-    1fd4:	fe be       	out	0x3e, r15	; 62
-    1fd6:	0f be       	out	0x3f, r0	; 63
-    1fd8:	ed be       	out	0x3d, r14	; 61
+    2008:	00 00       	nop
+    200a:	ce 01       	movw	r24, r28
+    200c:	05 96       	adiw	r24, 0x05	; 5
+    200e:	0e 94 26 0d 	call	0x1a4c	; 0x1a4c <can_get_status>
+    2012:	81 30       	cpi	r24, 0x01	; 1
+    2014:	d1 f3       	breq	.-12     	; 0x200a <can_send_debug_message+0xfc>
+    2016:	0f b6       	in	r0, 0x3f	; 63
+    2018:	f8 94       	cli
+    201a:	fe be       	out	0x3e, r15	; 62
+    201c:	0f be       	out	0x3f, r0	; 63
+    201e:	ed be       	out	0x3d, r14	; 61
 }
-    1fda:	00 00       	nop
-    1fdc:	0f b6       	in	r0, 0x3f	; 63
-    1fde:	f8 94       	cli
-    1fe0:	1e bf       	out	0x3e, r17	; 62
-    1fe2:	0f be       	out	0x3f, r0	; 63
-    1fe4:	0d bf       	out	0x3d, r16	; 61
-    1fe6:	67 96       	adiw	r28, 0x17	; 23
-    1fe8:	0f b6       	in	r0, 0x3f	; 63
-    1fea:	f8 94       	cli
-    1fec:	de bf       	out	0x3e, r29	; 62
-    1fee:	0f be       	out	0x3f, r0	; 63
-    1ff0:	cd bf       	out	0x3d, r28	; 61
-    1ff2:	df 91       	pop	r29
-    1ff4:	cf 91       	pop	r28
-    1ff6:	1f 91       	pop	r17
-    1ff8:	0f 91       	pop	r16
-    1ffa:	ff 90       	pop	r15
-    1ffc:	ef 90       	pop	r14
-    1ffe:	08 95       	ret
-
-00002000 <__vector_18>:
-
-ISR (CAN_INT_vect)
-{
-    2000:	1f 92       	push	r1
-    2002:	0f 92       	push	r0
-    2004:	00 90 5f 00 	lds	r0, 0x005F	; 0x80005f <__TEXT_REGION_LENGTH__+0x7f805f>
-    2008:	0f 92       	push	r0
-    200a:	11 24       	eor	r1, r1
-    200c:	8f 93       	push	r24
-    200e:	9f 93       	push	r25
-    2010:	cf 93       	push	r28
-    2012:	df 93       	push	r29
-    2014:	00 d0       	rcall	.+0      	; 0x2016 <__vector_18+0x16>
-    2016:	cd b7       	in	r28, 0x3d	; 61
-    2018:	de b7       	in	r29, 0x3e	; 62
-	int i = 10;
-    201a:	8a e0       	ldi	r24, 0x0A	; 10
-    201c:	90 e0       	ldi	r25, 0x00	; 0
-    201e:	9a 83       	std	Y+2, r25	; 0x02
-    2020:	89 83       	std	Y+1, r24	; 0x01
-	i++;
-    2022:	89 81       	ldd	r24, Y+1	; 0x01
-    2024:	9a 81       	ldd	r25, Y+2	; 0x02
-    2026:	01 96       	adiw	r24, 0x01	; 1
-    2028:	9a 83       	std	Y+2, r25	; 0x02
-    202a:	89 83       	std	Y+1, r24	; 0x01
-	
-    202c:	00 00       	nop
-    202e:	0f 90       	pop	r0
-    2030:	0f 90       	pop	r0
-    2032:	df 91       	pop	r29
-    2034:	cf 91       	pop	r28
-    2036:	9f 91       	pop	r25
-    2038:	8f 91       	pop	r24
-    203a:	0f 90       	pop	r0
-    203c:	00 92 5f 00 	sts	0x005F, r0	; 0x80005f <__TEXT_REGION_LENGTH__+0x7f805f>
-    2040:	0f 90       	pop	r0
-    2042:	1f 90       	pop	r1
-    2044:	18 95       	reti
+    2020:	00 00       	nop
+    2022:	0f b6       	in	r0, 0x3f	; 63
+    2024:	f8 94       	cli
+    2026:	1e bf       	out	0x3e, r17	; 62
+    2028:	0f be       	out	0x3f, r0	; 63
+    202a:	0d bf       	out	0x3d, r16	; 61
+    202c:	67 96       	adiw	r28, 0x17	; 23
+    202e:	0f b6       	in	r0, 0x3f	; 63
+    2030:	f8 94       	cli
+    2032:	de bf       	out	0x3e, r29	; 62
+    2034:	0f be       	out	0x3f, r0	; 63
+    2036:	cd bf       	out	0x3d, r28	; 61
+    2038:	df 91       	pop	r29
+    203a:	cf 91       	pop	r28
+    203c:	1f 91       	pop	r17
+    203e:	0f 91       	pop	r16
+    2040:	ff 90       	pop	r15
+    2042:	ef 90       	pop	r14
+    2044:	08 95       	ret
 
 00002046 <__low>:
 	{
@@ -5291,7 +5291,7 @@ int main(void)
     24d2:	0e 94 02 11 	call	0x2204	; 0x2204 <dac_init>
 	can_network_init(1);
     24d6:	81 e0       	ldi	r24, 0x01	; 1
-    24d8:	0e 94 76 0e 	call	0x1cec	; 0x1cec <can_network_init>
+    24d8:	0e 94 99 0e 	call	0x1d32	; 0x1d32 <can_network_init>
 
 	board_init(&board);	
     24dc:	88 ee       	ldi	r24, 0xE8	; 232
@@ -5418,7 +5418,7 @@ int main(void)
     25c2:	0d 92       	st	X+, r0
     25c4:	2a 95       	dec	r18
     25c6:	e1 f7       	brne	.-8      	; 0x25c0 <main+0x110>
-    25c8:	0e 94 84 0e 	call	0x1d08	; 0x1d08 <can_send_aem_message>
+    25c8:	0e 94 a7 0e 	call	0x1d4e	; 0x1d4e <can_send_aem_message>
     25cc:	8d b7       	in	r24, 0x3d	; 61
     25ce:	9e b7       	in	r25, 0x3e	; 62
     25d0:	4d 96       	adiw	r24, 0x1d	; 29
@@ -5554,7 +5554,7 @@ int main(void)
     269c:	7b 81       	ldd	r23, Y+3	; 0x03
     269e:	04 2f       	mov	r16, r20
     26a0:	43 2f       	mov	r20, r19
-    26a2:	0e 94 64 0f 	call	0x1ec8	; 0x1ec8 <can_send_debug_message>
+    26a2:	0e 94 87 0f 	call	0x1f0e	; 0x1f0e <can_send_debug_message>
 			
 			if (isActive() && sensor1.SensorStatus == WARMING_UP && sensor1.SystemVoltageOK && sensor1.SensorFaultState == OK)
     26a6:	0e 94 f6 1b 	call	0x37ec	; 0x37ec <isActive>

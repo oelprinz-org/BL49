@@ -103,10 +103,3 @@ void can_send_debug_message(uint16_t ur_ref_raw, uint16_t ur_raw, uint8_t pid, u
 	while(can_cmd(&debug_message) != CAN_CMD_ACCEPTED);					// wait for MOb to configure
 	while(can_get_status(&debug_message) == CAN_STATUS_NOT_COMPLETED);	// wait for a transmit request to come in, and send a response
 }
-
-ISR (CAN_INT_vect)
-{
-	int i = 10;
-	i++;
-	
-}
