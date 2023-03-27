@@ -34,6 +34,10 @@
 void can_network_init (uint8_t mode)
 {
 	can_init(mode);
+	
+	// CANGIE |= (1 << ENIT)|(1 << ENRX); // enable receive interrupt...
+	
+	
 }
 
 void can_send_aem_message(tSensor sensor)

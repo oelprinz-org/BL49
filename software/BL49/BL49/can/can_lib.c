@@ -32,6 +32,7 @@
 #include "can_lib.h"
 #include "can_drv.h"
 #include <avr/io.h>
+#include <avr/interrupt.h>
 
 //_____ D E F I N I T I O N S __________________________________________________
 
@@ -61,6 +62,15 @@ uint8_t can_init(uint8_t mode)
 {
     if ((Can_bit_timing(mode))==0) return (0);  // c.f. macro in "can_drv.h"
     can_clear_all_mob();                        // c.f. function in "can_drv.c"
+	
+	CANIE2 = (1 << IEMOB0);   			// Enable interrupts on mob1 for reception and transmission
+	CANGIE = (1 << ENIT)|(1 <<  ENRX);	// Enable interrupts on receive
+	
+	CANIDM1 = 0x00;   	// Clear Mask, let all IDs pass    
+	CANIDM2 = 0x00; 	//  " "
+	CANIDM3 = 0x00; 	//  " "
+	CANIDM4 = 0x00; 	//  " "    	
+	
     Can_enable();                               // c.f. macro in "can_drv.h" 
     return (1);
 }
@@ -315,17 +325,9 @@ uint8_t can_get_status (st_cmd_t* cmd)
     return (rtn_val);
 }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
+ISR (CAN_INT_vect)
+{
+	int i = 10;
+	i++;
+	
+}
