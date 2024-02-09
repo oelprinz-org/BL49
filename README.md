@@ -19,7 +19,7 @@ Feature list
 - Bosch recommended heating strategy: done
 - PID controller for heating the probe: done
 - activation per GPIO (pull **IN1** to GND): done
-- activation per CAN: open
+- <del>activation per CAN: open</del>
 
 ## 29.04.2020 - Version 0.0.1 - only hardware released / no software available at the moment  
 
@@ -67,6 +67,10 @@ Bosch numbers beginning with **0 258 007** are *LSU 4.2* probes and will not fit
 ### Hardware
 
 ![Hardware](./hardware/Datasheet/bl49_01.jpg)
+
+### MCU Fuses
+
+![Fuses](./hardware/Datasheet/fuses.jpg)
 
 ### AEM X-Series CAN layout
 
