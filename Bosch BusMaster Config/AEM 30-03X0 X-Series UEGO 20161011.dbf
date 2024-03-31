@@ -1,0 +1,860 @@
+//******************************BUSMASTER Messages and signals Database ******************************//
+
+[DATABASE_VERSION] 1.3
+
+[PROTOCOL] CAN
+
+[BUSMASTER_VERSION] [3.2.2]
+[NUMBER_OF_MESSAGES] 16
+
+[START_MSG] XSeriesGauge16,399,8,9,0,X,XSeriesGauge16
+[START_SIGNALS] AFR16Ext_SensorDetectedStatus,4,7,0,U,15,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Reserved",8
+[VALUE_DESCRIPTION] "Reserved",4
+[VALUE_DESCRIPTION] "Bosch LSU 4.9",2
+[VALUE_DESCRIPTION] "Reserved",1
+[START_SIGNALS] AFR16Ext_UsingFreeAreCalState,1,7,5,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Free Air Calibration",1
+[VALUE_DESCRIPTION] "Resistor Calibration",0
+[START_SIGNALS] AFR16Ext_SystemVolts,8,5,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR16Ext_SensorStatus,5,8,0,U,31,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Error",20
+[VALUE_DESCRIPTION] "Needs New Free Air Calibration",19
+[VALUE_DESCRIPTION] "Save Sensor",18
+[VALUE_DESCRIPTION] "Preparing to Run",17
+[VALUE_DESCRIPTION] "Determining Sensor Type",16
+[VALUE_DESCRIPTION] "Evap Startup",15
+[VALUE_DESCRIPTION] "Reading Junction Impeadance",14
+[VALUE_DESCRIPTION] "Detecting Sensor",13
+[VALUE_DESCRIPTION] "Preforming Free Air Calibration",12
+[VALUE_DESCRIPTION] "Start Free Air Calibration",11
+[VALUE_DESCRIPTION] "Heater Open Circuit",10
+[VALUE_DESCRIPTION] "Heater Short Circuit",9
+[VALUE_DESCRIPTION] "Overcool",8
+[VALUE_DESCRIPTION] "Overheat",7
+[VALUE_DESCRIPTION] "Run",6
+[VALUE_DESCRIPTION] "Reading Rcal Value",5
+[VALUE_DESCRIPTION] "Equalizing",4
+[VALUE_DESCRIPTION] "Reading Nerst Pump Impedance",3
+[VALUE_DESCRIPTION] "Stabilizing",2
+[VALUE_DESCRIPTION] "Warming Up",1
+[VALUE_DESCRIPTION] "Reset",0
+[START_SIGNALS] AFR16Ext_SensorFaultState,1,8,6,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Fault",1
+[VALUE_DESCRIPTION] "OK",0
+[START_SIGNALS] AFR16Ext_HeaterVolts,8,6,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR16Ext_DataValidState,1,7,7,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Valid",1
+[VALUE_DESCRIPTION] "InValid",0
+[START_SIGNALS] AFR16Ext,16,2,0,U,60000,0,0,0,0.0001,afr:LA,,
+[START_SIGNALS] AFR16_OxygenConcentration,16,4,0,I,32000,-32000,0,0,0.001,fraction:%,,
+[END_MSG]
+
+[START_MSG] XSeriesGauge15,398,8,9,0,X,XSeriesGauge15
+[START_SIGNALS] AFR15Ext_SensorDetectedStatus,4,7,0,U,15,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Reserved",8
+[VALUE_DESCRIPTION] "Reserved",4
+[VALUE_DESCRIPTION] "Bosch LSU 4.9",2
+[VALUE_DESCRIPTION] "Reserved",1
+[START_SIGNALS] AFR15Ext_UsingFreeAreCalState,1,7,5,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Free Air Calibration",1
+[VALUE_DESCRIPTION] "Resistor Calibration",0
+[START_SIGNALS] AFR15Ext_SystemVolts,8,5,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR15Ext_SensorStatus,5,8,0,U,31,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Error",20
+[VALUE_DESCRIPTION] "Needs New Free Air Calibration",19
+[VALUE_DESCRIPTION] "Save Sensor",18
+[VALUE_DESCRIPTION] "Preparing to Run",17
+[VALUE_DESCRIPTION] "Determining Sensor Type",16
+[VALUE_DESCRIPTION] "Evap Startup",15
+[VALUE_DESCRIPTION] "Reading Junction Impeadance",14
+[VALUE_DESCRIPTION] "Detecting Sensor",13
+[VALUE_DESCRIPTION] "Preforming Free Air Calibration",12
+[VALUE_DESCRIPTION] "Start Free Air Calibration",11
+[VALUE_DESCRIPTION] "Heater Open Circuit",10
+[VALUE_DESCRIPTION] "Heater Short Circuit",9
+[VALUE_DESCRIPTION] "Overcool",8
+[VALUE_DESCRIPTION] "Overheat",7
+[VALUE_DESCRIPTION] "Run",6
+[VALUE_DESCRIPTION] "Reading Rcal Value",5
+[VALUE_DESCRIPTION] "Equalizing",4
+[VALUE_DESCRIPTION] "Reading Nerst Pump Impedance",3
+[VALUE_DESCRIPTION] "Stabilizing",2
+[VALUE_DESCRIPTION] "Warming Up",1
+[VALUE_DESCRIPTION] "Reset",0
+[START_SIGNALS] AFR15Ext_SensorFaultState,1,8,6,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Fault",1
+[VALUE_DESCRIPTION] "OK",0
+[START_SIGNALS] AFR15Ext_HeaterVolts,8,6,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR15Ext_DataValidState,1,7,7,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Valid",1
+[VALUE_DESCRIPTION] "InValid",0
+[START_SIGNALS] AFR15Ext,16,2,0,U,60000,0,0,0,0.0001,afr:LA,,
+[START_SIGNALS] AFR15_OxygenConcentration,16,4,0,I,32000,-32000,0,0,0.001,fraction:%,,
+[END_MSG]
+
+[START_MSG] XSeriesGauge14,397,8,9,0,X,XSeriesGauge14
+[START_SIGNALS] AFR14Ext_UsingFreeAreCalState,1,7,5,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Free Air Calibration",1
+[VALUE_DESCRIPTION] "Resistor Calibration",0
+[START_SIGNALS] AFR14Ext_SystemVolts,8,5,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR14Ext_SensorStatus,5,8,0,U,31,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Error",20
+[VALUE_DESCRIPTION] "Needs New Free Air Calibration",19
+[VALUE_DESCRIPTION] "Save Sensor",18
+[VALUE_DESCRIPTION] "Preparing to Run",17
+[VALUE_DESCRIPTION] "Determining Sensor Type",16
+[VALUE_DESCRIPTION] "Evap Startup",15
+[VALUE_DESCRIPTION] "Reading Junction Impeadance",14
+[VALUE_DESCRIPTION] "Detecting Sensor",13
+[VALUE_DESCRIPTION] "Preforming Free Air Calibration",12
+[VALUE_DESCRIPTION] "Start Free Air Calibration",11
+[VALUE_DESCRIPTION] "Heater Open Circuit",10
+[VALUE_DESCRIPTION] "Heater Short Circuit",9
+[VALUE_DESCRIPTION] "Overcool",8
+[VALUE_DESCRIPTION] "Overheat",7
+[VALUE_DESCRIPTION] "Run",6
+[VALUE_DESCRIPTION] "Reading Rcal Value",5
+[VALUE_DESCRIPTION] "Equalizing",4
+[VALUE_DESCRIPTION] "Reading Nerst Pump Impedance",3
+[VALUE_DESCRIPTION] "Stabilizing",2
+[VALUE_DESCRIPTION] "Warming Up",1
+[VALUE_DESCRIPTION] "Reset",0
+[START_SIGNALS] AFR14Ext_SensorFaultState,1,8,6,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Fault",1
+[VALUE_DESCRIPTION] "OK",0
+[START_SIGNALS] AFR14Ext_SensorDetectedStatus,4,7,0,U,15,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Reserved",8
+[VALUE_DESCRIPTION] "Reserved",4
+[VALUE_DESCRIPTION] "Bosch LSU 4.9",2
+[VALUE_DESCRIPTION] "Reserved",1
+[START_SIGNALS] AFR14Ext_HeaterVolts,8,6,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR14Ext_DataValidState,1,7,7,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Valid",1
+[VALUE_DESCRIPTION] "InValid",0
+[START_SIGNALS] AFR14Ext,16,2,0,U,60000,0,0,0,0.0001,afr:LA,,
+[START_SIGNALS] AFR14_OxygenConcentration,16,4,0,I,32000,-32000,0,0,0.001,fraction:%,,
+[END_MSG]
+
+[START_MSG] XSeriesGauge13,396,8,9,0,X,XSeriesGauge13
+[START_SIGNALS] AFR13Ext_UsingFreeAreCalState,1,7,5,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Free Air Calibration",1
+[VALUE_DESCRIPTION] "Resistor Calibration",0
+[START_SIGNALS] AFR13Ext_SystemVolts,8,5,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR13Ext_SensorStatus,5,8,0,U,31,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Error",20
+[VALUE_DESCRIPTION] "Needs New Free Air Calibration",19
+[VALUE_DESCRIPTION] "Save Sensor",18
+[VALUE_DESCRIPTION] "Preparing to Run",17
+[VALUE_DESCRIPTION] "Determining Sensor Type",16
+[VALUE_DESCRIPTION] "Evap Startup",15
+[VALUE_DESCRIPTION] "Reading Junction Impeadance",14
+[VALUE_DESCRIPTION] "Detecting Sensor",13
+[VALUE_DESCRIPTION] "Preforming Free Air Calibration",12
+[VALUE_DESCRIPTION] "Start Free Air Calibration",11
+[VALUE_DESCRIPTION] "Heater Open Circuit",10
+[VALUE_DESCRIPTION] "Heater Short Circuit",9
+[VALUE_DESCRIPTION] "Overcool",8
+[VALUE_DESCRIPTION] "Overheat",7
+[VALUE_DESCRIPTION] "Run",6
+[VALUE_DESCRIPTION] "Reading Rcal Value",5
+[VALUE_DESCRIPTION] "Equalizing",4
+[VALUE_DESCRIPTION] "Reading Nerst Pump Impedance",3
+[VALUE_DESCRIPTION] "Stabilizing",2
+[VALUE_DESCRIPTION] "Warming Up",1
+[VALUE_DESCRIPTION] "Reset",0
+[START_SIGNALS] AFR13Ext_SensorFaultState,1,8,6,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Fault",1
+[VALUE_DESCRIPTION] "OK",0
+[START_SIGNALS] AFR13Ext_SensorDetectedStatus,4,7,0,U,15,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Reserved",8
+[VALUE_DESCRIPTION] "Reserved",4
+[VALUE_DESCRIPTION] "Bosch LSU 4.9",2
+[VALUE_DESCRIPTION] "Reserved",1
+[START_SIGNALS] AFR13Ext_HeaterVolts,8,6,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR13Ext_DataValidState,1,7,7,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Valid",1
+[VALUE_DESCRIPTION] "InValid",0
+[START_SIGNALS] AFR13Ext,16,2,0,U,60000,0,0,0,0.0001,afr:LA,,
+[START_SIGNALS] AFR13_OxygenConcentration,16,4,0,I,32000,-32000,0,0,0.001,fraction:%,,
+[END_MSG]
+
+[START_MSG] XSeriesGauge12,395,8,9,0,X,XSeriesGauge12
+[START_SIGNALS] AFR12Ext_UsingFreeAreCalState,1,7,5,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Free Air Calibration",1
+[VALUE_DESCRIPTION] "Resistor Calibration",0
+[START_SIGNALS] AFR12Ext_SystemVolts,8,5,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR12Ext_SensorStatus,5,8,0,U,31,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Error",20
+[VALUE_DESCRIPTION] "Needs New Free Air Calibration",19
+[VALUE_DESCRIPTION] "Save Sensor",18
+[VALUE_DESCRIPTION] "Preparing to Run",17
+[VALUE_DESCRIPTION] "Determining Sensor Type",16
+[VALUE_DESCRIPTION] "Evap Startup",15
+[VALUE_DESCRIPTION] "Reading Junction Impeadance",14
+[VALUE_DESCRIPTION] "Detecting Sensor",13
+[VALUE_DESCRIPTION] "Preforming Free Air Calibration",12
+[VALUE_DESCRIPTION] "Start Free Air Calibration",11
+[VALUE_DESCRIPTION] "Heater Open Circuit",10
+[VALUE_DESCRIPTION] "Heater Short Circuit",9
+[VALUE_DESCRIPTION] "Overcool",8
+[VALUE_DESCRIPTION] "Overheat",7
+[VALUE_DESCRIPTION] "Run",6
+[VALUE_DESCRIPTION] "Reading Rcal Value",5
+[VALUE_DESCRIPTION] "Equalizing",4
+[VALUE_DESCRIPTION] "Reading Nerst Pump Impedance",3
+[VALUE_DESCRIPTION] "Stabilizing",2
+[VALUE_DESCRIPTION] "Warming Up",1
+[VALUE_DESCRIPTION] "Reset",0
+[START_SIGNALS] AFR12Ext_SensorFaultState,1,8,6,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Fault",1
+[VALUE_DESCRIPTION] "OK",0
+[START_SIGNALS] AFR12Ext_SensorDetectedStatus,4,7,0,U,15,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Reserved",8
+[VALUE_DESCRIPTION] "Reserved",4
+[VALUE_DESCRIPTION] "Bosch LSU 4.9",2
+[VALUE_DESCRIPTION] "Reserved",1
+[START_SIGNALS] AFR12Ext_HeaterVolts,8,6,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR12Ext_DataValidState,1,7,7,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Valid",1
+[VALUE_DESCRIPTION] "InValid",0
+[START_SIGNALS] AFR12Ext,16,2,0,U,60000,0,0,0,0.0001,afr:LA,,
+[START_SIGNALS] AFR12_OxygenConcentration,16,4,0,I,32000,-32000,0,0,0.001,fraction:%,,
+[END_MSG]
+
+[START_MSG] XSeriesGauge11,394,8,9,0,X,XSeriesGauge11
+[START_SIGNALS] AFR11Ext_UsingFreeAreCalState,1,7,5,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Free Air Calibration",1
+[VALUE_DESCRIPTION] "Resistor Calibration",0
+[START_SIGNALS] AFR11Ext_SystemVolts,8,5,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR11Ext_SensorStatus,5,8,0,U,31,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Error",20
+[VALUE_DESCRIPTION] "Needs New Free Air Calibration",19
+[VALUE_DESCRIPTION] "Save Sensor",18
+[VALUE_DESCRIPTION] "Preparing to Run",17
+[VALUE_DESCRIPTION] "Determining Sensor Type",16
+[VALUE_DESCRIPTION] "Evap Startup",15
+[VALUE_DESCRIPTION] "Reading Junction Impeadance",14
+[VALUE_DESCRIPTION] "Detecting Sensor",13
+[VALUE_DESCRIPTION] "Preforming Free Air Calibration",12
+[VALUE_DESCRIPTION] "Start Free Air Calibration",11
+[VALUE_DESCRIPTION] "Heater Open Circuit",10
+[VALUE_DESCRIPTION] "Heater Short Circuit",9
+[VALUE_DESCRIPTION] "Overcool",8
+[VALUE_DESCRIPTION] "Overheat",7
+[VALUE_DESCRIPTION] "Run",6
+[VALUE_DESCRIPTION] "Reading Rcal Value",5
+[VALUE_DESCRIPTION] "Equalizing",4
+[VALUE_DESCRIPTION] "Reading Nerst Pump Impedance",3
+[VALUE_DESCRIPTION] "Stabilizing",2
+[VALUE_DESCRIPTION] "Warming Up",1
+[VALUE_DESCRIPTION] "Reset",0
+[START_SIGNALS] AFR11Ext_SensorFaultState,1,8,6,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Fault",1
+[VALUE_DESCRIPTION] "OK",0
+[START_SIGNALS] AFR11Ext_SensorDetectedStatus,4,7,0,U,15,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Reserved",8
+[VALUE_DESCRIPTION] "Reserved",4
+[VALUE_DESCRIPTION] "Bosch LSU 4.9",2
+[VALUE_DESCRIPTION] "Reserved",1
+[START_SIGNALS] AFR11Ext_HeaterVolts,8,6,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR11Ext_DataValidState,1,7,7,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Valid",1
+[VALUE_DESCRIPTION] "InValid",0
+[START_SIGNALS] AFR11Ext,16,2,0,U,60000,0,0,0,0.0001,afr:LA,,
+[START_SIGNALS] AFR11_OxygenConcentration,16,4,0,I,32000,-32000,0,0,0.001,fraction:%,,
+[END_MSG]
+
+[START_MSG] XSeriesGauge10,393,8,9,0,X,XSeriesGauge10
+[START_SIGNALS] AFR10Ext_UsingFreeAreCalState,1,7,5,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Free Air Calibration",1
+[VALUE_DESCRIPTION] "Resistor Calibration",0
+[START_SIGNALS] AFR10Ext_SystemVolts,8,5,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR10Ext_SensorStatus,5,8,0,U,31,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Error",20
+[VALUE_DESCRIPTION] "Needs New Free Air Calibration",19
+[VALUE_DESCRIPTION] "Save Sensor",18
+[VALUE_DESCRIPTION] "Preparing to Run",17
+[VALUE_DESCRIPTION] "Determining Sensor Type",16
+[VALUE_DESCRIPTION] "Evap Startup",15
+[VALUE_DESCRIPTION] "Reading Junction Impeadance",14
+[VALUE_DESCRIPTION] "Detecting Sensor",13
+[VALUE_DESCRIPTION] "Preforming Free Air Calibration",12
+[VALUE_DESCRIPTION] "Start Free Air Calibration",11
+[VALUE_DESCRIPTION] "Heater Open Circuit",10
+[VALUE_DESCRIPTION] "Heater Short Circuit",9
+[VALUE_DESCRIPTION] "Overcool",8
+[VALUE_DESCRIPTION] "Overheat",7
+[VALUE_DESCRIPTION] "Run",6
+[VALUE_DESCRIPTION] "Reading Rcal Value",5
+[VALUE_DESCRIPTION] "Equalizing",4
+[VALUE_DESCRIPTION] "Reading Nerst Pump Impedance",3
+[VALUE_DESCRIPTION] "Stabilizing",2
+[VALUE_DESCRIPTION] "Warming Up",1
+[VALUE_DESCRIPTION] "Reset",0
+[START_SIGNALS] AFR10Ext_SensorFaultState,1,8,6,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Fault",1
+[VALUE_DESCRIPTION] "OK",0
+[START_SIGNALS] AFR10Ext_SensorDetectedStatus,4,7,0,U,15,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Reserved",8
+[VALUE_DESCRIPTION] "Reserved",4
+[VALUE_DESCRIPTION] "Bosch LSU 4.9",2
+[VALUE_DESCRIPTION] "Reserved",1
+[START_SIGNALS] AFR10Ext_HeaterVolts,8,6,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR10Ext_DataValidState,1,7,7,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Valid",1
+[VALUE_DESCRIPTION] "InValid",0
+[START_SIGNALS] AFR10Ext,16,2,0,U,60000,0,0,0,0.0001,afr:LA,,
+[START_SIGNALS] AFR10_OxygenConcentration,16,4,0,I,32000,-32000,0,0,0.001,fraction:%,,
+[END_MSG]
+
+[START_MSG] XSeriesGauge9,392,8,9,0,X,XSeriesGauge9
+[START_SIGNALS] AFR9Ext_UsingFreeAreCalState,1,7,5,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Free Air Calibration",1
+[VALUE_DESCRIPTION] "Resistor Calibration",0
+[START_SIGNALS] AFR9Ext_SystemVolts,8,5,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR9Ext_SensorStatus,5,8,0,U,31,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Error",20
+[VALUE_DESCRIPTION] "Needs New Free Air Calibration",19
+[VALUE_DESCRIPTION] "Save Sensor",18
+[VALUE_DESCRIPTION] "Preparing to Run",17
+[VALUE_DESCRIPTION] "Determining Sensor Type",16
+[VALUE_DESCRIPTION] "Evap Startup",15
+[VALUE_DESCRIPTION] "Reading Junction Impeadance",14
+[VALUE_DESCRIPTION] "Detecting Sensor",13
+[VALUE_DESCRIPTION] "Preforming Free Air Calibration",12
+[VALUE_DESCRIPTION] "Start Free Air Calibration",11
+[VALUE_DESCRIPTION] "Heater Open Circuit",10
+[VALUE_DESCRIPTION] "Heater Short Circuit",9
+[VALUE_DESCRIPTION] "Overcool",8
+[VALUE_DESCRIPTION] "Overheat",7
+[VALUE_DESCRIPTION] "Run",6
+[VALUE_DESCRIPTION] "Reading Rcal Value",5
+[VALUE_DESCRIPTION] "Equalizing",4
+[VALUE_DESCRIPTION] "Reading Nerst Pump Impedance",3
+[VALUE_DESCRIPTION] "Stabilizing",2
+[VALUE_DESCRIPTION] "Warming Up",1
+[VALUE_DESCRIPTION] "Reset",0
+[START_SIGNALS] AFR9Ext_SensorFaultState,1,8,6,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Fault",1
+[VALUE_DESCRIPTION] "OK",0
+[START_SIGNALS] AFR9Ext_SensorDetectedStatus,4,7,0,U,15,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Reserved",8
+[VALUE_DESCRIPTION] "Reserved",4
+[VALUE_DESCRIPTION] "Bosch LSU 4.9",2
+[VALUE_DESCRIPTION] "Reserved",1
+[START_SIGNALS] AFR9Ext_HeaterVolts,8,6,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR9Ext_DataValidState,1,7,7,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Valid",1
+[VALUE_DESCRIPTION] "InValid",0
+[START_SIGNALS] AFR9Ext,16,2,0,U,60000,0,0,0,0.0001,afr:LA,,
+[START_SIGNALS] AFR9_OxygenConcentration,16,4,0,I,32000,-32000,0,0,0.001,fraction:%,,
+[END_MSG]
+
+[START_MSG] XSeriesGauge8,391,8,9,0,X,XSeriesGauge8
+[START_SIGNALS] AFR8Ext_UsingFreeAreCalState,1,7,5,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Free Air Calibration",1
+[VALUE_DESCRIPTION] "Resistor Calibration",0
+[START_SIGNALS] AFR8Ext_SystemVolts,8,5,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR8Ext_SensorStatus,5,8,0,U,31,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Error",20
+[VALUE_DESCRIPTION] "Needs New Free Air Calibration",19
+[VALUE_DESCRIPTION] "Save Sensor",18
+[VALUE_DESCRIPTION] "Preparing to Run",17
+[VALUE_DESCRIPTION] "Determining Sensor Type",16
+[VALUE_DESCRIPTION] "Evap Startup",15
+[VALUE_DESCRIPTION] "Reading Junction Impeadance",14
+[VALUE_DESCRIPTION] "Detecting Sensor",13
+[VALUE_DESCRIPTION] "Preforming Free Air Calibration",12
+[VALUE_DESCRIPTION] "Start Free Air Calibration",11
+[VALUE_DESCRIPTION] "Heater Open Circuit",10
+[VALUE_DESCRIPTION] "Heater Short Circuit",9
+[VALUE_DESCRIPTION] "Overcool",8
+[VALUE_DESCRIPTION] "Overheat",7
+[VALUE_DESCRIPTION] "Run",6
+[VALUE_DESCRIPTION] "Reading Rcal Value",5
+[VALUE_DESCRIPTION] "Equalizing",4
+[VALUE_DESCRIPTION] "Reading Nerst Pump Impedance",3
+[VALUE_DESCRIPTION] "Stabilizing",2
+[VALUE_DESCRIPTION] "Warming Up",1
+[VALUE_DESCRIPTION] "Reset",0
+[START_SIGNALS] AFR8Ext_SensorFaultState,1,8,6,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Fault",1
+[VALUE_DESCRIPTION] "OK",0
+[START_SIGNALS] AFR8Ext_SensorDetectedStatus,4,7,0,U,15,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Reserved",8
+[VALUE_DESCRIPTION] "Reserved",4
+[VALUE_DESCRIPTION] "Bosch LSU 4.9",2
+[VALUE_DESCRIPTION] "Reserved",1
+[START_SIGNALS] AFR8Ext_HeaterVolts,8,6,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR8Ext_DataValidState,1,7,7,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Valid",1
+[VALUE_DESCRIPTION] "InValid",0
+[START_SIGNALS] AFR8Ext,16,2,0,U,60000,0,0,0,0.0001,afr:LA,,
+[START_SIGNALS] AFR8_OxygenConcentration,16,4,0,I,32000,-32000,0,0,0.001,fraction:%,,
+[END_MSG]
+
+[START_MSG] XSeriesGauge7,390,8,9,0,X,XSeriesGauge7
+[START_SIGNALS] AFR7Ext_UsingFreeAreCalState,1,7,5,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Free Air Calibration",1
+[VALUE_DESCRIPTION] "Resistor Calibration",0
+[START_SIGNALS] AFR7Ext_SystemVolts,8,5,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR7Ext_SensorStatus,5,8,0,U,31,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Error",20
+[VALUE_DESCRIPTION] "Needs New Free Air Calibration",19
+[VALUE_DESCRIPTION] "Save Sensor",18
+[VALUE_DESCRIPTION] "Preparing to Run",17
+[VALUE_DESCRIPTION] "Determining Sensor Type",16
+[VALUE_DESCRIPTION] "Evap Startup",15
+[VALUE_DESCRIPTION] "Reading Junction Impeadance",14
+[VALUE_DESCRIPTION] "Detecting Sensor",13
+[VALUE_DESCRIPTION] "Preforming Free Air Calibration",12
+[VALUE_DESCRIPTION] "Start Free Air Calibration",11
+[VALUE_DESCRIPTION] "Heater Open Circuit",10
+[VALUE_DESCRIPTION] "Heater Short Circuit",9
+[VALUE_DESCRIPTION] "Overcool",8
+[VALUE_DESCRIPTION] "Overheat",7
+[VALUE_DESCRIPTION] "Run",6
+[VALUE_DESCRIPTION] "Reading Rcal Value",5
+[VALUE_DESCRIPTION] "Equalizing",4
+[VALUE_DESCRIPTION] "Reading Nerst Pump Impedance",3
+[VALUE_DESCRIPTION] "Stabilizing",2
+[VALUE_DESCRIPTION] "Warming Up",1
+[VALUE_DESCRIPTION] "Reset",0
+[START_SIGNALS] AFR7Ext_SensorFaultState,1,8,6,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Fault",1
+[VALUE_DESCRIPTION] "OK",0
+[START_SIGNALS] AFR7Ext_SensorDetectedStatus,4,7,0,U,15,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Reserved",8
+[VALUE_DESCRIPTION] "Reserved",4
+[VALUE_DESCRIPTION] "Bosch LSU 4.9",2
+[VALUE_DESCRIPTION] "Reserved",1
+[START_SIGNALS] AFR7Ext_HeaterVolts,8,6,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR7Ext_DataValidState,1,7,7,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Valid",1
+[VALUE_DESCRIPTION] "InValid",0
+[START_SIGNALS] AFR7Ext,16,2,0,U,60000,0,0,0,0.0001,afr:LA,,
+[START_SIGNALS] AFR7_OxygenConcentration,16,4,0,I,32000,-32000,0,0,0.001,fraction:%,,
+[END_MSG]
+
+[START_MSG] XSeriesGauge6,389,8,9,0,X,XSeriesGauge6
+[START_SIGNALS] AFR6Ext_UsingFreeAreCalState,1,7,5,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Free Air Calibration",1
+[VALUE_DESCRIPTION] "Resistor Calibration",0
+[START_SIGNALS] AFR6Ext_SystemVolts,8,5,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR6Ext_SensorStatus,5,8,0,U,31,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Error",20
+[VALUE_DESCRIPTION] "Needs New Free Air Calibration",19
+[VALUE_DESCRIPTION] "Save Sensor",18
+[VALUE_DESCRIPTION] "Preparing to Run",17
+[VALUE_DESCRIPTION] "Determining Sensor Type",16
+[VALUE_DESCRIPTION] "Evap Startup",15
+[VALUE_DESCRIPTION] "Reading Junction Impeadance",14
+[VALUE_DESCRIPTION] "Detecting Sensor",13
+[VALUE_DESCRIPTION] "Preforming Free Air Calibration",12
+[VALUE_DESCRIPTION] "Start Free Air Calibration",11
+[VALUE_DESCRIPTION] "Heater Open Circuit",10
+[VALUE_DESCRIPTION] "Heater Short Circuit",9
+[VALUE_DESCRIPTION] "Overcool",8
+[VALUE_DESCRIPTION] "Overheat",7
+[VALUE_DESCRIPTION] "Run",6
+[VALUE_DESCRIPTION] "Reading Rcal Value",5
+[VALUE_DESCRIPTION] "Equalizing",4
+[VALUE_DESCRIPTION] "Reading Nerst Pump Impedance",3
+[VALUE_DESCRIPTION] "Stabilizing",2
+[VALUE_DESCRIPTION] "Warming Up",1
+[VALUE_DESCRIPTION] "Reset",0
+[START_SIGNALS] AFR6Ext_SensorFaultState,1,8,6,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Fault",1
+[VALUE_DESCRIPTION] "OK",0
+[START_SIGNALS] AFR6Ext_SensorDetectedStatus,4,7,0,U,15,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Reserved",8
+[VALUE_DESCRIPTION] "Reserved",4
+[VALUE_DESCRIPTION] "Bosch LSU 4.9",2
+[VALUE_DESCRIPTION] "Reserved",1
+[START_SIGNALS] AFR6Ext_HeaterVolts,8,6,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR6Ext_DataValidState,1,7,7,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Valid",1
+[VALUE_DESCRIPTION] "InValid",0
+[START_SIGNALS] AFR6Ext,16,2,0,U,60000,0,0,0,0.0001,afr:LA,,
+[START_SIGNALS] AFR6_OxygenConcentration,16,4,0,I,32000,-32000,0,0,0.001,fraction:%,,
+[END_MSG]
+
+[START_MSG] XSeriesGauge5,388,8,9,0,X,XSeriesGauge5
+[START_SIGNALS] AFR5Ext_SensorDetectedStatus,4,7,0,U,15,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Reserved",8
+[VALUE_DESCRIPTION] "Reserved",4
+[VALUE_DESCRIPTION] "Bosch LSU 4.9",2
+[VALUE_DESCRIPTION] "Reserved",1
+[START_SIGNALS] AFR5Ext_UsingFreeAreCalState,1,7,5,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Free Air Calibration",1
+[VALUE_DESCRIPTION] "Resistor Calibration",0
+[START_SIGNALS] AFR5Ext_SystemVolts,8,5,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR5Ext_SensorStatus,5,8,0,U,31,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Error",20
+[VALUE_DESCRIPTION] "Needs New Free Air Calibration",19
+[VALUE_DESCRIPTION] "Save Sensor",18
+[VALUE_DESCRIPTION] "Preparing to Run",17
+[VALUE_DESCRIPTION] "Determining Sensor Type",16
+[VALUE_DESCRIPTION] "Evap Startup",15
+[VALUE_DESCRIPTION] "Reading Junction Impeadance",14
+[VALUE_DESCRIPTION] "Detecting Sensor",13
+[VALUE_DESCRIPTION] "Preforming Free Air Calibration",12
+[VALUE_DESCRIPTION] "Start Free Air Calibration",11
+[VALUE_DESCRIPTION] "Heater Open Circuit",10
+[VALUE_DESCRIPTION] "Heater Short Circuit",9
+[VALUE_DESCRIPTION] "Overcool",8
+[VALUE_DESCRIPTION] "Overheat",7
+[VALUE_DESCRIPTION] "Run",6
+[VALUE_DESCRIPTION] "Reading Rcal Value",5
+[VALUE_DESCRIPTION] "Equalizing",4
+[VALUE_DESCRIPTION] "Reading Nerst Pump Impedance",3
+[VALUE_DESCRIPTION] "Stabilizing",2
+[VALUE_DESCRIPTION] "Warming Up",1
+[VALUE_DESCRIPTION] "Reset",0
+[START_SIGNALS] AFR5Ext_SensorFaultState,1,8,6,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Fault",1
+[VALUE_DESCRIPTION] "OK",0
+[START_SIGNALS] AFR5Ext_HeaterVolts,8,6,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR5Ext_DataValidState,1,7,7,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Valid",1
+[VALUE_DESCRIPTION] "InValid",0
+[START_SIGNALS] AFR5Ext,16,2,0,U,60000,0,0,0,0.0001,afr:LA,,
+[START_SIGNALS] AFR5_OxygenConcentration,16,4,0,I,32000,-32000,0,0,0.001,fraction:%,,
+[END_MSG]
+
+[START_MSG] XSeriesGauge3,386,8,9,0,X,XSeriesGauge3
+[START_SIGNALS] AFR3Ext_UsingFreeAreCalState,1,7,5,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Free Air Calibration",1
+[VALUE_DESCRIPTION] "Resistor Calibration",0
+[START_SIGNALS] AFR3Ext_SystemVolts,8,5,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR3Ext_SensorStatus,5,8,0,U,31,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Error",20
+[VALUE_DESCRIPTION] "Needs New Free Air Calibration",19
+[VALUE_DESCRIPTION] "Save Sensor",18
+[VALUE_DESCRIPTION] "Preparing to Run",17
+[VALUE_DESCRIPTION] "Determining Sensor Type",16
+[VALUE_DESCRIPTION] "Evap Startup",15
+[VALUE_DESCRIPTION] "Reading Junction Impeadance",14
+[VALUE_DESCRIPTION] "Detecting Sensor",13
+[VALUE_DESCRIPTION] "Preforming Free Air Calibration",12
+[VALUE_DESCRIPTION] "Start Free Air Calibration",11
+[VALUE_DESCRIPTION] "Heater Open Circuit",10
+[VALUE_DESCRIPTION] "Heater Short Circuit",9
+[VALUE_DESCRIPTION] "Overcool",8
+[VALUE_DESCRIPTION] "Overheat",7
+[VALUE_DESCRIPTION] "Run",6
+[VALUE_DESCRIPTION] "Reading Rcal Value",5
+[VALUE_DESCRIPTION] "Equalizing",4
+[VALUE_DESCRIPTION] "Reading Nerst Pump Impedance",3
+[VALUE_DESCRIPTION] "Stabilizing",2
+[VALUE_DESCRIPTION] "Warming Up",1
+[VALUE_DESCRIPTION] "Reset",0
+[START_SIGNALS] AFR3Ext_SensorFaultState,1,8,6,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Fault",1
+[VALUE_DESCRIPTION] "OK",0
+[START_SIGNALS] AFR3Ext_SensorDetectedStatus,4,7,0,U,15,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Reserved",8
+[VALUE_DESCRIPTION] "Reserved",4
+[VALUE_DESCRIPTION] "Bosch LSU 4.9",2
+[VALUE_DESCRIPTION] "Reserved",1
+[START_SIGNALS] AFR3Ext_HeaterVolts,8,6,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR3Ext_DataValidState,1,7,7,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Valid",1
+[VALUE_DESCRIPTION] "InValid",0
+[START_SIGNALS] AFR3Ext,16,2,0,U,60000,0,0,0,0.0001,afr:LA,,
+[START_SIGNALS] AFR3_OxygenConcentration,16,4,0,I,32000,-32000,0,0,0.001,fraction:%,,
+[END_MSG]
+
+[START_MSG] XSeriesGauge4,387,8,9,0,X,XSeriesGauge4
+[START_SIGNALS] AFR4Ext_UsingFreeAreCalState,1,7,5,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Free Air Calibration",1
+[VALUE_DESCRIPTION] "Resistor Calibration",0
+[START_SIGNALS] AFR4Ext_SystemVolts,8,5,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR4Ext_SensorStatus,5,8,0,U,31,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Error",20
+[VALUE_DESCRIPTION] "Needs New Free Air Calibration",19
+[VALUE_DESCRIPTION] "Save Sensor",18
+[VALUE_DESCRIPTION] "Preparing to Run",17
+[VALUE_DESCRIPTION] "Determining Sensor Type",16
+[VALUE_DESCRIPTION] "Evap Startup",15
+[VALUE_DESCRIPTION] "Reading Junction Impeadance",14
+[VALUE_DESCRIPTION] "Detecting Sensor",13
+[VALUE_DESCRIPTION] "Preforming Free Air Calibration",12
+[VALUE_DESCRIPTION] "Start Free Air Calibration",11
+[VALUE_DESCRIPTION] "Heater Open Circuit",10
+[VALUE_DESCRIPTION] "Heater Short Circuit",9
+[VALUE_DESCRIPTION] "Overcool",8
+[VALUE_DESCRIPTION] "Overheat",7
+[VALUE_DESCRIPTION] "Run",6
+[VALUE_DESCRIPTION] "Reading Rcal Value",5
+[VALUE_DESCRIPTION] "Equalizing",4
+[VALUE_DESCRIPTION] "Reading Nerst Pump Impedance",3
+[VALUE_DESCRIPTION] "Stabilizing",2
+[VALUE_DESCRIPTION] "Warming Up",1
+[VALUE_DESCRIPTION] "Reset",0
+[START_SIGNALS] AFR4Ext_SensorFaultState,1,8,6,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Fault",1
+[VALUE_DESCRIPTION] "OK",0
+[START_SIGNALS] AFR4Ext_SensorDetectedStatus,4,7,0,U,15,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Reserved",8
+[VALUE_DESCRIPTION] "Reserved",4
+[VALUE_DESCRIPTION] "Bosch LSU 4.9",2
+[VALUE_DESCRIPTION] "Reserved",1
+[START_SIGNALS] AFR4Ext_HeaterVolts,8,6,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR4Ext_DataValidState,1,7,7,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Valid",1
+[VALUE_DESCRIPTION] "InValid",0
+[START_SIGNALS] AFR4Ext,16,2,0,U,60000,0,0,0,0.0001,afr:LA,,
+[START_SIGNALS] AFR4_OxygenConcentration,16,4,0,I,32000,-32000,0,0,0.001,fraction:%,,
+[END_MSG]
+
+[START_MSG] XSeriesGauge2,385,8,9,0,X,XSeriesGauge2
+[START_SIGNALS] AFR2Ext_UsingFreeAreCalState,1,7,5,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Free Air Calibration",1
+[VALUE_DESCRIPTION] "Resistor Calibration",0
+[START_SIGNALS] AFR2Ext_SystemVolts,8,5,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR2Ext_SensorStatus,5,8,0,U,31,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Error",20
+[VALUE_DESCRIPTION] "Needs New Free Air Calibration",19
+[VALUE_DESCRIPTION] "Save Sensor",18
+[VALUE_DESCRIPTION] "Preparing to Run",17
+[VALUE_DESCRIPTION] "Determining Sensor Type",16
+[VALUE_DESCRIPTION] "Evap Startup",15
+[VALUE_DESCRIPTION] "Reading Junction Impeadance",14
+[VALUE_DESCRIPTION] "Detecting Sensor",13
+[VALUE_DESCRIPTION] "Preforming Free Air Calibration",12
+[VALUE_DESCRIPTION] "Start Free Air Calibration",11
+[VALUE_DESCRIPTION] "Heater Open Circuit",10
+[VALUE_DESCRIPTION] "Heater Short Circuit",9
+[VALUE_DESCRIPTION] "Overcool",8
+[VALUE_DESCRIPTION] "Overheat",7
+[VALUE_DESCRIPTION] "Run",6
+[VALUE_DESCRIPTION] "Reading Rcal Value",5
+[VALUE_DESCRIPTION] "Equalizing",4
+[VALUE_DESCRIPTION] "Reading Nerst Pump Impedance",3
+[VALUE_DESCRIPTION] "Stabilizing",2
+[VALUE_DESCRIPTION] "Warming Up",1
+[VALUE_DESCRIPTION] "Reset",0
+[START_SIGNALS] AFR2Ext_SensorFaultState,1,8,6,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Fault",1
+[VALUE_DESCRIPTION] "OK",0
+[START_SIGNALS] AFR2Ext_SensorDetectedStatus,4,7,0,U,15,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Reserved",8
+[VALUE_DESCRIPTION] "Reserved",4
+[VALUE_DESCRIPTION] "Bosch LSU 4.9",2
+[VALUE_DESCRIPTION] "Reserved",1
+[START_SIGNALS] AFR2Ext_HeaterVolts,8,6,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR2Ext_DataValidState,1,7,7,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Valid",1
+[VALUE_DESCRIPTION] "InValid",0
+[START_SIGNALS] AFR2Ext,16,2,0,U,60000,0,0,0,0.0001,afr:LA,,
+[START_SIGNALS] AFR2_OxygenConcentration,16,4,0,I,32000,-32000,0,0,0.001,fraction:%,,
+[END_MSG]
+
+[START_MSG] XSeriesGauge1,384,8,9,0,X,XSeriesGauge1
+[START_SIGNALS] AFR1Ext_UsingFreeAreCalState,1,7,5,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Free Air Calibration",1
+[VALUE_DESCRIPTION] "Resistor Calibration",0
+[START_SIGNALS] AFR1Ext_SystemVolts,8,5,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR1Ext_SensorStatus,5,8,0,U,31,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Error",20
+[VALUE_DESCRIPTION] "Needs New Free Air Calibration",19
+[VALUE_DESCRIPTION] "Save Sensor",18
+[VALUE_DESCRIPTION] "Preparing to Run",17
+[VALUE_DESCRIPTION] "Determining Sensor Type",16
+[VALUE_DESCRIPTION] "Evap Startup",15
+[VALUE_DESCRIPTION] "Reading Junction Impeadance",14
+[VALUE_DESCRIPTION] "Detecting Sensor",13
+[VALUE_DESCRIPTION] "Preforming Free Air Calibration",12
+[VALUE_DESCRIPTION] "Start Free Air Calibration",11
+[VALUE_DESCRIPTION] "Heater Open Circuit",10
+[VALUE_DESCRIPTION] "Heater Short Circuit",9
+[VALUE_DESCRIPTION] "Overcool",8
+[VALUE_DESCRIPTION] "Overheat",7
+[VALUE_DESCRIPTION] "Run",6
+[VALUE_DESCRIPTION] "Reading Rcal Value",5
+[VALUE_DESCRIPTION] "Equalizing",4
+[VALUE_DESCRIPTION] "Reading Nerst Pump Impedance",3
+[VALUE_DESCRIPTION] "Stabilizing",2
+[VALUE_DESCRIPTION] "Warming Up",1
+[VALUE_DESCRIPTION] "Reset",0
+[START_SIGNALS] AFR1Ext_SensorFaultState,1,8,6,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Fault",1
+[VALUE_DESCRIPTION] "OK",0
+[START_SIGNALS] AFR1Ext_SensorDetectedStatus,4,7,0,U,15,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Reserved",8
+[VALUE_DESCRIPTION] "Reserved",4
+[VALUE_DESCRIPTION] "Bosch LSU 4.9",2
+[VALUE_DESCRIPTION] "Reserved",1
+[START_SIGNALS] AFR1Ext_HeaterVolts,8,6,0,U,250,0,0,0,0.1,voltage:V,,
+[START_SIGNALS] AFR1Ext_DataValidState,1,7,7,B,1,0,0,0,1,unitless:,,
+[VALUE_DESCRIPTION] "Valid",1
+[VALUE_DESCRIPTION] "InValid",0
+[START_SIGNALS] AFR1Ext,16,2,0,U,60000,0,0,0,0.0001,afr:LA,,
+[START_SIGNALS] AFR1_OxygenConcentration,16,4,0,I,32000,-32000,0,0,0.001,fraction:%,,
+[END_MSG]
+
+[START_VALUE_TABLE]
+[START_TABLE] UEGO_Sensor_Status
+[VALUE_DESCRIPTION] "Error",20
+[VALUE_DESCRIPTION] "Needs New Free Air Calibration",19
+[VALUE_DESCRIPTION] "Save Sensor",18
+[VALUE_DESCRIPTION] "Preparing to Run",17
+[VALUE_DESCRIPTION] "Determining Sensor Type",16
+[VALUE_DESCRIPTION] "Evap Startup",15
+[VALUE_DESCRIPTION] "Reading Junction Impeadance",14
+[VALUE_DESCRIPTION] "Detecting Sensor",13
+[VALUE_DESCRIPTION] "Preforming Free Air Calibration",12
+[VALUE_DESCRIPTION] "Start Free Air Calibration",11
+[VALUE_DESCRIPTION] "Heater Open Circuit",10
+[VALUE_DESCRIPTION] "Heater Short Circuit",9
+[VALUE_DESCRIPTION] "Overcool",8
+[VALUE_DESCRIPTION] "Overheat",7
+[VALUE_DESCRIPTION] "Run",6
+[VALUE_DESCRIPTION] "Reading Rcal Value",5
+[VALUE_DESCRIPTION] "Equalizing",4
+[VALUE_DESCRIPTION] "Reading Nerst Pump Impedance",3
+[VALUE_DESCRIPTION] "Stabilizing",2
+[VALUE_DESCRIPTION] "Warming Up",1
+[VALUE_DESCRIPTION] "Reset",0
+[END_TABLE]
+[START_TABLE] UEGO_Sensor_Detection_Status
+[VALUE_DESCRIPTION] "Reserved",8
+[VALUE_DESCRIPTION] "Reserved",4
+[VALUE_DESCRIPTION] "Bosch LSU 4.9",2
+[VALUE_DESCRIPTION] "Reserved",1
+[END_TABLE]
+[START_TABLE] Ok_Fault
+[VALUE_DESCRIPTION] "Fault",1
+[VALUE_DESCRIPTION] "OK",0
+[END_TABLE]
+[START_TABLE] Valid
+[VALUE_DESCRIPTION] "Valid",1
+[VALUE_DESCRIPTION] "InValid",0
+[END_TABLE]
+[START_TABLE] FreeAirCal
+[VALUE_DESCRIPTION] "Free Air Calibration",1
+[VALUE_DESCRIPTION] "Resistor Calibration",0
+[END_TABLE]
+[END_VALUE_TABLE]
+
+[NODE] XSeriesGauge8,XSeriesGauge7,XSeriesGauge6,XSeriesGauge5,XSeriesGauge4,XSeriesGauge3,XSeriesGauge16,XSeriesGauge15,XSeriesGauge14,XSeriesGauge13,XSeriesGauge12,XSeriesGauge11,XSeriesGauge10,XSeriesGauge9,XSeriesGauge2,XSeriesGauge1
+
+[START_DESC]
+[START_DESC_NET]
+[END_DESC_NET]
+
+[START_DESC_NODE]
+[END_DESC_NODE]
+
+[START_DESC_MSG]
+[END_DESC_MSG]
+
+[START_DESC_SIG]
+[END_DESC_SIG]
+[END_DESC]
+
+[START_PARAM]
+[START_PARAM_NET]
+"ProtocolType",STRING,""
+"NmType",STRING,""
+"VersionNumber",INT,0,0,10000
+"VersionDay",INT,1,1,31
+"VersionMonth",INT,1,1,12
+"VersionYear",INT,2016,2016,3000
+"BusType",STRING,""
+[END_PARAM_NET]
+
+[START_PARAM_NODE]
+"TpNodeBaseAddress",HEX,0,0,255
+"ILUsed",ENUM,"Yes","No","Yes"
+[END_PARAM_NODE]
+
+[START_PARAM_MSG]
+"GenMsgCycleTime",INT,10,1,2000
+"GenMsgSendType",ENUM,"Cyclic","Cyclic"
+"GenMsgILSupport",ENUM,"Yes","No","Yes"
+"DBC_Author_Contact",STRING,"CANbusInfo@AEMelectronics.com"
+[END_PARAM_MSG]
+
+[START_PARAM_SIG]
+[END_PARAM_SIG]
+
+[START_PARAM_NODE_RX_SIG]
+[END_PARAM_NODE_RX_SIG]
+
+[START_PARAM_NODE_TX_MSG]
+[END_PARAM_NODE_TX_MSG]
+[END_PARAM]
+
+[START_PARAM_VAL]
+[START_PARAM_NET_VAL]
+"ProtocolType","Can"
+"VersionNumber",1
+"VersionDay",11
+"VersionMonth",10
+"BusType","CAN"
+[END_PARAM_NET_VAL]
+
+[START_PARAM_NODE_VAL]
+XSeriesGauge8,"TpNodeBaseAddress",7
+XSeriesGauge7,"TpNodeBaseAddress",6
+XSeriesGauge6,"TpNodeBaseAddress",5
+XSeriesGauge5,"TpNodeBaseAddress",4
+XSeriesGauge4,"TpNodeBaseAddress",3
+XSeriesGauge3,"TpNodeBaseAddress",2
+XSeriesGauge16,"TpNodeBaseAddress",15
+XSeriesGauge15,"TpNodeBaseAddress",14
+XSeriesGauge14,"TpNodeBaseAddress",13
+XSeriesGauge13,"TpNodeBaseAddress",12
+XSeriesGauge12,"TpNodeBaseAddress",11
+XSeriesGauge11,"TpNodeBaseAddress",10
+XSeriesGauge10,"TpNodeBaseAddress",9
+XSeriesGauge9,"TpNodeBaseAddress",8
+XSeriesGauge2,"TpNodeBaseAddress",1
+[END_PARAM_NODE_VAL]
+
+[START_PARAM_MSG_VAL]
+[END_PARAM_MSG_VAL]
+
+[START_PARAM_SIG_VAL]
+[END_PARAM_SIG_VAL]
+
+[END_PARAM_VAL]
+
+
+[START_NOT_SUPPORTED]
+[END_NOT_SUPPORTED]
+
+[START_NOT_PROCESSED]
+	PZ_
+	ON_QRS_
+	ON_
+	INY_
+	PNG_QRS_
+	PNG_
+	SVYGRE
+	ON_QRS_QRS_
+	RI_QNGN_
+	RAIINE_QNGN_
+	FTGLCR_
+	FTGLCR_INY_
+	ON_QRS_FTGLCR_
+	ON_FTGLCR_
+	FVT_GLCR_ERS_
+	INY_GNOYR_
+	FVT_TEBHC_
+	FVT_INYGLCR_
+	FVTGLCR_INYGLCR_
+	OB_GK_OH_
+	ON_QRS_ERY_
+	ON_ERY_
+	ON_QRS_QRS_ERY_
+	OH_FT_ERY_
+	OH_RI_ERY_
+	OH_OB_ERY_
+	FT_ZHY_INY_
+OF_:
+
+[END_NOT_PROCESSED]

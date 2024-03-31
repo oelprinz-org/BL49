@@ -26,8 +26,11 @@ void board_init (tBoard *board)
 	// init LED2 (pb5) and LED2 (pb6)
 	// led1 is power
 	DDRB |= (1 << PINB5)|(1 << PINB6);
-	// switch them on
-	PORTB |= (1 << PINB5)|(1 << PINB6);
+	
+	// switch them off
+	// PORTB |= (1 << PINB5)|(1 << PINB6);
+	led1_setState(OFF);
+	led2_setState(OFF);
 }
 
 void board_read_inputs (tBoard *board)
@@ -59,4 +62,40 @@ void board_read_inputs (tBoard *board)
 bool isActive (void)
 {
 	return (bool) (bit_is_clear(PINC, PINC6));
+}
+
+void led1_toggle (void)
+{
+	PORTB ^= (1 << PINB5);
+}
+
+void led2_toggle (void)
+{
+	PORTB ^= (1 << PINB6);
+}
+
+void led1_setState (tLedState state)
+{
+	switch (state)
+	{
+		case ON:
+		PORTB |= (1 << PINB5);
+		break;
+		case OFF:
+		PORTB &= ~(1 << PINB5);
+		break;
+	}
+}
+
+void led2_setState (tLedState state)
+{
+	switch (state)
+	{
+		case ON:
+		PORTB |= (1 << PINB6);
+		break;
+		case OFF:
+		PORTB &= ~(1 << PINB6);
+		break;
+	}
 }

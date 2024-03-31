@@ -19,6 +19,12 @@ typedef enum
 	, HIGH
 } tInputState;
 
+typedef enum
+{
+	ON
+	, OFF
+} tLedState;
+
 typedef struct 
 {
 	tInputState input1_state;
@@ -28,5 +34,9 @@ typedef struct
 void board_init (tBoard *board);
 void board_read_inputs (tBoard *board);
 bool isActive (void);
+void led1_toggle (void);
+void led2_toggle (void);
+void led1_setState (tLedState state);
+void led2_setState (tLedState state);
 
 #endif /* BOARD_H_ */

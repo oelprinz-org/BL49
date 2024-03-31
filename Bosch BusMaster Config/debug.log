@@ -1,0 +1,9 @@
+Conversion Warnings Log
+
+
+MSG_ID: 512 	MSG_TYPE: X 	MSG_NAME: DEBUG
+	SIG_NAME: Diag_Heater, STATUS: Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Diag_IA_IP, STATUS: Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Diag_UN, STATUS: Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Diag_VM, STATUS: Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signature, STATUS: Invalid Max or Min value., ACTION: Value Set to default
