@@ -94,6 +94,7 @@ int main(void)
 				sensor1.SensorStatus = EVAP_START_UP;
 				heater_setVoltage(1500);
 				counter = 0;
+				led1_setState(ON);
 			} 
 			else if (isActive() && sensor1.SensorStatus == EVAP_START_UP)
 			{
@@ -114,6 +115,13 @@ int main(void)
 			{
 				sensor_shutdown();
 				dac_setValue(0);
+				led1_setState(OFF);
+			}
+			
+			else if (!isActive())
+			{
+				led2_toggle();
+
 			}
 		}
 		
@@ -135,6 +143,7 @@ int main(void)
 					sensor1.SensorStatus = RUN;
 				}
 				heater_setVoltage(sensor1.HeaterVoltage);
+				led2_toggle();
 			}
 			
 			// we are in a running state, just adjust PID and heater
@@ -144,6 +153,15 @@ int main(void)
 				pid = calc_pid(sensor1.Ur_ref_raw, adcValue, true);
 				heater_setVoltage(duty_cycle2voltage(sensor1.SystemVoltage, pid, 256));
 				sensor1.Ur = adc2voltage_millis(adcValue);
+			}
+		}
+		
+		if (bit_check(TIMER_TASKS, BIT_TIMER_500ms))
+		{
+			bit_clear(TIMER_TASKS, BIT_TIMER_500ms);
+			if (isActive() && sensor1.SensorStatus == RUN)
+			{
+				led2_toggle();
 			}
 		}
 	}
